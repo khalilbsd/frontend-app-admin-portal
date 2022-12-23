@@ -42,7 +42,7 @@
     "color": "3.1.3",
     "color-contrast-checker": "^2.1.0",
     "core-js": "3.7.0",
-    "dash-embedded-component": "file:src/packages/dash-embedded-component-2.0.2.tgz",
+    "dash-embedded-component": "file:packages/dash-embedded-component-2.0.2.tgz",
     "file-saver": "1.3.8",
     "font-awesome": "4.7.0",
     "history": "4.10.1",
