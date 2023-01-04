@@ -19,7 +19,7 @@ import EnterpriseAppContent from './EnterpriseAppContent';
 class EnterpriseApp extends React.Component {
   constructor(props) {
     super(props);
-
+    this
     this.contentWrapperRef = React.createRef();
     this.sidebarRef = null;
 
@@ -96,20 +96,20 @@ class EnterpriseApp extends React.Component {
     } = match;
     const baseUrl = url.split('/').slice(0, 2).join('/');
     const defaultContentPadding = 10; // 10px for appropriate padding
-    const { isActive, roles, email } = getAuthenticatedUser() || {};
+    const { isActive, email } = getAuthenticatedUser() || {};
     // checking for undefined tells if if the user's info is hydrated
     const isUserLoadedAndInactive = isActive !== undefined && !isActive;
-    const isUserMissingJWTRoles = !roles?.length;
+    // const isUserMissingJWTRoles = !roles?.length;
 
     if (error) {
       return this.renderError(error);
     }
 
-    if (isUserMissingJWTRoles || isUserLoadedAndInactive) {
-      return (
-        <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
-      );
-    }
+    // if (isUserLoadedAndInactive) {
+    //   return (
+    //     <Redirect to={`/${enterpriseSlug}/admin/register/activate`} />
+    //   );
+    // }
 
     if (loading) {
       return <EnterpriseAppSkeleton />;
