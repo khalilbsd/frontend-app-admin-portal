@@ -19,7 +19,9 @@ const AdminRegisterPage = ({ match }) => {
       return;
     }
     const processEnterpriseAdmin = (enterpriseUUID) => {
-      const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
+      const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);.
+      console.log("checking is user is admin for")
+      console.log(isEnterpriseAdmin)
       if (isEnterpriseAdmin) {
         // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
         // account activation page to ensure they verify their email address.
