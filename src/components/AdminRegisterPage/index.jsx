@@ -20,8 +20,11 @@ const AdminRegisterPage = ({ match }) => {
     }
     const processEnterpriseAdmin = (enterpriseUUID) => {
       const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
+      console.log("this is the user")
+      console.log(user)
       console.log("checking is user is admin for")
       console.log(isEnterpriseAdmin)
+
       if (isEnterpriseAdmin) {
         // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
         // account activation page to ensure they verify their email address.
@@ -38,6 +41,8 @@ const AdminRegisterPage = ({ match }) => {
       try {
         const response = await LmsApiService.fetchEnterpriseBySlug(enterpriseSlug);
         if (response.data && response.data.uuid) {
+          console.log("enterprise data found")
+          console.log(response.data)
           processEnterpriseAdmin(response.data.uuid);
         }
       } catch (error) {
