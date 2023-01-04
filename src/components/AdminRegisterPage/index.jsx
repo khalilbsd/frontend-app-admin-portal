@@ -19,7 +19,7 @@ const AdminRegisterPage = ({ match }) => {
       return;
     }
     const processEnterpriseAdmin = (enterpriseUUID) => {
-      const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);.
+      const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
       console.log("checking is user is admin for")
       console.log(isEnterpriseAdmin)
       if (isEnterpriseAdmin) {
