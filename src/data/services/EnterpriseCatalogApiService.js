@@ -52,6 +52,9 @@ class EnterpriseCatalogApiService {
       enterprise_customer: enterpriseId,
       ...snakeCaseObject(options),
     };
+    console.log("under me is the user")
+    console.log(EnterpriseCatalogApiService.apiClient())
+    console.log(this.apiClient())
     return EnterpriseCatalogApiService.apiClient().post(
       EnterpriseCatalogApiService.enterpriseCurationUrl,
       payload,
