@@ -39,6 +39,7 @@ class EnterpriseCatalogApiService {
     const queryParams = new URLSearchParams({
       enterprise_customer: enterpriseId,
     });
+    console.log(EnterpriseCatalogApiService.apiClient())
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
