@@ -18,44 +18,25 @@ const AdminRegisterPage = ({ match }) => {
     if (!user) {
       return;
     }
-    const processEnterpriseAdmin = (enterprise,enterpriseUUID) => {
+    const processEnterpriseAdmin = (enterpriseUUID) => {
       const isEnterpriseAdmin = isEnterpriseUser(user, ENTERPRISE_ADMIN, enterpriseUUID);
-      console.log("this is the user")
-      console.log(user)
-      console.log("checking is user is admin for")
-      console.log(isEnterpriseAdmin)
-
-      if (enterprise) {
-          if (enterprise.admin_users){
-             if ((enterprise.admin_users.filter(admin => admin === user.email)).length > 0) {
-              history.push(`/${enterpriseSlug}/admin/register/activate`);
-             }else{
-               // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
-         // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
-         const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
-         global.location.href = logoutRedirectUrl;
-             }
-          }
+      if (isEnterpriseAdmin) {
+        // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
+        // account activation page to ensure they verify their email address.
+        history.push(`/${enterpriseSlug}/admin/register/activate`);
+      } else {
+        // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
+        // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
+        const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
+        global.location.href = logoutRedirectUrl;
       }
-      // if (isEnterpriseAdmin) {
-        // // user is authenticated and has the ``enterprise_admin`` JWT role, so redirect user to
-        // // account activation page to ensure they verify their email address.
-        // history.push(`/${enterpriseSlug}/admin/register/activate`);
-      // } else {
-        // // user is authenticated but doesn't have the `enterprise_admin` JWT role; force a log out so their
-        // // JWT roles gets refreshed. on their next login, the JWT roles will be updated.
-        // const logoutRedirectUrl = getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug));
-        // global.location.href = logoutRedirectUrl;
-      // }
     };
 
     const getEnterpriseBySlug = async () => {
       try {
         const response = await LmsApiService.fetchEnterpriseBySlug(enterpriseSlug);
         if (response.data && response.data.uuid) {
-          console.log("enterprise data found")
-          console.log(response.data)
-          processEnterpriseAdmin(response.data,response.data.uuid);
+          processEnterpriseAdmin(response.data.uuid);
         }
       } catch (error) {
         logError(error);

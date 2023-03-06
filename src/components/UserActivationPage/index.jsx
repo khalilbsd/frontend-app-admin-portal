@@ -9,19 +9,15 @@ import { LoginRedirect } from '@edx/frontend-enterprise-logistration';
 
 import { useInterval } from '../../hooks';
 import EnterpriseAppSkeleton from '../EnterpriseApp/EnterpriseAppSkeleton';
-import LmsApiService from '../../data/services/LmsApiService';
 
 const USER_ACCOUNT_POLLING_TIMEOUT = 5000;
 
 const UserActivationPage = ({ match }) => {
   const user = getAuthenticatedUser();
-
   const [showToast, setShowToast] = useState(false);
-const [enterpriseRoles, setEnterpriseRoles] = useState(undefined)
-const [isActive, setIsActive] = useState(undefined)
-const [isUserAdmin, setIsUserAdmin] = useState(false)
+
   const { enterpriseSlug } = match.params;
-  const { roles } = user || {};
+  const { roles, isActive } = user || {};
 
   useInterval(() => {
     if (user && !user.isActive) {
@@ -33,33 +29,7 @@ const [isUserAdmin, setIsUserAdmin] = useState(false)
     if (isActive) {
       setShowToast(true);
     }
-
   }, [isActive]);
-
-
-  useEffect(() => {
-    const getEnterpriseBySlug = async () => {
-      try {
-        const response = await LmsApiService.fetchEnterpriseBySlug(enterpriseSlug);
-        if (response.data && response.data.uuid) {
-          console.log("enterprise data found")
-          console.log(response.data)
-          // processEnterpriseAdmin(response.data,response.data.uuid);
-          if (response.data.admin_users){
-            setEnterpriseRoles(response.data.admin_users)
-             if (response.data.admin_users.filter(admin => admin.email === user.email) > 0){
-                setIsUserAdmin(true)
-                setIsActive(true)
-             }
-          }
-        }
-      } catch (error) {
-        logError(error);
-      }
-    };
-    getEnterpriseBySlug();
-  }, [user,enterpriseSlug])
-
 
   if (!user) {
     // user is not authenticated, so redirect to enterprise proxy login flow
@@ -70,22 +40,13 @@ const [isUserAdmin, setIsUserAdmin] = useState(false)
     );
   }
 
-
-  // if (!roles?.length) {
-  //   // user is authenticated but doesn't have any JWT roles so redirect the user to
-  //   // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
-  //   return (
-  //     <Redirect to={`/${enterpriseSlug}/admin/register`} />
-  //   );
-  // }
-
-   if (!enterpriseRoles || !enterpriseRoles.length || !isUserAdmin) {
-     // user is authenticated but doesn't have any JWT roles so redirect the user to
-     // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
-     return (
-       <Redirect to={`/${enterpriseSlug}/admin/register`} />
-     );
-   }
+  if (!roles?.length) {
+    // user is authenticated but doesn't have any JWT roles so redirect the user to
+    // `:enterpriseSlug/admin/register` to force a log out in an attempt to refresh JWT roles.
+    return (
+      <Redirect to={`/${enterpriseSlug}/admin/register`} />
+    );
+  }
 
   if (isActive === undefined) {
     // user hydration is still pending when ``isActive`` is undefined, so display app skeleton state
