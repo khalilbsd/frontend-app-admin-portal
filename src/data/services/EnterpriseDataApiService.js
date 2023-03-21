@@ -11,8 +11,8 @@ class EnterpriseDataApiService {
 
   static fetchDashboardAnalytics(enterpriseId) {
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/enrollments/overview/`;
-    return axios.get(url)
-    // return EnterpriseDataApiService.apiClient().get(url);
+  //  return axios.get(url)
+   return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchCourseEnrollments(enterpriseId, options, { csv } = {}) {
@@ -28,8 +28,8 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
-    return axios.get(url)
-    // return EnterpriseDataApiService.apiClient().get(url);
+    //return axios.get(url)
+     return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchEnterpriseOfferSummary(enterpriseId, offerId, options = {}) {
@@ -40,8 +40,8 @@ class EnterpriseDataApiService {
       });
       url += `?${queryParams.toString()}`;
     }
-    return axios.get(url)
-    // return EnterpriseDataApiService.apiClient().get(url);
+   // return axios.get(url)
+   return EnterpriseDataApiService.apiClient().get(url);
   }
 
   static fetchUnenrolledRegisteredLearners(enterpriseId, options, { csv } = {}) {
@@ -58,8 +58,8 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
-    // return EnterpriseDataApiService.apiClient().get(url);
-    return axios.get(url)
+     return EnterpriseDataApiService.apiClient().get(url);
+    //return axios.get(url)
   }
 
   static fetchEnrolledLearners(enterpriseId, options, { csv } = {}) {
@@ -77,8 +77,8 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
-    // return EnterpriseDataApiService.apiClient().get(url);
-    return axios.get(url)
+     return EnterpriseDataApiService.apiClient().get(url);
+    //return axios.get(url)
   }
 
   static fetchEnrolledLearnersForInactiveCourses(enterpriseId, options, { csv } = {}) {
@@ -98,8 +98,8 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
-    // return EnterpriseDataApiService.apiClient().get(url);
-    return axios.get(url)
+     return EnterpriseDataApiService.apiClient().get(url);
+    //return axios.get(url)
   }
 
   static fetchCompletedLearners(enterpriseId, options, { csv } = {}) {
@@ -115,8 +115,8 @@ class EnterpriseDataApiService {
     }
 
     const url = `${EnterpriseDataApiService.enterpriseBaseUrl}${enterpriseId}/${endpoint}/?${queryParams.toString()}`;
-    // return EnterpriseDataApiService.apiClient().get(url);
-    return axios.get(url)
+     return EnterpriseDataApiService.apiClient().get(url);
+    //return axios.get(url)
   }
 }
 
