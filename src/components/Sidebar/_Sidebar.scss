@@ -29,7 +29,7 @@
       top: 0;
 
       .nav-link {
-        padding: 15px;
+        padding: 15px 0 15px 15px;
         color: $gray-700;
         color: black;
         div{
@@ -37,9 +37,13 @@
         justify-content: space-between;
         width: 100%;
         }
-        .icon{
-          margin-left: 10%;
+
+        .end-of-link{
+          display: flex;
+          gap:15px;
+
         }
+
 
         .edge-active{
           width: 5px;
@@ -53,7 +57,7 @@
           // background: $primary;
           // color: $white;
           background: none;
-        font-weight: 700;
+          font-weight: 700;
         svg{
           color:var(--unnamed-color-1a46de)
         }
@@ -69,6 +73,9 @@
           background: var(--unnamed-color-eaf0f4);
           svg{
             color:var(--unnamed-color-1a46de)
+          }
+          .edge-active{
+            background: var(--unnamed-color-eaf0f4);
           }
         }
         .link-title{
