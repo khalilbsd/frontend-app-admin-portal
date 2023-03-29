@@ -45,11 +45,12 @@ const BaseNavLink = ({
       {...rest}
     >
       <div className="position-relative d-flex align-items-center">
-        <span ref={iconRef} className="d-flex align-items-center">
+        <div class="edge-active"></div>
+        <span ref={iconRef} className="d-flex align-items-center icon">
           {IconElement}
         </span>
         {!isExpanded && <span className="sr-only">{title}</span>}
-        {isExpanded && <span ref={titleRef}>{title}</span>}
+        {isExpanded && <span className='link-title' ref={titleRef}>{title}</span>}
         {notification && (
           <Bubble
             variant="error"

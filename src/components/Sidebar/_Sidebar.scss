@@ -37,18 +37,43 @@
         justify-content: space-between;
         width: 100%;
         }
+        .icon{
+          margin-left: 10%;
+        }
+
+        .edge-active{
+          width: 5px;
+          background: white;
+          height: 50px;
+          border-top-left-radius: 15px;
+          border-bottom-left-radius: 15px;
+          transition: all 0.3s;
+        }
         &.active {
           // background: $primary;
           // color: $white;
           background: none;
         font-weight: 700;
+        svg{
+          color:var(--unnamed-color-1a46de)
+        }
+
+        .edge-active{
+          background: var(--unnamed-color-1a46de);
+        }
+
         }
 
         &:not(.active):hover,
         &:not(.active):focus {
           background: var(--unnamed-color-eaf0f4);
+          svg{
+            color:var(--unnamed-color-1a46de)
+          }
         }
-
+        .link-title{
+          font-size: 16px;
+        }
       }
     }
   }
