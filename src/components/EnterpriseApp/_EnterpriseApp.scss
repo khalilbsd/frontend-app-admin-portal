@@ -4,6 +4,7 @@
 
   .content-wrapper {
     padding: 10px;
+    background: #F4F5FF 0% 0% no-repeat padding-box;
 
     @include media-breakpoint-up(lg) {
       & {
