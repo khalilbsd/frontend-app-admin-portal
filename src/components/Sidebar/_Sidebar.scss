@@ -6,7 +6,7 @@
   z-index: $zindex-fixed;
   box-shadow: 5px 0px 16px 0px rgba(1,0,0,0.1);
   &.expanded {
-    width: auto;
+    width: 20vw;
 
     &.has-shadow {
       @include pgn-box-shadow(1, 'right');
@@ -40,7 +40,10 @@
 
         .end-of-link{
           display: flex;
-          gap:15px;
+          gap: 15px;
+          flex-direction: row;
+          justify-content: flex-end;
+          width: 18%;
 
         }
 
@@ -75,7 +78,7 @@
             color:var(--unnamed-color-1a46de)
           }
           .edge-active{
-            color:var(--unnamed-color-1a46de)
+            background:var(--unnamed-color-1a46de)
           }
         }
         .link-title{
