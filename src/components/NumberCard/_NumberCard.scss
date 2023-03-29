@@ -2,6 +2,15 @@ $viewport-size-details-overlay: "md";
 $viewport-size-details-overlay-lg: "xl";
 $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
+
+@include media-breakpoint-up($viewport-size-details-overlay-lg){
+  .col-xl-3 {
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+}
+}
+
+
 .number-card {
   // box-shadow: $number-card-box-shadow;
   position: relative;
@@ -18,19 +27,18 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     }
   }
 
-  @include media-breakpoint-up($viewport-size-details-overlay-lg){
-    .col-xl-3 {
-      flex: 0 0 20% !important;
-      max-width: 20% !important;
-  }
-  }
+
 
   @include media-breakpoint-up($viewport-size-details-overlay) {
     flex: 1 1 auto;
-
+    display: flex;
     &.has-details {
       margin-bottom: 53px; // height of collapsed .card-footer
     }
+  }
+
+  .card{
+    width: 100%;
   }
 
   .card-title {
