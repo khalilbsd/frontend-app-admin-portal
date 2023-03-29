@@ -31,4 +31,20 @@
       }
     }
   }
+
+  .learner-data-table{
+    .table-responsive{
+      background: white;
+    border: none;
+    min-height: 20vh;
+    border-radius: 10px;
+    table {
+        .sortable{
+          border-top: 0;
+        }
+    }
+
+    }
+
+  }
 }

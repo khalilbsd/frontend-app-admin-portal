@@ -1,15 +1,10 @@
-$viewport-size-details-overlay: 'md';
+$viewport-size-details-overlay: "md";
+$viewport-size-details-overlay-lg: "xl";
 $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-
-
-
-
-
 
 .number-card {
   // box-shadow: $number-card-box-shadow;
   position: relative;
-
 
   &.has-details {
     .card {
@@ -23,6 +18,13 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     }
   }
 
+  @include media-breakpoint-up($viewport-size-details-overlay-lg){
+    .col-xl-3 {
+      flex: 0 0 20% !important;
+      max-width: 20% !important;
+  }
+  }
+
   @include media-breakpoint-up($viewport-size-details-overlay) {
     flex: 1 1 auto;
 
@@ -33,19 +35,23 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
   .card-title {
     font-size: 2.5rem;
-    font-weight: 500;
-    font-family: $font-family-monospace;
+    font-weight: 700;
+    // font-family: $font-family-monospace;
+    color: var(--unnamed-color-3e4b80);
   }
 
   .card-body {
     .fa {
-
-
-      color:  var(--unnamed-color-3e4b80);
-      font-size: $font-size-lg;
+      color: var(--unnamed-color-3e4b80);
+      // font-size: $font-size-lg;
+      font-size: 34px;
       border-radius: 100%;
       width: 3.75rem;
       height: 3.75rem;
+    }
+    .card-text {
+      color: var(--unnamed-color-3e4b80);
+      font-weight: 500;
     }
   }
 

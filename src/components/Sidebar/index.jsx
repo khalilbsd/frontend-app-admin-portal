@@ -141,7 +141,6 @@ const Sidebar = ({
       aria-label="sidebar"
       className={classNames([
         'sidebar',
-        'border-right',
         'h-100',
         'd-none',
         'd-lg-flex',

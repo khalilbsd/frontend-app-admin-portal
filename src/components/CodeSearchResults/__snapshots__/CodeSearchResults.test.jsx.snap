@@ -28,7 +28,7 @@ exports[`<CodeSearchResults /> basic rendering should render empty table data 1`
           <h3
             className="lead m-0 text-truncate"
           >
-            Search results for 
+            Search results for
             <em>
               "
               test@test.com
@@ -115,7 +115,7 @@ exports[`<CodeSearchResults /> basic rendering should render error 1`] = `
           <h3
             className="lead m-0 text-truncate"
           >
-            Search results for 
+            Search results for
             <em>
               "
               test@test.com
@@ -207,7 +207,7 @@ exports[`<CodeSearchResults /> basic rendering should render loading 1`] = `
           <h3
             className="lead m-0 text-truncate"
           >
-            Search results for 
+            Search results for
             <em>
               "
               test@test.com
@@ -564,7 +564,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data 1`] = `
           <h3
             className="lead m-0 text-truncate"
           >
-            Search results for 
+            Search results for
             <em>
               "
               test@test.com
@@ -964,7 +964,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
           <h3
             className="lead m-0 text-truncate"
           >
-            Search results for 
+            Search results for
             <em>
               "
               FAG2LVLNHAKIXQ0Q
@@ -1109,7 +1109,7 @@ exports[`<CodeSearchResults /> basic rendering should render table data when sea
                       >
                         Remind
                       </button>
-                       | 
+                       |
                       <button
                         className="revoke-btn btn-sm p-0 btn btn-link"
                         disabled={false}

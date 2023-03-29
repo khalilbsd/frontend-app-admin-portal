@@ -1,10 +1,10 @@
 .sidebar {
-  background: $gray-100;
+  background: white;
   position: absolute;
   top: 0;
   left: 0;
   z-index: $zindex-fixed;
-
+  box-shadow: 5px 0px 16px 0px rgba(1,0,0,0.1);
   &.expanded {
     width: auto;
 
@@ -29,17 +29,26 @@
       top: 0;
 
       .nav-link {
+        padding: 15px;
         color: $gray-700;
-
+        color: black;
+        div{
+          flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+        }
         &.active {
-          background: $primary;
-          color: $white;
+          // background: $primary;
+          // color: $white;
+          background: none;
+        font-weight: 700;
         }
 
         &:not(.active):hover,
         &:not(.active):focus {
-          background: $gray-200;
+          background: var(--unnamed-color-eaf0f4);
         }
+
       }
     }
   }

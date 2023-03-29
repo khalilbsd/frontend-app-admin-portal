@@ -88,7 +88,7 @@ class TableComponent extends React.Component {
             <div className="table-responsive">
               <Table
                 id={id}
-                className="table-sm table-striped"
+                className="table-sm table"
                 columns={columnConfig}
                 data={formatData(data)}
                 tableSortable={tableSortable}

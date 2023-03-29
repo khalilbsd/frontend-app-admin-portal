@@ -84,7 +84,7 @@ const Header = ({
 }) => {
   const user = getAuthenticatedUser();
   return (
-    <header className="container-fluid border-bottom">
+    <header className="container-fluid">
       <Navbar aria-label="header" className="px-0 py-1 justify-content-between">
         <Nav aria-label="Main">
           {hasSidebarToggle && <SidebarToggle />}
