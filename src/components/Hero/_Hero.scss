@@ -2,16 +2,18 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  min-height: 8rem;
+  min-height: 6rem;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: solid 7px;
+  border-bottom: 0;
 
 
   h1 {
     margin: 0;
+    font-weight: 600;
+    line-height: 38px;
 
   }
 

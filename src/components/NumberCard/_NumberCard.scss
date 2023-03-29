@@ -1,15 +1,25 @@
 $viewport-size-details-overlay: 'md';
 $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
+
+
+
+
+
 .number-card {
-  box-shadow: $number-card-box-shadow;
+  // box-shadow: $number-card-box-shadow;
   position: relative;
+
 
   &.has-details {
     .card {
       border-bottom: 0;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
+      background: white;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border: none;
     }
   }
 
@@ -29,8 +39,9 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 
   .card-body {
     .fa {
-      background: $info-100;
-      color: $info-700;
+
+
+      color:  var(--unnamed-color-3e4b80);
       font-size: $font-size-lg;
       border-radius: 100%;
       width: 3.75rem;
@@ -43,7 +54,10 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
     font-size: $font-size-sm;
     background: $white;
     padding: 0;
-    border: $card-border-width solid $card-border-color;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
     @include border-radius($card-border-radius);
 
     @include media-breakpoint-up($viewport-size-details-overlay) {
@@ -52,19 +66,23 @@ $number-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
         z-index: $zindex-dropdown;
         top: 100%;
         width: 100%;
-        box-shadow: $number-card-box-shadow;
+        // box-shadow: $number-card-box-shadow;
       }
     }
 
     .toggle-collapse {
       padding: 1rem 1.25rem;
       font-weight: 600;
-      color: $dark-700;
+      color: var(--unnamed-color-3e4b80);
       font-size: $font-size-sm;
       text-decoration: none;
+      justify-content: flex-end;
 
       .fa {
         font-size: 1rem;
+        /* transform: rotate(270deg); */
+        margin-top: 4px;
+        color: var(--unnamed-color-2ce4b4);
       }
 
       &:hover,

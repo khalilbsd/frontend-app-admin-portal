@@ -60,7 +60,7 @@ $fa-font-path: "~font-awesome/fonts";
     --unnamed-line-spacing-41: 41px;
 }
 
-*:not(.icon){
+*:not(.icon,.fa){
   font-family: 'Montserrat' !important;
 }
 
@@ -111,3 +111,12 @@ form {
     max-width: $modal-max-width;
   }
 }
+
+
+
+h2{
+  font-weight: 500;
+    font-size: 1.8rem;
+    color: var(--unnamed-color-3e4b80);
+}
+

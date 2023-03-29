@@ -215,7 +215,7 @@ class NumberCard extends React.Component {
                       className={classNames(
                         'fa',
                         {
-                          'fa-caret-down': !detailsExpanded,
+                          'fa-chevron-right': !detailsExpanded,
                           'fa-close': detailsExpanded,
                         },
                       )}
