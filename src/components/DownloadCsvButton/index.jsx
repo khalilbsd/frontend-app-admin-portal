@@ -38,7 +38,7 @@ class DownloadCsvButton extends React.Component {
           {/* {buttonLabel}  */}
           Full Report
           <span className='file-type'>.csv</span>
-          <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
+          <Icon className={`fa ml-2 ${downloadButtonIconClasses.join(' ')}`} />
         </>
       </Button>
     );

@@ -64,12 +64,12 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             )}
           </div>
           <p>
-            In accordance with edX privacy policies, learners that do not activate their allocated
+            In accordance with groupadoPro privacy policies, learners that do not activate their allocated
             licenses within 90 days of invitation are purged from the record tables below.
           </p>
           <div className="mt-3 d-flex align-items-center">
             {subscription.priorRenewals[0]?.priorSubscriptionPlanStartDate && (
-              <div className="mr-5">
+              <div className="mr-5 sub-detail-card">
                 <div className="text-uppercase text-muted">
                   <small>Purchase Date</small>
                 </div>
@@ -78,19 +78,19 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                 </div>
               </div>
             )}
-            <div className="mr-5">
+            <div className="mr-5 sub-detail-card">
               <div className="text-uppercase text-muted">
                 <small>Start Date</small>
               </div>
-              <div className="lead">
+              <div className="lead start-date">
                 {moment(subscription.startDate).format('MMMM D, YYYY')}
               </div>
             </div>
-            <div>
+            <div className="sub-detail-card">
               <div className="text-uppercase text-muted">
                 <small>End Date</small>
               </div>
-              <div className="lead">
+              <div className="lead end-date">
                 {moment(subscription.expirationDate).format('MMMM D, YYYY')}
               </div>
             </div>

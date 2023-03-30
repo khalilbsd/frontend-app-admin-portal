@@ -134,3 +134,39 @@ header{
 }
 
 
+#tabs-subscription-management-tabpane-manage-learners{
+  .badge{
+    &.badge-success{
+      background: var(--unnamed-color-2ce4b4);
+    }
+    &.badge-warning{
+      background: var(--unnamed-color-f6d738)
+    }
+
+  }
+
+  .pgn__data-table th,.pgn__data-table{
+    &.is-striped{
+      tr:nth-child(2n){
+        background-color: var(--unnamed-color-eaf0f4) !important
+      }
+
+    }
+  }
+  .pgn__data-table-side-filters-item{
+    .pgn__checkbox-filter{
+      .form-check{
+        width: 100%;
+        margin-bottom: 8px;
+        label{
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
+

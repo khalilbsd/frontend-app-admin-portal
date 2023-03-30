@@ -18,7 +18,7 @@ const LicenseAllocationHeader = () => {
     <>
       {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
       <h2 className="mb-2">License Allocation</h2>
-      <p className="lead">
+      <p className="lead resume-license">
         {subscription.licenses?.allocated}
         {' of '}
         {subscription.licenses?.total} licenses allocated
