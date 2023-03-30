@@ -118,7 +118,7 @@ class AdminSearchForm extends React.Component {
                 onClear={() => updateUrl({ search: undefined })}
                 value={searchQuery}
                 aria-labelledby="search-email-label"
-                className="py-0"
+                className="py-0 search-form"
                 inputProps={{ 'data-hj-suppress': true }}
               />
             </div>

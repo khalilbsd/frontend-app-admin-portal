@@ -156,7 +156,7 @@ const Sidebar = ({
       onBlur={() => shouldSidebarCollapse && collapseSidebar()}
       ref={navRef}
     >
-      <div className="sidebar-content py-2">
+      <div className="sidebar-content py-2 w-100">
         <ul className="nav nav-pills flex-column m-0">
           {getMenuItems().filter(item => !item.hidden).map(({
             id, to, title, icon, notification, external,

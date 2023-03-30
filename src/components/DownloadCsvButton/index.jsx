@@ -34,8 +34,9 @@ class DownloadCsvButton extends React.Component {
         }}
       >
         <>
+
+          {buttonLabel} <span className='file-type'>.csv</span>
           <Icon className={`fa mr-2 ${downloadButtonIconClasses.join(' ')}`} />
-          {buttonLabel}
         </>
       </Button>
     );
@@ -46,7 +47,7 @@ DownloadCsvButton.defaultProps = {
   csvLoading: false,
   fetchMethod: () => {},
   disabled: false,
-  buttonLabel: 'Download full report (CSV)',
+  buttonLabel: 'Full Report',
 };
 
 DownloadCsvButton.propTypes = {
