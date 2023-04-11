@@ -244,7 +244,7 @@ const LicenseManagementTable = ({intl}) => {
         data={rows}
         columns={[
           {
-            Header: intl.fomatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.email']),
+            Header: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.email']),
             accessor: 'emailLabel',
             /* eslint-disable react/prop-types */
             /* eslint-disable react/no-unstable-nested-components */
