@@ -12,6 +12,8 @@ import LicenseManagementRevokeModal from '../../LicenseManagementModals/LicenseM
 import { canRevokeLicense, getActiveFilters } from '../../../data/utils';
 import { REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../../messages';
 
 const calculateTotalToRevoke = ({
   selectedRevocableRows,
@@ -47,6 +49,7 @@ const RevokeBulkAction = ({
   activatedUsersCount,
   assignedUsersCount,
   revokedUsersCount,
+  intl
 }) => {
   const [revokeModal, setRevokeModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
@@ -116,7 +119,7 @@ const RevokeBulkAction = ({
         onClick={handleRevokeClick}
         disabled={!totalToRevoke}
       >
-        Revoke ({totalToRevoke})
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.btn.revoke'])} ({totalToRevoke})
       </Button>
       <LicenseManagementRevokeModal
         isOpen={revokeModal.isOpen}
@@ -162,4 +165,4 @@ RevokeBulkAction.propTypes = {
   revokedUsersCount: PropTypes.number.isRequired,
 };
 
-export default RevokeBulkAction;
+export default (injectIntl(RevokeBulkAction));

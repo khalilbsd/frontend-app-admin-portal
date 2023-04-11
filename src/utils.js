@@ -22,7 +22,7 @@ import SAPIcon from './icons/SAP.svg';
 
 import LmsApiService from './data/services/LmsApiService';
 import messages from './components/EnrollmentsTable/messages';
-
+import licenseMessages from './components/subscriptions/messages';
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
     return moment(timestamp).format(format);
@@ -215,10 +215,12 @@ const mergeErrors = (object, other) => {
   return mergeWith(object, other, customizer);
 };
 
-const getSubscriptionContactText = (contactEmail) => {
-  let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
+const getSubscriptionContactText = (contactEmail,intl) => {
+  // let contactText = 'To learn more about your unlimited subscription and edX, contact your edX administrator';
+  let contactText = intl.formatMessage(licenseMessages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text']);
   if (contactEmail) {
-    contactText = `${contactText} at ${contactEmail}`;
+
+    contactText = intl.formatMessage(licenseMessages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text.admin'],{contactText,contactEmail});
   }
   return `${contactText}.`;
 };

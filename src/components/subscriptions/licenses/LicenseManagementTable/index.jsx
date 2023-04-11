@@ -33,22 +33,7 @@ import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
 import { injectIntl } from '@edx/frontend-platform/i18n';
 import messages from '../../messages';
 
-const userRecentAction = (user) => {
-  switch (user.status) {
-    case ACTIVATED: {
-      return `Activated: ${formatTimestamp({ timestamp: user.activationDate })}`;
-    }
-    case REVOKED: {
-      return `Revoked: ${formatTimestamp({ timestamp: user.revokedDate })}`;
-    }
-    case ASSIGNED: {
-      return `Invited: ${formatTimestamp({ timestamp: user.lastRemindDate })}`;
-    }
-    default: {
-      return null;
-    }
-  }
-};
+
 
 const selectColumn = {
   id: 'selection',
@@ -65,6 +50,24 @@ const LicenseManagementTable = ({intl}) => {
 
   const config = getConfig();
 
+  const userRecentAction = (user) => {
+    switch (user.status) {
+      case ACTIVATED: {
+
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.activated'],{activationDate:formatTimestamp({ timestamp: user.activationDate })});
+      }
+      case REVOKED: {
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.revoked'],{activationDate:formatTimestamp({ timestamp: user.revokedDate })});
+
+      }
+      case ASSIGNED: {
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.invited'],{activationDate:formatTimestamp({ timestamp: user.lastRemindDate })});
+      }
+      default: {
+        return null;
+      }
+    }
+  };
   const {
     forceRefresh: forceRefreshSubscription,
   } = useContext(SubscriptionContext);
@@ -236,7 +239,7 @@ const LicenseManagementTable = ({intl}) => {
             if (loadingUsers) {
               return null;
             }
-            return <DataTable.EmptyTable content="No results found" />;
+            return <DataTable.EmptyTable content={intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.no.results.found'])} />;
           }
           /* eslint-enable react/no-unstable-nested-components */
         }

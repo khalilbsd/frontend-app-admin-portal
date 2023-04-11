@@ -43,7 +43,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails,intl }) => {
       <Alert.Heading>
         {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.title'])}
       </Alert.Heading>
-      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.first.message'],{SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.message'],{SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,expirationDate:formatTimestamp({ timestamp: expirationDate })})}
     </>
   ));
 

@@ -12,6 +12,8 @@ import LicenseManagementRemindModal from '../../LicenseManagementModals/LicenseM
 import { canRemindLicense, getActiveFilters } from '../../../data/utils';
 import { ACTIVATED, REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../../messages';
 
 const calculateTotalToRemind = ({
   selectedRemindableRows,
@@ -50,6 +52,7 @@ const RemindBulkAction = ({
   assignedUsersCount,
   revokedUsersCount,
   onRemindSuccess,
+  intl
 }) => {
   const [remindModal, setRemindModal] = useLicenseManagementModalState();
   const selectedRows = selectedFlatRows.map(selectedRow => selectedRow.original);
@@ -119,7 +122,7 @@ const RemindBulkAction = ({
         onClick={handleRemindClick}
         disabled={!totalToRemind}
       >
-        Remind ({totalToRemind})
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.btn.remind'])} ({totalToRemind})
       </Button>
       <LicenseManagementRemindModal
         isOpen={remindModal.isOpen}
@@ -165,4 +168,4 @@ RemindBulkAction.propTypes = {
   revokedUsersCount: PropTypes.number.isRequired,
 };
 
-export default RemindBulkAction;
+export default (injectIntl(RemindBulkAction));

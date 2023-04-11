@@ -34,7 +34,7 @@ const messages = defineMessages({
     },
     'subs.management.page.tab.manage.learners.sub.details.message':{
         id:'subs.management.page.tab.manage.learners.sub.details.message',
-        defaultMessage: 'In accordance with groupadoPro privacy policies, learners that do not activate their allocated licenses within 90 days of invitation are purged from the record tables below.'
+        defaultMessage: 'In accordance with Groupado Pro privacy policies, learners that do not activate their allocated licenses within 90 days of invitation are purged from the record tables below.'
     },
     'subs.management.page.tab.manage.learners.sub.details.purchase':{
         id:'subs.management.page.tab.manage.learners.sub.details.purchase',
@@ -56,14 +56,27 @@ const messages = defineMessages({
         id:'subs.management.page.tab.manage.learners.add',
         defaultMessage: '{numAlreadyAssociated} email addresses were previously assigned. {numSuccessfulAssignments} email addresses were successfully added.'
     },
-    'subs.management.page.tab.manage.learners.license.expiration.first.title':{
-        id:'subs.management.page.tab.manage.learners.license.expiration.first.title',
+    'subs.management.page.tab.manage.learners.license.expiration.ended.title':{
+        id:'subs.management.page.tab.manage.learners.license.expiration.ended.title',
         defaultMessage: "This subscription plan's end date has passed"
     },
-    'subs.management.page.tab.manage.learners.license.expiration.first.message':{
-        id:'subs.management.page.tab.manage.learners.license.expiration.first.message',
+    'subs.management.page.tab.manage.learners.license.subs.management.page.tab.manage.learners.license.expiration.ended.message':{
+        id:'subs.management.page.tab.manage.learners.license.subs.management.page.tab.manage.learners.license.expiration.ended.message',
         defaultMessage: "Administrative actions are no longer available as of the plan end date of {expirationDate}. You may still view the statuses of your invited learners."
     },
+    'subs.management.page.tab.manage.learners.license.expiration.ending.title':{
+        id:'subs.management.page.tab.manage.learners.license.expiration.ending.title',
+        defaultMessage: "This subscription plan's end date is approaching"
+    },
+
+
+    'subs.management.page.tab.manage.learners.license.expiration.ending.message':{
+        id:'subs.management.page.tab.manage.learners.license.expiration.ending.message',
+        defaultMessage: "Administrative actions will no longer be available beginning {SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS} hours prior to the plan end date of {expirationDate}."
+    },
+
+
+
 
     'subs.management.page.tab.manage.learners.license.expiration.exprired.title':{
         id:'subs.management.page.tab.manage.learners.license.expiration.exprired.title',
@@ -75,7 +88,7 @@ const messages = defineMessages({
         defaultMessage: "Renew your subscription today to reconnect your learning community."
     },
     'subs.management.page.tab.manage.learners.license.expiration.expring.title':{
-        id:'subs.management.page.tab.manage.learners.license.expiration.exprired.title',
+        id:'subs.management.page.tab.manage.learners.license.expiration.expring.title',
         defaultMessage: "Your subscription contract is expiring soon"
     },
 
@@ -158,7 +171,149 @@ const messages = defineMessages({
         id:'subs.management.page.tab.manage.learners.license.data.table.recent.actions',
         defaultMessage:'Recent action'
     },
+    'subs.management.page.tab.manage.learners.license.data.no.results.found':{
+        id:'subs.management.page.tab.manage.learners.license.data.no.results.found',
+        defaultMessage:'No results found'
+    },
 
+    'subs.management.page.tab.manage.learners.license.data.table.recent.actions.activated':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.recent.actions.activated',
+        defaultMessage:'Activated: {activationDate}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.recent.actions.revoked':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.recent.actions.revoked',
+        defaultMessage:'Revoked: {revokedDate}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.recent.actions.invited':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.recent.actions.invited',
+        defaultMessage:'Invited: {lastRemindDate}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.btn.remind':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.btn.remind',
+        defaultMessage:'Remind'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title',
+        defaultMessage:'Remind User'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title.plural':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title.plural',
+        defaultMessage:'Remind Users'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured',
+        defaultMessage:'There was an error with your request. Please try again.'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message',
+        defaultMessage:'If the error persists,'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message.link':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message.link',
+        defaultMessage:'contact customer support.'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates',
+        defaultMessage:'Email Template'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize',
+        defaultMessage:'Customize Greeting'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body',
+        defaultMessage:'Body'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing',
+        defaultMessage:'Customize Closing'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.close':{
+        id:'subs.management.page.tab.manage.learners.license.expiration.modal.dismiss',
+        defaultMessage:'Cancel'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.all':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.all',
+        defaultMessage:'all'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.remind':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.remind',
+        defaultMessage:'Remind {buttonNumberLabel}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.reminding':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.reminding',
+        defaultMessage:'Reminding {buttonNumberLabel}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.done':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.done',
+        defaultMessage:'done'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.retry':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.retry',
+        defaultMessage:'Retry remind {buttonNumberLabel}'
+    },
+
+
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.text':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.text',
+        defaultMessage:'We noticed you haven’t had a chance to start learning With Groupado Pro! It’s easy to get started and browse the course catalog.'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body.text':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body.text',
+        defaultMessage:'{ENTERPRISE_NAME} partnered with Groupado Pro to give everyone access to high-quality online courses. '
+        + 'Start your subscription and browse courses in nearly every subject including '
+        + 'Data Analytics, Digital Media, Business & Leadership, Communications, Computer Science and so much more. '
+        + 'Courses are taught by experts from the world’s leading universities and corporations.'
+        + '\n\nStart learning: {LICENSE_ACTIVATION_LINK}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text',
+        defaultMessage:'To learn more about your unlimited subscription and Groupado Pro, contact your Groupado Pro administrator'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text.admin':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing.text.admin',
+        defaultMessage:'{contactText} at {contactEmail}'
+    },
+
+
+    'subs.management.page.tab.manage.learners.license.data.table.actions.btn.revoke':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.btn.revoke',
+        defaultMessage:'Revoke'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title.plural':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title.plural',
+        defaultMessage:'Revoke Licenses'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title',
+        defaultMessage:'Revoke License'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning',
+        defaultMessage:'You have already revoked {applied} licenses. You have {remaining} revocations left on your plan.'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning.body':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning.body',
+        defaultMessage:'This action cannot be undone. Learners with revoked licenses must be reinvited.'
+    },
+
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.revoke':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.revoke',
+        defaultMessage:'Revoke {buttonNumberLabel}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.revoking':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.revoking',
+        defaultMessage:'Revoking {buttonNumberLabel}'
+    },
+
+    'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.retry':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.retry',
+        defaultMessage:'Retry revoke {buttonNumberLabel}'
+    },
+    'subs.management.page.tab.manage.learners.license.data.table.actions.btn.enroll':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.actions.btn.enroll',
+        defaultMessage:'Enroll'
+    },
 
 
 })

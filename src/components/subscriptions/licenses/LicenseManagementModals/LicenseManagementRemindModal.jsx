@@ -19,15 +19,18 @@ import LicenseManagerApiService from '../../../../data/services/LicenseManagerAP
 import { configuration } from '../../../../config';
 import { getSubscriptionContactText } from '../../../../utils';
 import { transformFiltersForRequest } from '../../data/utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../messages';
 
-const generateEmailTemplate = (contactEmail) => ({
-  greeting: 'We noticed you haven’t had a chance to start learning on edX! It’s easy to get started and browse the course catalog.',
-  body: '{ENTERPRISE_NAME} partnered with edX to give everyone access to high-quality online courses. '
-    + 'Start your subscription and browse courses in nearly every subject including '
-    + 'Data Analytics, Digital Media, Business & Leadership, Communications, Computer Science and so much more. '
-    + 'Courses are taught by experts from the world’s leading universities and corporations.'
-    + '\n\nStart learning: {LICENSE_ACTIVATION_LINK}',
-  closing: getSubscriptionContactText(contactEmail),
+const generateEmailTemplate = (contactEmail,intl) => ({
+  greeting: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.text']),
+  body: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body.text'],{ENTERPRISE_NAME,LICENSE_ACTIVATION_LINK}),
+  // body: '{ENTERPRISE_NAME} partnered with edX to give everyone access to high-quality online courses. '
+  //   + 'Start your subscription and browse courses in nearly every subject including '
+  //   + 'Data Analytics, Digital Media, Business & Leadership, Communications, Computer Science and so much more. '
+  //   + 'Courses are taught by experts from the world’s leading universities and corporations.'
+  //   + '\n\nStart learning: {LICENSE_ACTIVATION_LINK}',
+  closing: getSubscriptionContactText(contactEmail,intl),
 });
 
 /**
@@ -35,16 +38,16 @@ const generateEmailTemplate = (contactEmail) => ({
  * @param {number} totalToRemind
  * @returns {Object}
  */
-const generateRemindModalSubmitLabel = (totalToRemind) => {
-  let buttonNumberLabel = 'all';
+const generateRemindModalSubmitLabel = (totalToRemind,intl) => {
+  let buttonNumberLabel =intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.all']);
   if (Number.isFinite(totalToRemind)) {
     buttonNumberLabel = `(${totalToRemind})`;
   }
   return {
-    default: `Remind ${buttonNumberLabel}`,
-    pending: `Reminding ${buttonNumberLabel}`,
-    complete: 'Done',
-    error: `Retry remind ${buttonNumberLabel}`,
+    default:intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.remind'],{buttonNumberLabel}),
+    pending: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.reminding'],{buttonNumberLabel}),
+    complete:intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.done']),
+    error:intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.retry'],{buttonNumberLabel}),
   };
 };
 
@@ -59,15 +62,25 @@ const LicenseManagementRemindModal = ({
   totalToRemind,
   contactEmail,
   activeFilters,
+  intl
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
-  const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail));
+  const [emailTemplate, setEmailTemplate] = useState(generateEmailTemplate(contactEmail,intl));
   const isExpired = moment().isAfter(subscription.expirationDate);
 
-  const buttonLabels = generateRemindModalSubmitLabel(totalToRemind);
+  const buttonLabels = generateRemindModalSubmitLabel(totalToRemind,intl);
 
-  const title = `Remind User${remindAllUsers || totalToRemind > 1 ? 's' : ''}`;
+
+  // const title = `Remind User${remindAllUsers || totalToRemind > 1 ? 's' : ''}`;
+  var  title = ""
+  if (remindAllUsers || totalToRemind > 1){
+    title = intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title.plural'])
+
+  }else{
+    title = intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.title'])
+
+  }
 
   const handleSubmit = useCallback(async () => {
     if (onSubmit) {
@@ -162,19 +175,19 @@ const LicenseManagementRemindModal = ({
         {requestState.error
             && (
             <Alert variant="danger">
-              <p>There was an error with your request. Please try again.</p>
+              <p>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured'])}</p>
               <p>
-                If the error persists,{' '};
+               {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message'])}
                 <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
-                  contact customer support.
+                 {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message.link'])}
                 </Hyperlink>
               </p>
             </Alert>
             )}
-        <h3 className="h4">Email Template</h3>
+        <h3 className="h4">{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates'])}</h3>
         <Form>
           <Form.Group controlId="email-template-greeting">
-            <Form.Label>Customize Greeting</Form.Label>
+            <Form.Label>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize'])}</Form.Label>
             <Form.Control
               rows={3}
               as="textarea"
@@ -184,7 +197,7 @@ const LicenseManagementRemindModal = ({
             />
           </Form.Group>
           <Form.Group controlId="email-template-body">
-            <Form.Label>Body</Form.Label>
+            <Form.Label>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body'])}</Form.Label>
             <Form.Control
               rows={3}
               as="textarea"
@@ -194,7 +207,7 @@ const LicenseManagementRemindModal = ({
             />
           </Form.Group>
           <Form.Group controlId="email-template-closing">
-            <Form.Label>Customize Closing</Form.Label>
+            <Form.Label>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.closing'])}</Form.Label>
             <Form.Control
               rows={3}
               as="textarea"
@@ -209,7 +222,7 @@ const LicenseManagementRemindModal = ({
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Cancel
+            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.close'])}
           </ModalDialog.CloseButton>
           <StatefulButton
             state={getRemindButtonState()}
@@ -267,4 +280,4 @@ const mapStateToProps = state => ({
   contactEmail: state.portalConfiguration.contactEmail,
 });
 
-export default connect(mapStateToProps)(LicenseManagementRemindModal);
+export default connect(mapStateToProps)(injectIntl(LicenseManagementRemindModal));

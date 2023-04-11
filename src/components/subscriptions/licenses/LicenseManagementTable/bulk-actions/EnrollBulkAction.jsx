@@ -9,6 +9,8 @@ import BulkEnrollDialog from '../../../../BulkEnrollmentPage/BulkEnrollDialog';
 import { canEnrollLicense } from '../../../data/utils';
 import { REVOKED } from '../../../data/constants';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../../eventTracking';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../../messages';
 
 /**
  * TODO: the Bulk Enrollment UX flow requires displaying each individually
@@ -28,6 +30,7 @@ const EnrollBulkAction = ({
   isEntireTableSelected,
   subscription,
   onEnrollSuccess,
+  intl
 }) => {
   const [showBulkEnrollWarning, setShowBulkEnrollWarning] = useState(false);
   const [showBulkEnrollModal, setShowBulkEnrollModal] = useState(false);
@@ -116,7 +119,7 @@ const EnrollBulkAction = ({
         onClick={handleEnrollClick}
         disabled={!totalToEnroll}
       >
-        Enroll ({totalToEnroll})
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.btn.enroll'])} ({totalToEnroll})
       </Button>
       <BulkEnrollWarningModal
         learners={selectedEnrollableLearnerEmails}
@@ -169,4 +172,4 @@ EnrollBulkAction.propTypes = {
   onEnrollSuccess: PropTypes.func.isRequired,
 };
 
-export default EnrollBulkAction;
+export default (injectIntl(EnrollBulkAction));

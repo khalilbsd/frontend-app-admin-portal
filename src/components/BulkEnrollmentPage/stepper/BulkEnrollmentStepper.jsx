@@ -20,6 +20,8 @@ import {
   REVIEW_TITLE,
 } from './constants';
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
 /**
  * Modal dialog to house Bulk enrollment workflow that starts after selecting learners and
@@ -35,7 +37,7 @@ import { BulkEnrollContext } from '../BulkEnrollmentContext';
  * @returns Modal dialog from Paragon
  */
 const BulkEnrollStepper = ({
-  enterpriseId, enterpriseSlug, subscription, isOpen, onClose, onSuccess,
+  enterpriseId, enterpriseSlug, subscription, isOpen, onClose, onSuccess,intl
 }) => {
   const steps = [ADD_COURSES_STEP, REVIEW_STEP];
   const [currentStep, setCurrentStep] = useState(steps[0]);
@@ -57,9 +59,10 @@ const BulkEnrollStepper = ({
         onClose={onClose}
         className="bulk-enroll-modal"
       >
+
         <ModalDialog.Header>
           <ModalDialog.Title>
-            Subscription Enrollment
+           {intl.formatMessage(messages['bulk.enrollment.learners.main.title'])}
           </ModalDialog.Title>
         </ModalDialog.Header>
         <ModalDialog.Body>
@@ -85,7 +88,7 @@ const BulkEnrollStepper = ({
               data-testid={NEXT_BUTTON_TEST_ID}
               disabled={selectedCourses.length < 1}
             >
-              {NEXT_BUTTON_TEXT}
+              {intl.formatMessage(messages[NEXT_BUTTON_TEXT])}
             </Button>
           </Stepper.ActionRow>
           <Stepper.ActionRow eventKey={REVIEW_STEP}>
@@ -94,7 +97,7 @@ const BulkEnrollStepper = ({
               onClick={() => setCurrentStep(ADD_COURSES_STEP)}
               data-testid={PREV_BUTTON_TEST_ID}
             >
-              {PREVIOUS_BUTTON_TEXT}
+              {intl.formatMessage(messages[PREVIOUS_BUTTON_TEXT])}
             </Button>
             <Stepper.ActionRow.Spacer />
             <BulkEnrollmentSubmit
@@ -119,4 +122,4 @@ BulkEnrollStepper.propTypes = {
   onSuccess: PropTypes.func.isRequired,
 };
 
-export default BulkEnrollStepper;
+export default (injectIntl(BulkEnrollStepper));

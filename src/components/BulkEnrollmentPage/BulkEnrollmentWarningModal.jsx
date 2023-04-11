@@ -7,21 +7,23 @@ import {
 import { Error } from '@edx/paragon/icons';
 
 import BulkEnrollButton from './BulkEnrollButton';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 const BulkEnrollWarningModal = ({
-  learners, isDialogOpen, onClose, onEnroll,
+  learners, isDialogOpen, onClose, onEnroll,intl
 }) => (
   <AlertModal
     title={(
       <div className="d-flex align-items-center">
         <Icon className="enroll-header mr-1" src={Error} />
-        Revoked Learners Selected
+       {intl.formatMessage(messages['bulk.enrollment.learners.title'])}
       </div>
     )}
     isOpen={isDialogOpen}
     footerNode={(
       <ActionRow>
-        <Button variant="link" onClick={onClose} data-testid="CLOSE_BTN_IN_WARNING_MODAL">Close</Button>
+        <Button variant="link" onClick={onClose} data-testid="CLOSE_BTN_IN_WARNING_MODAL">{intl.formatMessage(messages['bulk.enrollment.learners.message.close'])}</Button>
         <BulkEnrollButton
           learners={learners}
           handleEnrollment={onEnroll}
@@ -30,8 +32,7 @@ const BulkEnrollWarningModal = ({
       </ActionRow>
     )}
   >
-    Any learners with revoked licenses are not included. Click &quot;Enroll&quot; to enroll
-    active and pending learners only.
+ {intl.formatMessage(messages['bulk.enrollment.learners.message'])}
   </AlertModal>
 );
 
@@ -47,4 +48,4 @@ BulkEnrollWarningModal.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default BulkEnrollWarningModal;
+export default (injectIntl(BulkEnrollWarningModal));

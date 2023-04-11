@@ -32,9 +32,9 @@ export const DEFAULT_LEAD_TEXT = 'Invite your learners to access your course cat
 
 // user status badge mapping, takes user status as key returns label and badge style defined by ux
 export const USER_STATUS_BADGE_MAP = {
-  [ACTIVATED]: { label: 'Active', variant: 'success' },
-  [ASSIGNED]: { label: 'Pending', variant: 'warning' },
-  [REVOKED]: { label: 'Revoked', variant: 'light' },
+  [ACTIVATED]: { label: 'subs.management.page.tab.manage.learners.license.data.table.status.active', variant: 'success' },
+  [ASSIGNED]: { label: 'ubs.management.page.tab.manage.learners.license.data.table.status.pending', variant: 'warning' },
+  [REVOKED]: { label: 'subs.management.page.tab.manage.learners.license.data.table.status.revoked', variant: 'light' },
 };
 
 // Subscription statuses

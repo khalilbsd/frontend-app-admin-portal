@@ -14,6 +14,8 @@ import {
 import { BulkEnrollContext } from '../BulkEnrollmentContext';
 
 import CourseSearchResults from '../CourseSearchResults';
+import messages from '../messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
 const currentEpoch = Math.round((new Date()).getTime() / 1000);
 const MAX_COURSES = 7;
@@ -24,13 +26,13 @@ const searchClient = algoliasearch(
 );
 
 const AddCoursesStep = ({
-  enterpriseId, enterpriseSlug, subscription,
+  enterpriseId, enterpriseSlug, subscription,intl
 }) => {
   const { courses: [selectedCourses] } = useContext(BulkEnrollContext);
   return (
     <>
-      <p>{ADD_COURSE_DESCRIPTION}</p>
-      <h2>{ADD_COURSES_TITLE}</h2>
+      <p>{intl.formatMessage(messages[ADD_COURSE_DESCRIPTION])}</p>
+      <h2>{intl.formatMessage(messages[ADD_COURSES_TITLE])}</h2>
       {(selectedCourses?.length || 0) > MAX_COURSES ? <DismissibleCourseWarning /> : null}
       <SearchData>
         <InstantSearch
@@ -62,4 +64,4 @@ AddCoursesStep.propTypes = {
   }).isRequired,
 };
 
-export default AddCoursesStep;
+export default (injectIntl(AddCoursesStep));

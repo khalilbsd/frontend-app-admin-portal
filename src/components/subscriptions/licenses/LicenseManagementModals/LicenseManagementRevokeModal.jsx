@@ -20,6 +20,8 @@ import { configuration } from '../../../../config';
 import { SHOW_REVOCATION_CAP_PERCENT } from '../../data/constants';
 import LicenseManagerApiService from '../../../../data/services/LicenseManagerAPIService';
 import { transformFiltersForRequest } from '../../data/utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../messages';
 
 /**
  * Compute if alert should be rendered to warn admin they are approaching revocation limit.
@@ -42,7 +44,7 @@ const showRevocationCapAlert = (revocationCapEnabled, revocations) => {
  * @param {number} totalToRevoke
  * @returns {Object}
  */
-const generateRevokeModalSubmitLabel = (totalToRevoke) => {
+const generateRevokeModalSubmitLabel = (totalToRevoke,intl) => {
   let buttonNumberLabel = 'all';
 
   if (Number.isFinite(totalToRevoke)) {
@@ -50,10 +52,10 @@ const generateRevokeModalSubmitLabel = (totalToRevoke) => {
   }
 
   return {
-    default: `Revoke ${buttonNumberLabel}`,
-    pending: `Revoking ${buttonNumberLabel}`,
-    complete: 'Done',
-    error: `Retry revoke ${buttonNumberLabel}`,
+    default: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.remind']),
+    pending: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.reminding']),
+    complete: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.remind.btn.done']),
+    error: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.revoke.btn.retry']),
   };
 };
 
@@ -67,12 +69,24 @@ const LicenseManagementRevokeModal = ({
   revokeAllUsers,
   totalToRevoke,
   activeFilters,
+  intl
 }) => {
   const [requestState, setRequestState, initialRequestState] = useRequestState(isOpen);
 
-  const buttonLabels = generateRevokeModalSubmitLabel(totalToRevoke);
+  const buttonLabels = generateRevokeModalSubmitLabel(totalToRevoke,intl);
 
-  const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
+  // const title = `Revoke License${revokeAllUsers || totalToRevoke > 1 ? 's' : ''}`;
+
+  var  title = ""
+  if (revokeAllUsers || totalToRevoke > 1){
+    title = intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title.plural'])
+
+  }else{
+    title = intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.title'])
+
+  }
+
+
 
   const isExpired = moment().isAfter(subscription.expirationDate);
 
@@ -156,11 +170,11 @@ const LicenseManagementRevokeModal = ({
         {requestState.error
             && (
             <Alert variant="danger">
-              <p>There was an error with your request. Please try again.</p>
+              <p>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured'])}</p>
               <p>
-                If the error persists,{' '}
+               {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message'])}
                 <Hyperlink destination={configuration.ENTERPRISE_SUPPORT_URL}>
-                  contact customer support.
+                {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.error.occured.message.link'])}
                 </Hyperlink>
               </p>
             </Alert>
@@ -168,24 +182,17 @@ const LicenseManagementRevokeModal = ({
         {showRevocationCapAlert(subscription.isRevocationCapEnabled, subscription.revocations)
             && (
             <Alert variant="warning">
-              You have already revoked {subscription.revocations.applied} licenses. You
-              have {subscription.revocations.remaining} revocations left on your plan.
+
+              {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning'],{applied:subscription.revocations.applied,remaining:subscription.revocations.remaining})}
             </Alert>
             )}
-        <p>This action cannot be undone. Learners with revoked licenses must be reinvited.</p>
-        <p>
-          <Hyperlink
-            variant="muted"
-            destination={configuration.ENTERPRISE_SUPPORT_REVOKE_LICENSE_URL}
-          >
-            Learn more about revoking subscription licenses.
-          </Hyperlink>
-        </p>
+        <p>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.revoke.modal.warning.body'])}</p>
+
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Cancel
+          {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.close'])}
           </ModalDialog.CloseButton>
           <StatefulButton
             state={getRevokeButtonState()}
@@ -243,4 +250,4 @@ LicenseManagementRevokeModal.propTypes = {
   ).isRequired,
 };
 
-export default LicenseManagementRevokeModal;
+export default (injectIntl(LicenseManagementRevokeModal));
