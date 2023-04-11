@@ -19,12 +19,15 @@ import {
 import { sortSubscriptionsByStatus } from './data/utils';
 import { ROUTE_NAMES } from '../EnterpriseApp/data/constants';
 import { configuration } from '../../config';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 const MultipleSubscriptionsPage = ({
   enterpriseSlug,
   redirectPage,
   leadText,
   createActions,
+  intl
 }) => {
   const { loading, data } = useContext(SubscriptionContext);
   const subscriptions = data.results;
@@ -39,17 +42,16 @@ const MultipleSubscriptionsPage = ({
         <Card.Section className="text-center">
           <Row>
             <Col xs={12} lg={{ span: 8, offset: 2 }}>
-              <h3 className="mb-3">No subscription plans for your organization</h3>
+              <h3 className="mb-3">{intl.formatMessage(messages['subs.management.page.tab.manage.learners.no.sub.found'])}</h3>
               <p>
-                We were unable to find any active subscription plans for your organization. Please contact
-                Customer Support if you have questions.
+                {intl.formatMessage(messages['subs.management.page.tab.manage.learners.no.sub.found.message'])}
               </p>
               <Hyperlink
                 className="btn btn-brand"
                 target="_blank"
                 destination={configuration.ENTERPRISE_SUPPORT_URL}
               >
-                Contact support
+                {intl.formatMessage(messages['subs.management.page.tab.manage.learners.no.sub.found.contact'])}
               </Hyperlink>
             </Col>
           </Row>
@@ -97,4 +99,4 @@ const mapStateToProps = (state) => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(MultipleSubscriptionsPage);
+export default connect(mapStateToProps)(injectIntl(MultipleSubscriptionsPage));

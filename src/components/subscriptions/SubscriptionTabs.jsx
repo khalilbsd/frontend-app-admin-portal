@@ -20,8 +20,10 @@ import {
   SUBSCRIPTIONS_TAB_PARAM,
 } from './data/constants';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../data/constants/subsidyRequests';
+import messages from './messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
-const SubscriptionTabs = ({ enterpriseSlug }) => {
+const SubscriptionTabs = ({ enterpriseSlug,intl }) => {
   const { subsidyRequestConfiguration, subsidyRequestsCounts } = useContext(SubsidyRequestsContext);
 
   const isSubsidyRequestsEnabled = subsidyRequestConfiguration?.subsidyRequestsEnabled;
@@ -64,7 +66,7 @@ const SubscriptionTabs = ({ enterpriseSlug }) => {
       <Tab
         key={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
         eventKey={SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB]}
-        title={SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]}
+        title={intl.formatMessage(messages[SUBSCRIPTION_TABS_LABELS[MANAGE_LEARNERS_TAB]])}
         className="pt-4"
       >
         {SUBSCRIPTION_TABS_VALUES[MANAGE_LEARNERS_TAB] === subscriptionsTab && (
@@ -113,4 +115,4 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(SubscriptionTabs);
+export default connect(mapStateToProps)(injectIntl(SubscriptionTabs));

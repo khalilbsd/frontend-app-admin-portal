@@ -14,8 +14,10 @@ import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import SubscriptionExpirationBanner from './expiration/SubscriptionExpirationBanner';
 import { MANAGE_LEARNERS_TAB } from './data/constants';
+import messages from './messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
-const SubscriptionDetails = ({ enterpriseSlug }) => {
+const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
   const { forceRefresh } = useContext(SubscriptionContext);
   const {
     hasMultipleSubscriptions,
@@ -39,7 +41,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
           <Link to={backToSubscriptionsPath}>
             <Button variant="outline-primary">
               <FontAwesomeIcon icon={faAngleLeft} className="mr-2" />
-              Back to subscriptions
+                {intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.back.subs'])}
             </Button>
           </Link>
         </Row>
@@ -55,7 +57,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
                   onSuccess={({ numAlreadyAssociated, numSuccessfulAssignments }) => {
                     forceRefresh();
                     forceRefreshDetailView();
-                    setToastMessage(`${numAlreadyAssociated} email addresses were previously assigned. ${numSuccessfulAssignments} email addresses were successfully added.`);
+                    setToastMessage(intl.formatMessage(messages['subs.management.page.tab.manage.learners.add'],{numAlreadyAssociated,numSuccessfulAssignments}));
                     setShowToast(true);
                   }}
                   disabled={subscription.isLockedForRenewalProcessing}
@@ -64,14 +66,13 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             )}
           </div>
           <p>
-            In accordance with groupadoPro privacy policies, learners that do not activate their allocated
-            licenses within 90 days of invitation are purged from the record tables below.
+            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.message'])}
           </p>
           <div className="mt-3 d-flex align-items-center">
             {subscription.priorRenewals[0]?.priorSubscriptionPlanStartDate && (
               <div className="mr-5 sub-detail-card">
                 <div className="text-uppercase text-muted">
-                  <small>Purchase Date</small>
+                  <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.purchase'])}</small>
                 </div>
                 <div className="lead">
                   {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
@@ -80,7 +81,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             )}
             <div className="mr-5 sub-detail-card">
               <div className="text-uppercase text-muted">
-                <small>Start Date</small>
+                <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.start.date'])}</small>
               </div>
               <div className="lead start-date">
                 {moment(subscription.startDate).format('MMMM D, YYYY')}
@@ -88,7 +89,7 @@ const SubscriptionDetails = ({ enterpriseSlug }) => {
             </div>
             <div className="sub-detail-card">
               <div className="text-uppercase text-muted">
-                <small>End Date</small>
+                <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.end.date'])}</small>
               </div>
               <div className="lead end-date">
                 {moment(subscription.expirationDate).format('MMMM D, YYYY')}
@@ -115,4 +116,4 @@ const mapStateToProps = state => ({
   enterpriseSlug: state.portalConfiguration.enterpriseSlug,
 });
 
-export default connect(mapStateToProps)(SubscriptionDetails);
+export default connect(mapStateToProps)(injectIntl(SubscriptionDetails));

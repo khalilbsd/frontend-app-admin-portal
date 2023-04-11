@@ -3,51 +3,53 @@ import React from 'react';
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
-const EnrollmentsTable = () => {
+const EnrollmentsTable = ({intl}) => {
   const enrollmentTableColumns = [
     {
-      label: 'Email',
+      label: intl.formatMessage(messages['enrollment.table.label.email']),
       key: 'user_email',
       columnSortable: true,
     },
     {
-      label: 'Course Title',
+      label: intl.formatMessage(messages['enrollment.table.label.course.title']),
       key: 'course_title',
       columnSortable: true,
     },
     {
-      label: 'Course Price',
+      label: intl.formatMessage(messages['enrollment.table.label.course.price']),
       key: 'course_list_price',
       columnSortable: true,
     },
     {
-      label: 'Start Date',
+      label: intl.formatMessage(messages['enrollment.table.label.course.start.date']),
       key: 'course_start_date',
       columnSortable: true,
     },
     {
-      label: 'End Date',
+      label: intl.formatMessage(messages['enrollment.table.label.course.end.date']),
       key: 'course_end_date',
       columnSortable: true,
     },
     {
-      label: 'Passed Date',
+      label: intl.formatMessage(messages['enrollment.table.label.course.passed.date']),
       key: 'passed_date',
       columnSortable: true,
     },
     {
-      label: 'Current Grade',
+      label: intl.formatMessage(messages['enrollment.table.label.course.current.grade']),
       key: 'current_grade',
       columnSortable: true,
     },
     {
-      label: 'Progress Status',
+      label: intl.formatMessage(messages['enrollment.table.label.course.progress.status']),
       key: 'progress_status',
       columnSortable: true,
     },
     {
-      label: 'Last Activity Date',
+      label: intl.formatMessage(messages['enrollment.table.label.last.activity.date']),
       key: 'last_activity_date',
       columnSortable: true,
     },
@@ -62,7 +64,7 @@ const EnrollmentsTable = () => {
     enrollment_date: formatTimestamp({
       timestamp: enrollment.enrollment_date,
     }),
-    passed_date: formatPassedTimestamp(enrollment.passed_date),
+    passed_date: formatPassedTimestamp(enrollment.passed_date,intl),
     user_account_creation_date: formatTimestamp({
       timestamp: enrollment.user_account_creation_date,
     }),
@@ -83,4 +85,4 @@ const EnrollmentsTable = () => {
   );
 };
 
-export default EnrollmentsTable;
+export default (injectIntl(EnrollmentsTable));

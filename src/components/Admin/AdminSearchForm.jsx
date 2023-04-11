@@ -9,6 +9,8 @@ import { Form } from '@edx/paragon';
 import SearchBar from '../SearchBar';
 import { updateUrl } from '../../utils';
 import IconWithTooltip from '../IconWithTooltip';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 class AdminSearchForm extends React.Component {
   componentDidUpdate(prevProps) {
@@ -45,6 +47,7 @@ class AdminSearchForm extends React.Component {
   render() {
     const {
       tableData,
+      intl,
       searchParams: { searchCourseQuery, searchDateQuery, searchQuery },
     } = this.props;
     const courseTitles = Array.from(new Set(tableData.map(en => en.course_title).sort()));
@@ -56,14 +59,14 @@ class AdminSearchForm extends React.Component {
           <div className="row w-100 m-0">
             <div className="col-12 col-md-3 px-0 pl-0 pr-md-2 pr-lg-3">
               <Form.Group>
-                <Form.Label className="search-label mb-2">Filter by course</Form.Label>
+                <Form.Label className="search-label mb-2">{intl.formatMessage(messages['tab.progress.report.data.filter'])}</Form.Label>
                 <Form.Control
                   className="w-100"
                   as="select"
                   value={searchCourseQuery}
                   onChange={e => this.onCourseSelect(e)}
                 >
-                  <option value="">All Courses</option>
+                  <option value="">{intl.formatMessage(messages['tab.progress.report.data.filter.all.courses'])}</option>
                   {courseTitles.map(title => (
                     <option
                       value={title}
@@ -78,11 +81,11 @@ class AdminSearchForm extends React.Component {
             <div className="col-12 col-md-3 px-0 pr-0 px-md-2 px-lg-3">
               <Form.Group>
                 <Form.Label className="search-label mb-2">
-                  Filter by start date
+                  {intl.formatMessage(messages['tab.progress.report.data.filter.start.date'])}
                   <IconWithTooltip
                     icon={faInfoCircle}
                     altText="More information"
-                    tooltipText="A start date can be selected after the course name is selected."
+                    tooltipText={intl.formatMessage(messages['tab.progress.report.data.filter.start.date.help'])}
                   />
                 </Form.Label>
                 <Form.Control
@@ -95,7 +98,7 @@ class AdminSearchForm extends React.Component {
                   })}
                   disabled={!searchCourseQuery}
                 >
-                  <option value="">{searchCourseQuery ? 'All Dates' : 'Choose a course'}</option>
+                  <option value="">{searchCourseQuery ? intl.formatMessage(messages['tab.progress.report.data.filter.start.search']) : intl.formatMessage(messages['tab.progress.report.data.filter.start.search.choose'])}</option>
                   {searchCourseQuery && courseDates.map(date => (
                     <option
                       value={date}
@@ -108,9 +111,9 @@ class AdminSearchForm extends React.Component {
               </Form.Group>
             </div>
             <div className="col-12 col-md-6 my-2 my-md-0 px-0 px-md-2 px-lg-3">
-              <Form.Label id="search-email-label" className="mb-2">Filter by email</Form.Label>
+              <Form.Label id="search-email-label" className="mb-2">{intl.formatMessage(messages['tab.progress.report.data.filter.email'])}</Form.Label>
               <SearchBar
-                placeholder="Search by email..."
+                placeholder={intl.formatMessage(messages['tab.progress.report.data.filter.email.placeholder'])}
                 onSearch={query => updateUrl({
                   search: query,
                   page: 1,
@@ -143,4 +146,4 @@ AdminSearchForm.propTypes = {
   tableData: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
-export default AdminSearchForm;
+export default (injectIntl(AdminSearchForm));

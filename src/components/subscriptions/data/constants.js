@@ -58,8 +58,8 @@ export const REDIRECT_SETTINGS_BUTTON_TEXT = 'Go to settings';
 export const MANAGE_LEARNERS_TAB = 'manage-learners';
 export const MANAGE_REQUESTS_TAB = 'manage-requests';
 
-const MANAGE_LEARNERS_TAB_LABEL = 'Manage Learners';
-const MANAGE_REQUESTS_TAB_LABEL = 'Manage Requests';
+const MANAGE_LEARNERS_TAB_LABEL = 'subs.management.page.tab.manage.learners';
+const MANAGE_REQUESTS_TAB_LABEL = 'subs.management.page.tab.manage.requests';
 
 /**
  * Used as tab values and in router params

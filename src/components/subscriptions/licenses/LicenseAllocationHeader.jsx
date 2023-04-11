@@ -3,8 +3,10 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 import { SubsidyRequestsContext } from '../../subsidy-requests';
 import NewFeatureAlertBrowseAndRequest from '../../NewFeatureAlertBrowseAndRequest';
 import { SUPPORTED_SUBSIDY_TYPES } from '../../../data/constants/subsidyRequests';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
-const LicenseAllocationHeader = () => {
+const LicenseAllocationHeader = ({intl}) => {
   const {
     subscription,
   } = useContext(SubscriptionDetailContext);
@@ -17,14 +19,14 @@ const LicenseAllocationHeader = () => {
   return (
     <>
       {isBrowseAndRequestFeatureAlertShown && <NewFeatureAlertBrowseAndRequest />}
-      <h2 className="mb-2">License Allocation</h2>
+      <h2 className="mb-2">{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.allocation'])}</h2>
       <p className="lead resume-license">
         {subscription.licenses?.allocated}
-        {' of '}
-        {subscription.licenses?.total} licenses allocated
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.allocation.of.nb'])}
+        {subscription.licenses?.total} {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.allocation.of.nb.allocated'])}
       </p>
     </>
   );
 };
 
-export default LicenseAllocationHeader;
+export default (injectIntl(LicenseAllocationHeader));

@@ -21,6 +21,8 @@ import { TOUR_TARGETS } from '../ProductTours/constants';
 import { useOnMount } from '../../hooks';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import { EnterpriseAppContext } from '../EnterpriseApp/EnterpriseAppContextProvider';
+import messages from './messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
 const Sidebar = ({
   baseUrl,
@@ -34,6 +36,7 @@ const Sidebar = ({
   enableAnalyticsScreen,
   onWidthChange,
   isMobile,
+  intl
 }) => {
   const navRef = useRef();
   const widthRef = useRef();
@@ -70,59 +73,59 @@ const Sidebar = ({
 
   const getMenuItems = () => [
     {
-      title: 'Learner Progress Report',
+      title: intl.formatMessage(messages['sidebar.link.learner.progress']),
       to: `${baseUrl}/admin/${ROUTE_NAMES.learners}`,
       icon: <FontAwesomeIcon icon={faChartLine} fixedWidth />,
     },
     {
-      title: 'Analytics',
+      title: intl.formatMessage(messages['sidebar.link.analytics']),
       to: `${baseUrl}/admin/${ROUTE_NAMES.analytics}`,
       icon: <FontAwesomeIcon icon={faChartBar} fixedWidth />,
       hidden: !features.ANALYTICS || !enableAnalyticsScreen,
     },
     {
-      title: 'Code Management',
+      title: intl.formatMessage(messages['sidebar.link.code.management']),
       to: `${baseUrl}/admin/${ROUTE_NAMES.codeManagement}`,
       icon: <FontAwesomeIcon icon={faTags} fixedWidth />,
       hidden: !features.CODE_MANAGEMENT || !enableCodeManagementScreen,
       notification: !!subsidyRequestsCounts.couponCodes,
     },
     {
-      title: 'Subscription Management',
+      title: intl.formatMessage(messages['sidebar.link.subs.management']),
       to: `${baseUrl}/admin/${ROUTE_NAMES.subscriptionManagement}`,
       icon: <FontAwesomeIcon icon={faCreditCard} fixedWidth />,
       hidden: !enableSubscriptionManagementScreen,
       notification: !!subsidyRequestsCounts.subscriptionLicenses,
     },
     {
-      title: 'Learner Credit Management',
+      title: intl.formatMessage(messages['sidebar.link.learner.management']),
       id: TOUR_TARGETS.LEARNER_CREDIT,
       to: `${baseUrl}/admin/${ROUTE_NAMES.learnerCredit}`,
       icon: <Icon src={MoneyOutline} className="d-inline-block" />,
       hidden: !canManageLearnerCredit,
     },
     {
-      title: 'Highlights',
+      title:  intl.formatMessage(messages['sidebar.link.highlights']),
       id: TOUR_TARGETS.CONTENT_HIGHLIGHTS,
       to: `${baseUrl}/admin/${ROUTE_NAMES.contentHighlights}`,
       icon: <Icon src={BookOpen} className="d-inline-block" />,
       hidden: !FEATURE_CONTENT_HIGHLIGHTS || !enterpriseCuration?.isHighlightFeatureActive,
     },
     {
-      title: 'Reporting Configurations',
+      title: intl.formatMessage(messages['sidebar.link.report.config']),
       to: `${baseUrl}/admin/${ROUTE_NAMES.reporting}`,
       icon: <FontAwesomeIcon icon={faFile} fixedWidth />,
       hidden: !features.REPORTING_CONFIGURATIONS || !enableReportingConfigScreen,
     },
     {
-      title: 'Settings',
+      title: intl.formatMessage(messages['sidebar.link.report.settings']),
       id: TOUR_TARGETS.SETTINGS_SIDEBAR,
       to: `${baseUrl}/admin/${ROUTE_NAMES.settings}`,
       icon: <FontAwesomeIcon icon={faCog} fixedWidth />,
     },
     // NOTE: keep "Support" link the last nav item
     {
-      title: 'Support',
+      title: intl.formatMessage(messages['sidebar.link.report.support']),
       to: configuration.ENTERPRISE_SUPPORT_URL,
       icon: <FontAwesomeIcon icon={faLifeRing} fixedWidth />,
       hidden: !features.SUPPORT,
@@ -203,4 +206,4 @@ Sidebar.propTypes = {
   isMobile: PropTypes.bool,
 };
 
-export default Sidebar;
+export default (injectIntl(Sidebar));

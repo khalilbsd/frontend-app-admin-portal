@@ -1,18 +1,68 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
 import Hero from '../Hero';
 import StatusAlert from '../StatusAlert';
 import PlotlyAnalyticsCharts from './PlotlyAnalyticsCharts';
+import { Col, Container, Row } from '@edx/paragon';
+import PieChart from './Charts/PieChart';
+import LineChart from './Charts/LineChart';
+import LearnerStatusInCourses from './Charts/LearnerStatusInCourses';
+import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import { fetchDashboardAnalytics } from '../../data/actions/dashboardAnalytics';
+import { clearDashboardAnalytics } from '../../data/actions/dashboardAnalytics';
+import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
+import messages from './messages';
+import LearnerCertificate from './Charts/LearnerCertificate';
 
-const PAGE_TITLE = 'Analytics';
 
-const PlotlyAnalyticsPage = ({ enterpriseId }) => {
+
+const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics,analyticsData, enrollments,intl }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
+  const [enrollmentsList, setenrollmentsList] = useState(undefined)
+const [learnerStatus, setlearnerStatus] = useState(undefined)
+const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
+  // const enrollmentsList = enrollments.then(enrollment => enrollments.data);
+
+
+  async function getEnrollmentsData() {
+    try {
+      const { data } = await enrollments;
+
+      setenrollmentsList(data.results)
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+
+
+  function getLearnerStatus() {
+      setlearnerStatus(
+        [
+            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status']), intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.message'])],
+            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.enrolled']), Math.abs(analyticsData.number_of_users - analyticsData.enrolled_learners)],
+            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.not.enrolled']), analyticsData.enrolled_learners],
+          ]
+      )
+  }
+
+  useEffect(() => {
+    fetchDashboardAnalytics(enterpriseId)
+    getEnrollmentsData()
+
+  }, [enterpriseId])
+
+
+  useEffect(() => {
+    getLearnerStatus()
+  }, [analyticsData])
+
+
 
   const setSuccessStatus = ({ visible, message = '' }) => {
     setStatus({
@@ -24,14 +74,14 @@ const PlotlyAnalyticsPage = ({ enterpriseId }) => {
 
   const renderStatusMessage = () => (
     status && status.visible && (
-    <StatusAlert
-      alertType={status.alertType}
-      iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
-      title={status.title}
-      message={status.message}
-      onClose={() => setSuccessStatus({ visible: false })}
-      dismissible
-    />
+      <StatusAlert
+        alertType={status.alertType}
+        iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
+        title={status.title}
+        message={status.message}
+        onClose={() => setSuccessStatus({ visible: false })}
+        dismissible
+      />
     )
   );
 
@@ -42,7 +92,27 @@ const PlotlyAnalyticsPage = ({ enterpriseId }) => {
       <div className="col-12 col-lg-9">
         {renderStatusMessage()}
       </div>
-      <PlotlyAnalyticsCharts enterpriseId={enterpriseId} />
+      <Container gap={2}>
+        <Row style={{ rowGap: 10 }}>
+          <Col lg={6} md={6} sm={6} xs={12}  >
+            {/* 1st chart  */}
+            <PieChart data={learnerStatus} title="tab.anayltics.chart.title.daily.activities" />
+          </Col>
+          <Col lg={6} md={6} sm={6} xs={12}  >
+            <LineChart />
+          </Col>
+        </Row>
+        <Row className='mt-3' style={{ rowGap: 10 }}>
+          <Col lg={12} md={12} sm={12} xs={12} >
+            <LearnerStatusInCourses rawData={enrollmentsList} />
+          </Col>
+        </Row>
+        <Row className='mt-3' style={{ rowGap: 10 }}>
+          <Col lg={12} md={12} sm={12} xs={12} >
+            <LearnerCertificate rawData={enrollmentsList} />
+          </Col>
+        </Row>
+      </Container>
     </>
   );
 };
@@ -53,6 +123,25 @@ PlotlyAnalyticsPage.propTypes = {
 
 const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
+  // learnerStatus: [
+  //   ['tab.analytics.chart.learner.enrollment.status', 'tab.analytics.chart.learner.enrollment.status.message'],
+  //   ['tab.analytics.chart.learner.enrollment.status.enrolled', Math.abs(state.dashboardAnalytics.number_of_users - state.dashboardAnalytics.enrolled_learners)],
+  //   ['tab.analytics.chart.learner.enrollment.status.not.enrolled', state.dashboardAnalytics.enrolled_learners],
+  // ],
+  analyticsData:state.dashboardAnalytics,
+  enrollments: EnterpriseDataApiService.fetchCourseEnrollments(state.portalConfiguration.enterpriseId)
 });
 
-export default connect(mapStateToProps)(PlotlyAnalyticsPage);
+
+const mapDispatchToProps = dispatch => ({
+  fetchDashboardAnalytics: (enterpriseId) => {
+    dispatch(fetchDashboardAnalytics(enterpriseId));
+  },
+  clearDashboardAnalytics: () => {
+    dispatch(clearDashboardAnalytics());
+  },
+
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(PlotlyAnalyticsPage));

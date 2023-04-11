@@ -6,6 +6,8 @@ import { Link, withRouter } from 'react-router-dom';
 
 import { removeTrailingSlash, isTriggerKey } from '../../utils';
 import { DETAILS_TEXT } from '../CouponDetails/constants';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../Admin/messages';
 
 export const triggerKeys = {
   OPEN_DETAILS: ['ArrowDown', 'Enter'],
@@ -128,7 +130,7 @@ class NumberCard extends React.Component {
   }
 
   renderDetailActions() {
-    const { detailActions, match } = this.props;
+    const { detailActions, match,intl } = this.props;
     const { params: { actionSlug } } = match;
 
     return detailActions.map((action, index) => (
@@ -140,14 +142,14 @@ class NumberCard extends React.Component {
             active: action.slug === actionSlug,
           },
         )}
-        key={action.label}
+        key={intl.formatMessage(messages[action.label])}
         to={actionSlug ? action.slug : `${removeTrailingSlash(match.url)}/${action.slug}`}
         onClick={() => { this.handleDetailsActionClick(); }}
         onKeyDown={event => this.handleDetailsActionKeyDown(event)}
       >
         <div className="d-flex justify-content-between align-items-center">
           <span className="label">
-            {action.label}
+            {intl.formatMessage(messages[action.label])}
           </span>
           {action.loading
             && <Icon className="fa fa-spinner fa-spin ml-2" />}
@@ -165,6 +167,7 @@ class NumberCard extends React.Component {
       description,
       detailActions,
       id,
+      intl
     } = this.props;
 
     return (
@@ -208,7 +211,7 @@ class NumberCard extends React.Component {
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="details-btn-text mr-1">
-                    {detailsExpanded ? DETAILS_TEXT.expanded : DETAILS_TEXT.unexpanded}
+                    {detailsExpanded ? intl.formatMessage(messages[DETAILS_TEXT.expanded]) : intl.formatMessage(messages[DETAILS_TEXT.unexpanded])}
                   </div>
                   <div>
                     <Icon
@@ -220,7 +223,7 @@ class NumberCard extends React.Component {
                         },
                       )}
                       screenReaderText={detailsExpanded
-                        ? DETAILS_TEXT.expandedScreenReader : DETAILS_TEXT.unexpandedScreenReader}
+                        ? intl.formatMessage(messages[DETAILS_TEXT.expandedScreenReader]) : intl.formatMessage(messages[DETAILS_TEXT.unexpandedScreenReader])}
                     />
                   </div>
                 </div>
@@ -270,4 +273,4 @@ NumberCard.propTypes = {
   }).isRequired,
 };
 
-export default withRouter(NumberCard);
+export default withRouter(injectIntl(NumberCard));

@@ -30,6 +30,8 @@ import LicenseManagementTableActionColumn from './LicenseManagementTableActionCo
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../../messages';
 
 const userRecentAction = (user) => {
   switch (user.status) {
@@ -55,7 +57,7 @@ const selectColumn = {
   disableSortBy: true,
 };
 
-const LicenseManagementTable = () => {
+const LicenseManagementTable = ({intl}) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { width } = useWindowSize();
@@ -242,7 +244,7 @@ const LicenseManagementTable = () => {
         data={rows}
         columns={[
           {
-            Header: 'Email address',
+            Header: intl.fomatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.email']),
             accessor: 'emailLabel',
             /* eslint-disable react/prop-types */
             /* eslint-disable react/no-unstable-nested-components */
@@ -251,28 +253,28 @@ const LicenseManagementTable = () => {
             /* eslint-enable react/no-unstable-nested-components */
           },
           {
-            Header: 'Status',
+            Header: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.status']),
             accessor: 'statusBadge',
             Filter: CheckboxFilter,
             filter: 'includesValue',
             filterChoices: [{
-              name: 'Active',
+              name: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.status.active']),
               number: overview.activated,
               value: ACTIVATED,
             },
             {
-              name: 'Pending',
+              name: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.status.pending']),
               number: overview.assigned,
               value: ASSIGNED,
             },
             {
-              name: 'Revoked',
+              name: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.status.revoked']),
               number: overview.revoked,
               value: REVOKED,
             }],
           },
           {
-            Header: 'Recent action',
+            Header: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions']),
             accessor: 'recentAction',
             disableFilters: true,
           },
@@ -324,4 +326,4 @@ const LicenseManagementTable = () => {
   );
 };
 
-export default LicenseManagementTable;
+export default (injectIntl(LicenseManagementTable));

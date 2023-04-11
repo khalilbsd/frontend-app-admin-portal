@@ -21,6 +21,7 @@ import MoodleIcon from './icons/Moodle.png';
 import SAPIcon from './icons/SAP.svg';
 
 import LmsApiService from './data/services/LmsApiService';
+import messages from './components/EnrollmentsTable/messages';
 
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
@@ -29,11 +30,11 @@ const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   return null;
 };
 
-const formatPassedTimestamp = (timestamp) => {
+const formatPassedTimestamp = (timestamp,intl) => {
   if (timestamp) {
     return formatTimestamp({ timestamp });
   }
-  return 'Has not passed';
+  return intl.formatMessage(messages['enrollment.table.label.course.passed.date.none']);
 };
 
 const formatPercentage = ({ decimal, numDecimals = 1 }) => (

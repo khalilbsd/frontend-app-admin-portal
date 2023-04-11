@@ -6,8 +6,9 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 import { getSubscriptionExpiringCookieName } from '../data/utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
-export const EXPIRING_MODAL_TITLE = 'Renew your expiring subscription';
 
 const SubscriptionExpiringModal = ({
   onClose,
@@ -15,9 +16,11 @@ const SubscriptionExpiringModal = ({
   expirationThreshold,
   enterpriseId,
   onAction,
+  intl
 }) => {
   const { subscription: { agreementNetDaysUntilExpiration, expirationDate } } = useContext(SubscriptionDetailContext);
 
+  const EXPIRING_MODAL_TITLE = intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.modal.title']);
   const handleClose = () => {
     if (expirationThreshold) {
       const seenCurrentExpirationModalCookieName = getSubscriptionExpiringCookieName({
@@ -39,24 +42,24 @@ const SubscriptionExpiringModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          Your subscription contract expires in {agreementNetDaysUntilExpiration} days
+          {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.modal.message'],{agreementNetDaysUntilExpiration})}
+
         </ModalDialog.Title>
       </ModalDialog.Header>
 
       <ModalDialog.Body>
         <p>
-          It&apos;s time to renew your subscription contract with edX!
-          The edX customer support team is here to help.
-          Get in touch today to minimize access disruptions for your learners.
+          {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.on.modal.message'])}
         </p>
         <i>
-          Access expires on {formatTimestamp({ timestamp: expirationDate })}
+            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.on.date.modal.message'],{expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+
         </i>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Dismiss
+          {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.modal.dismiss'])}
           </ModalDialog.CloseButton>
           <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>
@@ -78,4 +81,4 @@ SubscriptionExpiringModal.defaultProps = {
   expirationThreshold: null,
 };
 
-export default SubscriptionExpiringModal;
+export default (injectIntl(SubscriptionExpiringModal));

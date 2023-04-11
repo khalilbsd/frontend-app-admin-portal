@@ -73,10 +73,10 @@ export const BULK_ACTION = {
 };
 
 export const DETAILS_TEXT = {
-  expanded: 'Detailed breakdown',
-  unexpanded: 'Details',
-  expandedScreenReader: 'Close details',
-  unexpandedScreenReader: 'Show details',
+  expanded: 'tab.progress.report.cards.details.text.expanded',
+  unexpanded: 'tab.progress.report.cards.details.text.unexpanded',
+  expandedScreenReader: 'tab.progress.report.cards.details.text.expandedScreenReader',
+  unexpandedScreenReader: 'tab.progress.report.cards.details.text.unexpandedScreenReader',
 };
 
 export const COLUMNS = {

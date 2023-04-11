@@ -12,8 +12,10 @@ import {
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { formatTimestamp } from '../../../utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
-const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
+const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails,intl }) => {
   const {
     subscription: {
       agreementNetDaysUntilExpiration: daysUntilContractExpiration,
@@ -31,36 +33,35 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails }) => {
   const renderPlanDetailsMessage = () => (isSubscriptionExpired ? (
     <>
       <Alert.Heading>
-        This subscription plan&apos;s end date has passed
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ended.title'])}
       </Alert.Heading>
-      Administrative actions are no longer available as of the plan end date of
-      {' '}{formatTimestamp({ timestamp: expirationDate })}. You may still view the
-      statuses of your invited learners.
+      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.subs.management.page.tab.manage.learners.license.expiration.ended.message'],{expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+
     </>
   ) : (
     <>
       <Alert.Heading>
-        This subscription plan&apos;s end date is approaching
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.title'])}
       </Alert.Heading>
-      Administrative actions will no longer be available beginning {SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS}
-      {' '}hours prior to the plan end date of {formatTimestamp({ timestamp: expirationDate })}.
+      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.first.message'],{SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,expirationDate:formatTimestamp({ timestamp: expirationDate })})}
     </>
   ));
 
   const renderContractDetailsMessage = () => (isSubscriptionExpired ? (
     <>
       <Alert.Heading>
-        Your subscription contract has expired
+        {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.exprired.title'])}
       </Alert.Heading>
-      Renew your subscription today to reconnect your learning community.
+     {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.exprired.message'])}
     </>
   ) : (
     <>
       <Alert.Heading>
-        Your subscription contract is expiring soon
+{intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expring.title'])}
+
       </Alert.Heading>
-      Your current subscription contract will expire in {daysUntilContractExpiration} days.
-      Renew your subscription today to minimize access disruption for your learners.
+      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expring.message'],{daysUntilContractExpiration})}
+
     </>
   ));
 
@@ -140,4 +141,4 @@ SubscriptionExpirationBanner.defaultProps = {
   isSubscriptionPlanDetails: false,
 };
 
-export default SubscriptionExpirationBanner;
+export default (injectIntl(SubscriptionExpirationBanner));

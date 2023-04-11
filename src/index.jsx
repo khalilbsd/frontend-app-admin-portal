@@ -13,6 +13,7 @@ import {
 import { ErrorPage } from '@edx/frontend-platform/react';
 import { hasFeatureFlagEnabled } from '@edx/frontend-enterprise-utils';
 import { messages as paragonMessages } from '@edx/paragon';
+import appMessages from './i18n'
 
 import App from './components/App';
 
@@ -26,6 +27,9 @@ subscribe(APP_INIT_ERROR, (error) => {
   ReactDOM.render(<ErrorPage message={error.message} />, document.getElementById('root'));
 });
 
+
+
+console.log(paragonMessages)
 initialize({
   handlers: {
     config: () => {
@@ -46,6 +50,7 @@ initialize({
   },
   messages: [
     paragonMessages,
+    appMessages
   ],
   requireAuthenticatedUser: false,
   hydrateAuthenticatedUser: true,

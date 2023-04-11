@@ -9,6 +9,8 @@ import TableLoadingSkeleton from './TableLoadingSkeleton';
 import TableLoadingOverlay from '../TableLoadingOverlay';
 import StatusAlert from '../StatusAlert';
 import { updateUrl } from '../../utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 class TableComponent extends React.Component {
   componentDidMount() {
@@ -53,6 +55,7 @@ class TableComponent extends React.Component {
       id,
       loading,
       enterpriseId,
+      intl
     } = this.props;
 
     const sortByColumn = (column, direction) => {
@@ -104,6 +107,10 @@ class TableComponent extends React.Component {
               paginationLabel={`${id}-pagination`}
               pageCount={pageCount}
               currentPage={currentPage}
+              buttonLabels={{
+                previous: intl.formatMessage(messages['pagination.previous']),
+                next:intl.formatMessage(messages['pagination.next'])
+              }}
               onPageSelect={(page) => {
                 updateUrl({ page });
                 sendEnterpriseTrackEvent(enterpriseId, 'edx.ui.enterprise.admin_portal.table.paginated', {
@@ -197,4 +204,4 @@ TableComponent.defaultProps = {
   loading: false,
 };
 
-export default TableComponent;
+export default (injectIntl(TableComponent));

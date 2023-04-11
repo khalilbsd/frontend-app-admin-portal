@@ -7,15 +7,20 @@ import Img from '../../Img';
 import { formatTimestamp } from '../../../utils';
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
-export const EXPIRED_MODAL_TITLE = 'This subscription cohort is expired';
 
 const SubscriptionExpiredModal = ({
   onClose,
   isOpen,
   onAction,
+  intl
 }) => {
   const { subscription: { expirationDate } } = useContext(SubscriptionDetailContext);
+
+  const EXPIRED_MODAL_TITLE =intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expired.modal.title']);
+
 
   return (
     <ModalDialog
@@ -27,15 +32,14 @@ const SubscriptionExpiredModal = ({
       <ModalDialog.Body>
         <Img className="w-25 my-5 mx-auto d-block" src={configuration.LOGO_URL} alt="edX logo" />
         <p>
-          Your subscription contract expired on <b>{formatTimestamp({ timestamp: expirationDate })}</b>.
-          The edX customer support team is here to help! Get in touch today to renew your subscription
-          and access your subscription management details.
+          {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.exprired.modal.message'],{expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+
         </p>
       </ModalDialog.Body>
       <ModalDialog.Footer>
         <ActionRow>
           <ModalDialog.CloseButton variant="tertiary">
-            Dismiss
+            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.modal.dismiss'])}
           </ModalDialog.CloseButton>
           <ContactCustomerSupportButton onClick={onAction} />
         </ActionRow>
@@ -54,4 +58,4 @@ SubscriptionExpiredModal.defaultProps = {
   isOpen: false,
 };
 
-export default SubscriptionExpiredModal;
+export default (injectIntl(SubscriptionExpiredModal));

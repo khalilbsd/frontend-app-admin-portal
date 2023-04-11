@@ -27,6 +27,8 @@ import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
 import { features } from '../../config';
 import { isExperimentVariant } from '../../optimizely';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 class Admin extends React.Component {
   componentDidMount() {
@@ -48,10 +50,10 @@ class Admin extends React.Component {
     this.props.clearDashboardAnalytics();
   }
 
-  getMetadataForAction(actionSlug) {
+  getMetadataForAction(actionSlug,intl) {
     const { enterpriseId } = this.props;
     const defaultData = {
-      title: 'Full Report',
+      title: intl.formatMessage(messages['tab.progress.report.full.report.title']),
       component: <EnrollmentsTable />,
       csvFetchMethod: () => (
         EnterpriseDataApiService.fetchCourseEnrollments(enterpriseId, {}, { csv: true })
@@ -207,9 +209,9 @@ class Admin extends React.Component {
   }
 
   renderDownloadButton() {
-    const { match } = this.props;
+    const { match,intl } = this.props;
     const { params: { actionSlug } } = match;
-    const tableMetadata = this.getMetadataForAction(actionSlug);
+    const tableMetadata = this.getMetadataForAction(actionSlug,intl);
     return (
       <DownloadCsvButton
         id={tableMetadata.csvButtonId}
@@ -262,14 +264,14 @@ class Admin extends React.Component {
     );
   }
 
-  renderCsvErrorMessage(message) {
+  renderCsvErrorMessage(message,intl) {
     return (
       <StatusAlert
         className="mt-3"
         alertType="danger"
         iconClassName="fa fa-times-circle"
-        title="Unable to Generate CSV Report"
-        message={`Please try again. (${message})`}
+        title={intl.formatMessage(messages['tab.progress.report.data.download.report.error'])}
+        message={intl.formatMessage(messages['tab.progress.report.data.download.report.error.try.again'],{message})}
       />
     );
   }
@@ -281,15 +283,17 @@ class Admin extends React.Component {
       loading,
       enterpriseId,
       match,
+      intl,
       location: { search },
     } = this.props;
 
+    const PAGE_TITLE = intl.formatMessage(messages['tab.progress.report.page.title'])
     const { params: { actionSlug } } = match;
 
     const queryParams = new URLSearchParams(search || '');
     const queryParamsLength = Array.from(queryParams.entries()).length;
     const filtersActive = queryParamsLength !== 0 && !(queryParamsLength === 1 && queryParams.has('ordering'));
-    const tableMetadata = this.getMetadataForAction(actionSlug);
+    const tableMetadata = this.getMetadataForAction(actionSlug,intl);
     const csvErrorMessage = this.getCsvErrorMessage(tableMetadata.csvButtonId);
 
     const searchParams = {
@@ -308,12 +312,12 @@ class Admin extends React.Component {
       <main role="main" className="learner-progress-report">
         {!loading && !error && !this.hasAnalyticsData() ? <EnterpriseAppSkeleton /> : (
           <>
-            <Helmet title="Learner Progress Report" />
-            <Hero title="Learner Progress Report" />
+            <Helmet title={PAGE_TITLE} />
+            <Hero title={PAGE_TITLE} />
             <div className="container-fluid">
               <div className="row mt-4">
                 <div className="col">
-                  <h2>Overview</h2>
+                  <h2>{intl.formatMessage(messages['tab.progress.report.overview'])}</h2>
                 </div>
               </div>
               <div className="row mt-3">
@@ -341,10 +345,10 @@ class Admin extends React.Component {
               <div className="row mt-4">
                 <div className="col">
                   <div className="row">
-                    <div className="col-12 col-md-3 col-xl-2 mb-2 mb-md-0">
+                    <div className="col-12 col-md-4 col-xl-2 mb-2 mb-md-0">
                       <h2 className="table-title">{tableMetadata.title}</h2>
                     </div>
-                    <div className="col-12 col-md-9 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
+                    <div className="col-12 col-md-8 col-xl-10 mb-2 mb-md-0 mt-0 mt-md-1">
                       {actionSlug && this.renderUrlResetButton()}
                       {filtersActive && this.renderFiltersResetButton()}
                     </div>
@@ -366,7 +370,7 @@ class Admin extends React.Component {
                           {lastUpdatedDate
                             && (
                             <>
-                              Showing data as of {formatTimestamp({ timestamp: lastUpdatedDate })}
+                              {intl.formatMessage(messages['tab.progress.report.data.date.showing'])} {formatTimestamp({ timestamp: lastUpdatedDate })}
                             </>
                             )}
 
@@ -384,7 +388,7 @@ class Admin extends React.Component {
                       )}
                     </>
                   )}
-                  {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage)}
+                  {csvErrorMessage && this.renderCsvErrorMessage(csvErrorMessage,intl)}
                   <div className="mt-3 mb-5 learner-data-table">
                     {enterpriseId && tableMetadata.component}
                   </div>
@@ -443,4 +447,4 @@ Admin.propTypes = {
   table: PropTypes.shape({}),
 };
 
-export default Admin;
+export default (injectIntl(Admin));

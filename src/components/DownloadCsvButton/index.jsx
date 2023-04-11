@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from '@edx/paragon';
 import { sendEnterpriseTrackEvent } from '@edx/frontend-enterprise-utils';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../Admin/messages';
 
 export const CSV_CLICK_SEGMENT_EVENT_NAME = 'edx.ui.enterprise.admin_portal.download_csv.clicked';
 
@@ -19,6 +21,7 @@ class DownloadCsvButton extends React.Component {
       buttonLabel,
       enterpriseId,
       id,
+      intl
     } = this.props;
     const downloadButtonIconClasses = csvLoading ? ['fa-spinner', 'fa-spin'] : ['fa-download'];
     return (
@@ -36,7 +39,7 @@ class DownloadCsvButton extends React.Component {
         <>
 
           {/* {buttonLabel}  */}
-          Full Report
+          {intl.formatMessage(messages['tab.progress.report.data.download.report'])}
           <span className='file-type'>.csv</span>
           <Icon className={`fa ml-2 ${downloadButtonIconClasses.join(' ')}`} />
         </>
@@ -63,4 +66,4 @@ DownloadCsvButton.propTypes = {
   id: PropTypes.string.isRequired,
 };
 
-export default DownloadCsvButton;
+export default (injectIntl(DownloadCsvButton));

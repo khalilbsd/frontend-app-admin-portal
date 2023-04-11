@@ -7,13 +7,15 @@ import { Container } from '@edx/paragon';
 import Hero from '../Hero';
 import SubscriptionData from './SubscriptionData';
 import SubscriptionRoutes from './SubscriptionRoutes';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
-const PAGE_TITLE = 'Subscription Management';
 
-const SubscriptionManagementPage = ({ enterpriseId }) => (
+const PAGE_TITLE = 'subs.management.page.title';
+const SubscriptionManagementPage = ({ enterpriseId,intl }) => (
   <SubscriptionData enterpriseId={enterpriseId}>
-    <Helmet title={PAGE_TITLE} />
-    <Hero title={PAGE_TITLE} />
+    <Helmet title={intl.formatMessage(messages[PAGE_TITLE])} />
+    <Hero title={intl.formatMessage(messages[PAGE_TITLE])} />
     <main role="main" className="manage-subscription">
       <Container className="py-3" fluid>
         <SubscriptionRoutes />
@@ -30,4 +32,4 @@ const mapStateToProps = state => ({
   enterpriseId: state.portalConfiguration.enterpriseId,
 });
 
-export default connect(mapStateToProps)(SubscriptionManagementPage);
+export default connect(mapStateToProps)(injectIntl(SubscriptionManagementPage));
