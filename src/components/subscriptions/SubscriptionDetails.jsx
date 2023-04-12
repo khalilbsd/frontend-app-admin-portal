@@ -8,7 +8,7 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   Button, Row, Col, Toast,
 } from '@edx/paragon';
-
+import { getLocale } from '@edx/frontend-platform/i18n';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
@@ -75,7 +75,9 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
                   <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.purchase'])}</small>
                 </div>
                 <div className="lead">
-                  {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')}
+                  {/* {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')} */}
+                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.priorRenewals[0].priorSubscriptionPlanStartDate))}
+
                 </div>
               </div>
             )}
@@ -84,7 +86,8 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
                 <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.start.date'])}</small>
               </div>
               <div className="lead start-date">
-                {moment(subscription.startDate).format('MMMM D, YYYY')}
+                {/* {moment(subscription.startDate).format('MMMM D, YYYY')} */}
+                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.startDate))}
               </div>
             </div>
             <div className="sub-detail-card">
@@ -92,7 +95,8 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
                 <small>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.end.date'])}</small>
               </div>
               <div className="lead end-date">
-                {moment(subscription.expirationDate).format('MMMM D, YYYY')}
+                {/* {moment(subscription.expirationDate).format('MMMM D, YYYY')} */}
+                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.expirationDate))}
               </div>
             </div>
           </div>
