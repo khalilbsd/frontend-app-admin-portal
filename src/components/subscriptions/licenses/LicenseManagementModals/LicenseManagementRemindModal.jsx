@@ -24,7 +24,7 @@ import messages from '../../messages';
 
 const generateEmailTemplate = (contactEmail,intl) => ({
   greeting: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.text']),
-  body: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body.text'],{ENTERPRISE_NAME,LICENSE_ACTIVATION_LINK}),
+  body: intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.actions.remind.modal.templates.customize.body.text']),
   // body: '{ENTERPRISE_NAME} partnered with edX to give everyone access to high-quality online courses. '
   //   + 'Start your subscription and browse courses in nearly every subject including '
   //   + 'Data Analytics, Digital Media, Business & Leadership, Communications, Computer Science and so much more. '
