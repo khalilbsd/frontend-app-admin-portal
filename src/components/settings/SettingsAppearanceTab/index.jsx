@@ -12,12 +12,14 @@ import CustomThemeModal from './CustomThemeModal';
 import {
   ACUMEN_THEME, CAMBRIDGE_THEME, CUSTOM_THEME_LABEL, IMPACT_THEME, PIONEER_THEME, SAGE_THEME, SCHOLAR_THEME,
 } from '../data/constants';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
-export const SettingsAppearanceTab = ({
-  enterpriseId, enterpriseBranding, updatePortalConfiguration,
+ const SettingsAppearanceTab = ({
+  enterpriseId, enterpriseBranding, updatePortalConfiguration,intl
 }) => {
-  const logoMessage = 'Your logo will appear on the upper left of every page for both learners and administrators. For best results, use a rectagular logo that is longer in width and has a transparent or white background.';
-  const themeMessage = 'Select designer curated theme colors to update the look and feel of your learner and administrator experiences, or create your own theme.';
+  const logoMessage = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.placeholder.message']);
+  const themeMessage = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.theme.message']);
   const [configChangeSuccess, setConfigChangeSuccess] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(undefined);
   const [customModalIsOpen, openCustomModal, closeCustomModal] = useToggle(false);
@@ -32,7 +34,7 @@ export const SettingsAppearanceTab = ({
       }
     }
     const CUSTOM_THEME = {
-      title: CUSTOM_THEME_LABEL,
+      title: intl.formatMessage(messages[CUSTOM_THEME_LABEL]),
       button: enterpriseBranding.primary_color,
       banner: enterpriseBranding.secondary_color,
       accent: enterpriseBranding.tertiary_color,
@@ -89,10 +91,9 @@ export const SettingsAppearanceTab = ({
   };
   return (
     <>
-      <h2 className="py-2">Portal Appearance</h2>
+      <h2 className="py-2">{intl.formatMessage(messages['tab.settings.tabs.labels.appearance'])}</h2>
       <p>
-        Customize the appearance of your learner and administrator edX experiences with your
-        organization’s logo and color themes.
+       {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.message'])}
       </p>
       <Alert
         show={configChangeSuccess === false}
@@ -102,22 +103,22 @@ export const SettingsAppearanceTab = ({
         dismissible
         stacked
       >
-        <Alert.Heading>We&apos;re sorry</Alert.Heading>
+        <Alert.Heading>{intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.sorry'])}</Alert.Heading>
         <p>
-          Something went wrong behind the scenes. Try again later or contact support for help.
+         {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.message'])}
         </p>
       </Alert>
       <h3 className="py-2">
-        Logo
+        {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo'])}
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
       </h3>
       {!uploadedFile && (
       <Dropzone
         onProcessUpload={handleLogoUpload}
         errorMessages={{
-          invalidType: 'Invalid file type, only png images allowed.',
-          invalidSize: 'The file size must be under 512 Mb.',
-          multipleDragged: 'Cannot upload more than one file.',
+          invalidType:intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.type.type']),
+          invalidSize:intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.type.size']),
+          multipleDragged: intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.type.number']),
         }}
         maxSize={512000}
         accept={{
@@ -137,10 +138,10 @@ export const SettingsAppearanceTab = ({
         onClose={() => setConfigChangeSuccess(null)}
         show={configChangeSuccess || false}
       >
-        Portal appearance updated successfully.
+       {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.updated.success'])}
       </Toast>
       <h3 className="py-2 pt-5">
-        Theme
+        {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.theme'])}
         <InfoHover className="" keyName="theme-info-hover" message={themeMessage} />
       </h3>
       <CardGrid
@@ -158,13 +159,13 @@ export const SettingsAppearanceTab = ({
         <ThemeCard themeVars={PIONEER_THEME} theme={theme} setTheme={setTheme} />
       </CardGrid>
       <h3 className="py-2 pt-5 mb-2">
-        {CUSTOM_THEME_LABEL}
+        {intl.formatMessage(messages[CUSTOM_THEME_LABEL])}
       </h3>
       {theme[1] === null && (
       <p className="mt-0">
-        Rather use your own colors?
+        {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.message'])}
         <Button variant="link" onClick={openCustomModal} className="p-0 pl-1" size="inline">
-          Create a custom theme.
+         {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.btn'])}
         </Button>
       </p>
       )}
@@ -177,7 +178,7 @@ export const SettingsAppearanceTab = ({
         customColors={theme[1]}
         setTheme={setTheme}
       />
-      <Button className="d-flex ml-auto" onClick={saveChanges}>Save changes</Button>
+      <Button className="d-flex ml-auto" onClick={saveChanges}>{intl.formatMessage(messages['tab.settings.tabs.labels.appearance.save'])}</Button>
     </>
   );
 };
@@ -193,4 +194,4 @@ SettingsAppearanceTab.propTypes = {
   updatePortalConfiguration: PropTypes.func.isRequired,
 };
 
-export default SettingsAppearanceTab;
+export default (injectIntl(SettingsAppearanceTab));

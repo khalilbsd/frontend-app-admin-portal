@@ -57,8 +57,8 @@ const AppWrapper = () => {
   return (
     <AppProvider store={store}>
       <Helmet
-        titleTemplate="%s - edX Admin Portal"
-        defaultTitle="edX Admin Portal"
+        titleTemplate="%s - Groupado Pro Admin Portal"
+        defaultTitle="Groupado Pro Admin Portal"
       />
       {isMaintenanceAlertOpen && (
         <SystemWideWarningBanner>

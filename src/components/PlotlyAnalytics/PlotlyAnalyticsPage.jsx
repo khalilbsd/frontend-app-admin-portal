@@ -89,10 +89,10 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
     <>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
-      <div className="col-12 col-lg-9">
+      {/* <div className="col-12 col-lg-9">
         {renderStatusMessage()}
-      </div>
-      <Container gap={2}>
+      </div> */}
+      <Container gap={2} className='tab-content'>
         <Row style={{ rowGap: 10 }}>
           <Col lg={6} md={6} sm={6} xs={12}  >
             {/* 1st chart  */}

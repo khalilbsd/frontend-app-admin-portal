@@ -3,18 +3,33 @@
   display: flex;
 
   .content-wrapper {
-    padding: 10px;
-    background: #F4F5FF 0% 0% no-repeat padding-box;
-
+    // padding: 10px;
+    // padding-right: 0;
+    // background: #F4F5FF 0% 0% no-repeat padding-box;
+    background: rgb(44,228,180);
+    background: linear-gradient(22deg, rgba(44,228,180,1) 25%, rgba(26,70,222,1) 80%);
+    background-size: 100% 10em;
+    background-repeat: no-repeat;
     @include media-breakpoint-up(lg) {
       & {
         // If we change the width of the icon-only menu links in the Sidebar navigation,
         // we will also need to update the padding-left to ensure correct spacing.
         padding-left: 51px;
+        // padding-top: 0;
       }
     }
   }
   .full-page {
     flex: 1;
+    padding-right: 0;
   }
+  .tab-content{
+    background: var(--unnamed-color-eaf0f4);
+    /* padding: 0; */
+    padding: 2%;
+    min-height: 60vh;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+  }
+
 }

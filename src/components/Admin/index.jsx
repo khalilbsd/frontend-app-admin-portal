@@ -314,7 +314,7 @@ class Admin extends React.Component {
           <>
             <Helmet title={PAGE_TITLE} />
             <Hero title={PAGE_TITLE} />
-            <div className="container-fluid">
+            <div className="container-fluid tab-content">
               <div className="row mt-4">
                 <div className="col">
                   <h2>{intl.formatMessage(messages['tab.progress.report.overview'])}</h2>

@@ -9,7 +9,7 @@ const APPEARANCE_TAB = 'appearance';
 const ACCESS_TAB_LABEL = 'Configure Access';
 const LMS_TAB_LABEL = 'Learning Platform';
 const SSO_TAB_LABEL = 'Single Sign On (SSO)';
-const APPEARANCE_TAB_LABEL = 'Portal Appearance';
+const APPEARANCE_TAB_LABEL = 'tab.settings.tabs.labels.appearance';
 
 export const HELP_CENTER_LINK = 'https://business-support.edx.org/hc/en-us/categories/360000368453-Integrations';
 export const HELP_CENTER_SAML_LINK = 'https://business-support.edx.org/hc/en-us/articles/360005421073-5-Implementing-Single-Sign-on-SSO-with-edX';
@@ -56,7 +56,7 @@ export const SETTINGS_TAB_LABELS = {
 };
 
 /** Default tab when no parameter is given */
-export const DEFAULT_TAB = ACCESS_TAB;
+export const DEFAULT_TAB = APPEARANCE_TAB;
 
 /**
  * Url parameter that the set in the router
@@ -90,7 +90,7 @@ export const SUBSIDY_TYPE_LABELS = {
 export const DARK_COLOR = '#454545';
 export const WHITE_COLOR = '#FFFFFF';
 
-export const CUSTOM_THEME_LABEL = 'Custom Theme';
+export const CUSTOM_THEME_LABEL = 'tab.settings.tabs.labels.appearance.custom.theme';
 
 export const SCHOLAR_THEME = {
   title: 'Scholar (Default)',

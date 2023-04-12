@@ -62,11 +62,11 @@
           background: none;
           font-weight: 700;
         svg{
-          color:var(--unnamed-color-1a46de)
+          color:var(--unnamed-color-2ce4b4)
         }
 
         .edge-active{
-          background: var(--unnamed-color-1a46de);
+          background: var(--unnamed-color-2ce4b4);
         }
 
         }
@@ -75,10 +75,10 @@
         &:not(.active):focus {
           background: var(--unnamed-color-eaf0f4);
           svg{
-            color:var(--unnamed-color-1a46de)
+            color:var(--unnamed-color-2ce4b4)
           }
           .edge-active{
-            background:var(--unnamed-color-1a46de)
+            background:var(--unnamed-color-2ce4b4)
           }
         }
         .link-title{

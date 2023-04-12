@@ -20,12 +20,13 @@ import {
   SETTINGS_TAB_PARAM,
 } from './data/constants';
 import SettingsAccessTab from './SettingsAccessTab';
-import { SettingsAppearanceTab } from './SettingsAppearanceTab';
+import  SettingsAppearanceTab from './SettingsAppearanceTab';
 import SettingsLMSTab from './SettingsLMSTab';
 import SettingsSSOTab from './SettingsSSOTab';
 import { features } from '../../config';
 import { updatePortalConfigurationEvent } from '../../data/actions/portalConfiguration';
-
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 const SettingsTabs = ({
   enterpriseId,
   enterpriseSlug,
@@ -37,6 +38,7 @@ const SettingsTabs = ({
   identityProvider,
   updatePortalConfiguration,
   enterpriseBranding,
+  intl
 }) => {
   const [hasSSOConfig, setHasSSOConfig] = useState(false);
   const { FEATURE_SSO_SETTINGS_TAB, SETTINGS_PAGE_LMS_TAB, SETTINGS_PAGE_APPEARANCE_TAB } = features;
@@ -48,62 +50,62 @@ const SettingsTabs = ({
 
   const tabArray = useMemo(() => {
     const initialTabs = [];
-    if (enableLearnerPortal) {
-      initialTabs.push(
-        <Tab
-          key={SETTINGS_TABS_VALUES.access}
-          eventKey={SETTINGS_TABS_VALUES.access}
-          title={SETTINGS_TAB_LABELS.access}
-        >
-          <SettingsAccessTab
-            enterpriseId={enterpriseId}
-            enterpriseSlug={enterpriseSlug}
-            enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
-            identityProvider={identityProvider}
-            enableLearnerPortal={enableLearnerPortal}
-            enableUniversalLink={enableUniversalLink}
-            updatePortalConfiguration={updatePortalConfiguration}
-          />
-        </Tab>,
-      );
-    }
-    if (FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen) {
-      initialTabs.push(
-        <Tab
-          key={SETTINGS_TABS_VALUES.sso}
-          eventKey={SETTINGS_TABS_VALUES.sso}
-          title={SETTINGS_TAB_LABELS.sso}
-        >
-          <SettingsSSOTab
-            enterpriseId={enterpriseId}
-            setHasSSOConfig={setHasSSOConfig}
-          />
-        </Tab>,
-      );
-    }
-    if (SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen) {
-      initialTabs.push(
-        <Tab
-          key={SETTINGS_TABS_VALUES.lms}
-          eventKey={SETTINGS_TABS_VALUES.lms}
-          title={SETTINGS_TAB_LABELS.lms}
-        >
-          <SettingsLMSTab
-            enterpriseId={enterpriseId}
-            enterpriseSlug={enterpriseSlug}
-            enableSamlConfigurationScreen={enableSamlConfigurationScreen}
-            identityProvider={identityProvider}
-            hasSSOConfig={hasSSOConfig}
-          />
-        </Tab>,
-      );
-    }
+    // if (enableLearnerPortal) {
+    //   initialTabs.push(
+    //     <Tab
+    //       key={SETTINGS_TABS_VALUES.access}
+    //       eventKey={SETTINGS_TABS_VALUES.access}
+    //       title={SETTINGS_TAB_LABELS.access}
+    //     >
+    //       <SettingsAccessTab
+    //         enterpriseId={enterpriseId}
+    //         enterpriseSlug={enterpriseSlug}
+    //         enableIntegratedCustomerLearnerPortalSearch={enableIntegratedCustomerLearnerPortalSearch}
+    //         identityProvider={identityProvider}
+    //         enableLearnerPortal={enableLearnerPortal}
+    //         enableUniversalLink={enableUniversalLink}
+    //         updatePortalConfiguration={updatePortalConfiguration}
+    //       />
+    //     </Tab>,
+    //   );
+    // }
+    // if (FEATURE_SSO_SETTINGS_TAB && enableSamlConfigurationScreen) {
+    //   initialTabs.push(
+    //     <Tab
+    //       key={SETTINGS_TABS_VALUES.sso}
+    //       eventKey={SETTINGS_TABS_VALUES.sso}
+    //       title={SETTINGS_TAB_LABELS.sso}
+    //     >
+    //       <SettingsSSOTab
+    //         enterpriseId={enterpriseId}
+    //         setHasSSOConfig={setHasSSOConfig}
+    //       />
+    //     </Tab>,
+    //   );
+    // }
+    // if (SETTINGS_PAGE_LMS_TAB && enableLmsConfigurationsScreen) {
+    //   initialTabs.push(
+    //     <Tab
+    //       key={SETTINGS_TABS_VALUES.lms}
+    //       eventKey={SETTINGS_TABS_VALUES.lms}
+    //       title={SETTINGS_TAB_LABELS.lms}
+    //     >
+    //       <SettingsLMSTab
+    //         enterpriseId={enterpriseId}
+    //         enterpriseSlug={enterpriseSlug}
+    //         enableSamlConfigurationScreen={enableSamlConfigurationScreen}
+    //         identityProvider={identityProvider}
+    //         hasSSOConfig={hasSSOConfig}
+    //       />
+    //     </Tab>,
+    //   );
+    // }
     if (SETTINGS_PAGE_APPEARANCE_TAB) {
       initialTabs.push(
         <Tab
           key={SETTINGS_TABS_VALUES.appearance}
           eventKey={SETTINGS_TABS_VALUES.appearance}
-          title={SETTINGS_TAB_LABELS.appearance}
+          title={intl.formatMessage(messages[SETTINGS_TAB_LABELS.appearance])}
         >
           <SettingsAppearanceTab
             enterpriseId={enterpriseId}
@@ -218,4 +220,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(SettingsTabs));

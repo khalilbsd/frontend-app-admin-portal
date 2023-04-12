@@ -3,63 +3,76 @@ import PropTypes from 'prop-types';
 import { Input, ValidationFormGroup } from '@edx/paragon';
 import isEmpty from 'lodash/isEmpty';
 import isEmail from 'validator/lib/isEmail';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
-const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
+const EmailDeliveryMethodForm = ({ invalidFields, config, handleBlur, intl }) => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <div className="row">
-      <div className="col">
-        <ValidationFormGroup
-          for="email"
-          helpText="The email(s), one per line, where the report should be sent"
-          invalidMessage="Required. One email per line. Emails must be formatted properly (email@domain.com)"
-          invalid={invalidFields.emailRaw}
-        >
-          <label htmlFor="email">Email(s)</label>
-          <Input
-            type="textarea"
-            id="email"
-            name="emailRaw"
-            defaultValue={config ? config.email.join('\n') : undefined}
-            onBlur={e => handleBlur(e, () => {
-              const rows = e.target.value.split('\n');
-              const emails = rows.filter(email => !isEmail(email));
-              return !isEmpty(emails);
-            })}
-            data-hj-suppress
-          />
-        </ValidationFormGroup>
-        {config && (
-          <div className="form-group">
-            <label htmlFor="changePassword">Change Password</label>
+    <>
+      <div className="row">
+        <div className="col col-lg-6">
+          <ValidationFormGroup
+            for="email"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.email.help'])}
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.email.required'])}
+            invalid={invalidFields.emailRaw}
+          >
+            <label htmlFor="email">{intl.formatMessage(messages['tab.report.config.add.config.form.data.email'])}</label>
             <Input
-              type="checkbox"
-              id="changePassword"
-              className="ml-3"
-              checked={checked}
-              onChange={() => setChecked(!checked)}
+              type="textarea"
+              id="email"
+              name="emailRaw"
+              defaultValue={config ? config.email.join('\n') : undefined}
+              onBlur={e => handleBlur(e, () => {
+                const rows = e.target.value.split('\n');
+                const emails = rows.filter(email => !isEmail(email));
+                return !isEmpty(emails);
+              })}
+              data-hj-suppress
             />
-          </div>
-        )}
-        <ValidationFormGroup
-          for="encryptedPassword"
-          helpText="This password will be used to secure the zip file. It will be encrypted when stored in the database."
-          invalid={invalidFields.encryptedPassword}
-          invalidMessage="Required. Password must not be blank"
-        >
-          <label htmlFor="encryptedPassword">Password</label>
-          <Input
-            type="password"
-            id="encryptedPassword"
-            name="encryptedPassword"
-            disabled={config && !checked}
-            onBlur={e => handleBlur(e)}
-            data-hj-suppress
-          />
-        </ValidationFormGroup>
+          </ValidationFormGroup>
+              </div>
+              <div className="col col-lg-6">
+          <ValidationFormGroup
+            for="encryptedPassword"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.password.help'])}
+            invalid={invalidFields.encryptedPassword}
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.password.invalid'])}
+          >
+            <label htmlFor="encryptedPassword">{intl.formatMessage(messages['tab.report.config.add.config.form.data.password'])}</label>
+            <Input
+              type="password"
+              id="encryptedPassword"
+              name="encryptedPassword"
+              disabled={config && !checked}
+              onBlur={e => handleBlur(e)}
+              data-hj-suppress
+            />
+          </ValidationFormGroup>
+        </div>
+
       </div>
-    </div>
+      <div className="row">
+        <div className='col col-lg-6'>
+          {config && (
+            <div className="form-group">
+              <label htmlFor="changePassword">{intl.formatMessage(messages['tab.report.config.add.config.form.data.change.password'])}</label>
+              <Input
+                type="checkbox"
+                id="changePassword"
+                className="ml-3"
+                checked={checked}
+                onChange={() => setChecked(!checked)}
+              />
+            </div>
+          )}
+        </div>
+
+      </div>
+
+    </>
   );
 };
 
@@ -90,4 +103,4 @@ EmailDeliveryMethodForm.propTypes = {
   }),
 };
 
-export default EmailDeliveryMethodForm;
+export default (injectIntl(EmailDeliveryMethodForm));

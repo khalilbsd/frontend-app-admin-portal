@@ -29,7 +29,7 @@ class RequestCodesPage extends React.Component {
           <title>Request More Codes</title>
         </Helmet>
         <Hero title="Request More Codes" />
-        <div className="container-fluid">
+        <div className="container-fluid tab-content">
           <div className="row my-3">
             <div className="col">
               {this.hasEmailAndEnterpriseName() ? (

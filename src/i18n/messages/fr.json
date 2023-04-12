@@ -139,5 +139,92 @@
     "bulk.enrollment.learners.message": "Les apprenants dont le permis a été révoqué ne sont pas inclus. Cliquez sur 'Inscrire' pour inscrire uniquement les apprenants actifs et en attente.",
     "bulk.enrollment.learners.message.close": "Fermer",
     "bulk.enrollment.learners.add.course.description": "En inscrivant vos apprenants à des cours, vous connectez votre communauté d'apprentissage au contenu qui leur importe le plus, et vous éliminez les incertitudes liées à la mise en route de la plateforme Groupado Pro. Pour commencer, sélectionnez un cours dans votre catalogue d'abonnement.",
-    "bulk.enrollment.learners.add.course.add.courses": "Ajouter des cours"
+    "bulk.enrollment.learners.add.course.add.courses": "Ajouter des cours",
+    "pgn.Dropzone.DefaultContent.label": "Glissez-déposez votre fichier ici ou cliquez pour le télécharger.",
+    "dropzone.Dropzone.uploadError": "Un problème est survenu lors du téléchargement de votre fichier. Veuillez réessayer.",
+    "dropzone.Dropzone.multipleDraggedError": "Un seul téléchargement est autorisé.",
+    "dropzone.Dropzone.invalidSizeLessError": "Le fichier doit être plus grand que {size}.",
+    "dropzone.Dropzone.invalidSizeMoreError": "Le fichier doit être plus petit que {size}.",
+    "dropzone.Dropzone.invalidType": "Le type de fichier doit être {count, plural, one {{typeString} fichier} other {l'un des fichiers {typeString}}}.",
+    "dropzone.Dropzone.unexpectedValidationError": "Un problème inattendu est survenu pendant la validation du fichier. Veuillez réessayer.",
+    "pgn.Dropzone.DefaultContent.fileSizeBetween": "Entre {sizeMin} et {sizeMax}",
+    "pgn.Dropzone.DefaultContent.fileSizeMax": "Max {sizeMax}",
+    "pgn.Dropzone.DefaultContent.fileSizeMin": "Min {sizeMin}",
+    "pgn.Dropzone.DefaultContent.fileTypeRestriction": "Télécharger {count, plural, one {{firstPart} fichier} other {{firstPart} ou {secondPart} fichiers}}"
+,"tab.settings.tabs.labels.appearance":"Apparence du portail"
+,"tab.settings.tabs.labels.appearance.customize.logo.message":"Personnalisez l'apparence de vos expériences d'apprentissage et d'administration edX avec le logo de votre organisation et des thèmes de couleurs."
+,"tab.settings.tabs.labels.appearance.customize.logo.error.sorry":"Nous sommes désolés"
+,"tab.settings.tabs.labels.appearance.customize.logo.error.message":"Quelque chose s'est mal passé en coulisse. Réessayez plus tard ou contactez le support pour obtenir de l'aide."
+,"tab.settings.tabs.labels.appearance.customize.logo":"Logo"
+,"tab.settings.tabs.labels.appearance.customize.logo.placeholder.message":"Votre logo apparaîtra en haut à gauche de chaque page pour les apprenants et les administrateurs. Pour de meilleurs résultats, utilisez un logo rectangulaire plus large que haut et ayant un fond transparent ou blanc."
+,"tab.settings.tabs.labels.appearance.customize.logo.error.type.type":"Type de fichier invalide, seules les images png sont autorisées."
+,"tab.settings.tabs.labels.appearance.customize.logo.error.type.size":"La taille du fichier doit être inférieure à 512 Mb."
+,"tab.settings.tabs.labels.appearance.customize.logo.error.type.number":"Impossible de télécharger plus d'un fichier."
+,"tab.settings.tabs.labels.appearance.updated.success":"Apparence du portail mise à jour avec succès."
+,"tab.settings.tabs.labels.appearance.theme":"Thème"
+,"tab.settings.tabs.labels.appearance.theme.message":"Sélectionnez des couleurs de thème conçues par des designers pour mettre à jour l'apparence et la convivialité de vos expériences d'apprentissage et d'administration, ou créez votre propre thème."
+,"tab.settings.tabs.labels.appearance.custom.theme":"Thème personnalisé"
+,"tab.settings.tabs.labels.appearance.custom.theme.message":"Vous préférez utiliser vos propres couleurs ?"
+,"tab.settings.tabs.labels.appearance.custom.theme.btn":"Créer un thème personnalisé."
+,"tab.settings.tabs.labels.appearance.custom.theme.modal":"Personnalisez l'expérience de l'administrateur et de l'apprenant de Groupado Pro en utilisant les couleurs de votre propre marque. Saisissez les valeurs des couleurs en code hexadécimal."
+,"tab.settings.tabs.labels.appearance.custom.theme.info":"Pour plus de détails sur l'apparence des couleurs dans les expériences de l'administrateur et de l'apprenant, ainsi que sur les meilleures pratiques pour sélectionner des couleurs accessibles, voir le document"
+,"tab.settings.tabs.labels.appearance.custom.theme.invalid":"Doit être hexidécimale et commencer par # (Ex : #1e0b57)"
+,"tab.settings.tabs.labels.appearance.custom.theme.warning":"La couleur ne répond pas à la norme d'accessibilité WCAG AA. Pour en savoir plus, consultez le centre d'aide ci-dessous. "
+,"tab.settings.tabs.labels.appearance.custom.theme.warning.help.center":"Centre d'aide à l'entreprise."
+,"tab.settings.tabs.labels.appearance.custom.theme.modal.btn.color":"Couleur des boutons"
+,"tab.settings.tabs.labels.appearance.custom.theme.modal.banner.color":"Couleur de la bannière"
+,"tab.settings.tabs.labels.appearance.custom.theme.modal.accent.color":"Couleur d'accent"
+,"tab.settings.tabs.labels.appearance.custom.theme.modal.add.btn":"Ajouter un thème"
+,"tab.settings.tabs.labels.appearance.save":"Enregistrer les modifications"
+,"tab.report.config.add.config.btn":"Ajouter une configuration de rapport"
+
+,"tab.report.config.add.config.form.data.type":"Type de données"
+,"tab.report.config.add.config.form.data.type.help":"Le type de données que ce rapport doit contenir. S'il s'agit d'un ancien rapport, vous ne pourrez pas modifier ce champ et devrez créer un nouveau rapport."
+,"tab.report.config.add.config.form.data.report":"Type de rapport"
+,"tab.report.config.add.config.form.data.report.help":"Type de rapport à envoyer, par exemple CSV"
+,"tab.report.config.add.config.form.data.delivery":"Méthode d'envoi"
+,"tab.report.config.add.config.form.data.delivery.help":"Méthode d'envoi des données"
+,"tab.report.config.add.config.form.data.frequency":"Fréquence"
+,"tab.report.config.add.config.form.data.frequency.help":"L'intervalle de fréquence (quotidien, hebdomadaire ou mensuel) auquel le rapport doit être envoyé."
+,"tab.report.config.add.config.form.data.day.month":"Jour du mois"
+,"tab.report.config.add.config.form.data.day.month.help":"Le jour du mois où le rapport doit être envoyé. Ce champ est obligatoire et n'est valable que si la fréquence est mensuelle."
+,"tab.report.config.add.config.form.data.day.week":"Jour de la semaine"
+,"tab.report.config.add.config.form.data.day.week.help":"Le jour de la semaine où le rapport doit être envoyé. Ce champ est obligatoire et n'est valable que si la fréquence est hebdomadaire."
+,"tab.report.config.add.config.form.data.hour.day":"Heure du jour"
+,"tab.report.config.add.config.form.data.hour.day.help":"L'heure de la journée à laquelle le rapport doit être envoyé, en heure normale de l'Est (EST). Ce paramètre est nécessaire pour tous les réglages de fréquence"
+,"tab.report.config.add.config.form.data.pgp":"Clé de chiffrement PGP"
+,"tab.report.config.add.config.form.data.pgp.help":"la clé de cryptage, si un fichier crypté par PGP est requis Cette clé est requise pour tous les paramètres de fréquence"
+,"tab.report.config.add.config.form.data.email":"Email(s)"
+,"tab.report.config.add.config.form.data.email.help":"Le(s) email(s), un par ligne, où le rapport doit être envoyé"
+,"tab.report.config.add.config.form.data.email.required":"Obligatoire. Un courriel par ligne. Les courriels doivent être formatés correctement (email@domain.com)."
+,"tab.report.config.add.config.form.data.change.password":"Changer de mot de passe"
+,"tab.report.config.add.config.form.data.password":"Mot de passe"
+,"tab.report.config.add.config.form.data.password.help":"Ce mot de passe sera utilisé pour sécuriser le fichier zip. Il sera crypté lorsqu'il sera stocké dans la base de données."
+,"tab.report.config.add.config.form.data.password.invalid":"Obligatoire. Le mot de passe ne doit pas être vide"
+,"tab.report.config.add.config.form.data.sftp.hostname.help":"L'hôte doit également remettre le rapport"
+,"tab.report.config.add.config.form.data.sftp.hostname.invalid":"Obligatoire. Le nom d'hôte ne peut pas être vide"
+,"tab.report.config.add.config.form.data.sftp.hostname":"Nom d'hôte SFTP"
+,"tab.report.config.add.config.form.data.sftp.port.help":"Le port sur lequel l'hôte SFTP se connecte"
+,"tab.report.config.add.config.form.data.sftp.port.invalid":"Obligatoire: Doit être un port valide"
+,"tab.report.config.add.config.form.data.sftp.port":"Port SFTP"
+,"tab.report.config.add.config.form.data.sftp.username.help":"Le nom d'utilisateur pour accéder de manière sécurisée à l'hôte"
+,"tab.report.config.add.config.form.data.sftp.username.invalid":"Obligatoire : Le nom d'utilisateur ne peut pas être vide"
+,"tab.report.config.add.config.form.data.sftp.username":"Nom d'utilisateur SFTP"
+,"tab.report.config.add.config.form.data.sftp.password.help":"Le mot de passe à utiliser pour accéder à l'hôte en toute sécurité. Le mot de passe sera crypté lorsqu'il sera stocké dans la base de données."
+,"tab.report.config.add.config.form.data.sftp.password.invalid":"Obligatoire: Le mot de passe ne doit pas être vide"
+,"tab.report.config.add.config.form.data.sftp.password":"Mot de passe SFTP"
+,"tab.report.config.add.config.form.data.sftp.file.path.help":"Le chemin d'accès de l'hôte auquel le rapport doit être envoyé"
+,"tab.report.config.add.config.form.data.sftp.file.path.invalid":"Obligatoire"
+,"tab.report.config.add.config.form.data.sftp.file.path":"Chemin d'accès au fichier SFTP"
+,"tab.report.config.add.config.form.data.enterprise.catalog.help":"Les catalogues qui doivent être inclus dans le rapport. L'absence de sélection signifie que tous les catalogues seront inclus."
+,"tab.report.config.add.config.form.data.enterprise.catalog":"Catalogues de clients d'entreprise"
+,"tab.report.config.add.config.form.data.enterprise.catalog.label":"Catalogue {titre} avec UUID {uuid}"
+,"tab.report.config.add.config.form.data.btn.submit":"Soumettre"
+,"tab.report.config.add.config.form.data.btn.saving":"Enregistrement..."
+,"tab.report.config.add.config.form.data.btn.complete":"enregistré"
+,"tab.report.config.add.config.form.data.btn.error":"Error"
+,"tab.report.config.add.config.form.data.btn.delete":"Delete"
+,"header.logout":"Se déconnecter"
+
+
 }

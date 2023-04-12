@@ -8,7 +8,10 @@ import ReportingConfigForm from './ReportingConfigForm';
 import { snakeCaseFormData } from '../../utils';
 import LoadingMessage from '../LoadingMessage';
 import ErrorPage from '../ErrorPage';
-
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
+import Hero from '../Hero';
+import { Helmet } from 'react-helmet';
 const STATUS_FULFILLED = 'fulfilled';
 
 class ReportingConfig extends React.Component {
@@ -19,6 +22,7 @@ class ReportingConfig extends React.Component {
     reportingConfigTypes: [],
     error: undefined,
     availableCatalogs: [],
+    intl: this.props.intl,
   };
 
   // eslint-disable-next-line react/sort-comp
@@ -116,6 +120,7 @@ class ReportingConfig extends React.Component {
       error,
       availableCatalogs,
       reportingConfigTypes,
+      intl
     } = this.state;
 
     if (loading) {
@@ -129,9 +134,14 @@ class ReportingConfig extends React.Component {
         />
       );
     }
+
+
+    const PAGE_TITLE = 'tab.report.config.title'
     return (
-      <main role="main">
-        <div>
+      <main role="main" className='reporting-configuration'>
+         <Helmet title={intl.formatMessage(messages[PAGE_TITLE])} />
+        <Hero title={intl.formatMessage(messages[PAGE_TITLE])} />
+        <div className="container-fluid tab-content">
           {reportingConfigs && reportingConfigs.map(config => (
             <div
               key={config.uuid}
@@ -146,15 +156,15 @@ class ReportingConfig extends React.Component {
                       className={`col-1 ${config.active ? ' fa fa-check text-success-300' : ' fa fa-times text-danger-300'}`}
                     />
                     <div className="col">
-                      <h3 className="h6">Report Type:</h3>
+                      <h3 className="h6">{intl.formatMessage(messages['tab.report.config.add.config.form.data.report'])}:</h3>
                       <p>{config.data_type}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Delivery Method:</h3>
+                      <h3 className="h6">{intl.formatMessage(messages['tab.report.config.add.config.form.data.delivery'])}:</h3>
                       <p>{config.delivery_method}</p>
                     </div>
                     <div className="col">
-                      <h3 className="h6">Frequency:</h3>
+                      <h3 className="h6">{intl.formatMessage(messages['tab.report.config.add.config.form.data.frequency'])}:</h3>
                       <p>{config.frequency}</p>
                     </div>
                   </div>
@@ -174,8 +184,9 @@ class ReportingConfig extends React.Component {
           ))}
           <Collapsible
             styling="basic"
-            title="Add a reporting configuration"
-            className="col justify-content-center align-items-center"
+
+            title={intl.formatMessage(messages['tab.report.config.add.config.btn'])}
+            className="col justify-content-center align-items-center add-config"
             ref={this.newConfigFormRef}
           >
             <div>
@@ -208,4 +219,4 @@ ReportingConfig.propTypes = {
   enterpriseId: PropTypes.string.isRequired,
 };
 
-export default ReportingConfig;
+export default (injectIntl(ReportingConfig));

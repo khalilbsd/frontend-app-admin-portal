@@ -9,9 +9,11 @@ import { InfoOutline } from '@edx/paragon/icons';
 import {
   CUSTOM_THEME_LABEL, HELP_CENTER_BRANDING_LINK, DARK_COLOR, WHITE_COLOR,
 } from '../data/constants';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from '../messages';
 
 const CustomThemeModal = ({
-  isOpen, close, customColors, setTheme,
+  isOpen, close, customColors, setTheme,intl
 }) => {
   const [button, setButton] = useState('');
   const [buttonValid, setButtonValid] = useState(true);
@@ -22,10 +24,10 @@ const CustomThemeModal = ({
   const [accent, setAccent] = useState('');
   const [accentValid, setAccentValid] = useState(true);
 
-  const headerText = 'Customize the admin and learner edX experience using your own brand colors. Enter color values in hexadecimal code.';
-  const infoText = 'More details about color appearance in the admin and learner experiences and best practices for selecting accessible colors are available in the ';
-  const invalidMessage = 'Must be hexidecimal starting with # (Ex: #1e0b57)';
-  const warningMessage = 'Color doesn\'t meet the WCAG AA standard of accessibility. Learn more at the help center link below. ';
+  const headerText = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.modal'])
+  const infoText = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.info'])
+  const invalidMessage = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.invalid'])
+  const warningMessage = intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.warning'])
 
   const hexRegExpPattern = '^#([A-Fa-f0-9]{6})$';
   const validHex = new RegExp(hexRegExpPattern);
@@ -73,7 +75,7 @@ const CustomThemeModal = ({
     >
       <ModalDialog.Header>
         <ModalDialog.Title>
-          {CUSTOM_THEME_LABEL}
+          {intl.formatMessage(messages[CUSTOM_THEME_LABEL])}
         </ModalDialog.Title>
         <p className="mt-4">{headerText}</p>
       </ModalDialog.Header>
@@ -82,7 +84,7 @@ const CustomThemeModal = ({
         <Form>
           <Form.Group controlId="custom-button">
             <Form.Control
-              floatingLabel="Button color"
+              floatingLabel={intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.modal.btn.color'])}
               isInvalid={!buttonValid}
               onChange={(e) => {
                 setButton(e.target.value);
@@ -99,7 +101,7 @@ const CustomThemeModal = ({
           </Form.Group>
           <Form.Group controlId="custom-banner">
             <Form.Control
-              floatingLabel="Banner color"
+              floatingLabel={intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.modal.banner.color'])}
               isInvalid={!bannerValid}
               onChange={(e) => {
                 setBanner(e.target.value);
@@ -116,7 +118,7 @@ const CustomThemeModal = ({
           </Form.Group>
           <Form.Group controlId="custom-accent">
             <Form.Control
-              floatingLabel="Accent color"
+              floatingLabel={intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.modal.accent.color'])}
               isInvalid={!accentValid}
               onChange={(e) => {
                 setAccent(e.target.value);
@@ -135,7 +137,7 @@ const CustomThemeModal = ({
             target="_blank"
             showLaunchIcon={false}
           >
-            Enterprise Help Center.
+            {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.warning.help.center'])}
           </Hyperlink>
         </p>
       </ModalDialog.Body>
@@ -147,7 +149,7 @@ const CustomThemeModal = ({
             onClick={setCustom}
             disabled={!buttonValid || !bannerValid || !accentValid}
           >
-            Add theme
+            {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.custom.theme.modal.add.btn'])}
           </Button>
         </ActionRow>
       </ModalDialog.Footer>
@@ -172,4 +174,4 @@ CustomThemeModal.propTypes = {
   setTheme: PropTypes.func.isRequired,
 };
 
-export default CustomThemeModal;
+export default (injectIntl(CustomThemeModal));

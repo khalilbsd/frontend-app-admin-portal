@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, ValidationFormGroup } from '@edx/paragon';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
-const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
+const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur,intl }) => {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -11,11 +13,11 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         <div className="col">
           <ValidationFormGroup
             for="sftpHostname"
-            helpText="The host to deliver the report too"
-            invalidMessage="Required. Hostname cannot be blank"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.hostname.help'])}
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.hostname.invalid'])}
             invalid={invalidFields.sftpHostname}
           >
-            <label htmlFor="sftpHostname">SFTP Hostname</label>
+            <label htmlFor="sftpHostname">{intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.hostname'])}</label>
             <Input
               type="text"
               id="sftpHostname"
@@ -29,11 +31,11 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         <div className="col col-2">
           <ValidationFormGroup
             for="sftpPort"
-            helpText="The port the sftp host connects too"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.port.help'])}
             invalid={invalidFields.sftpPort}
-            invalidMessage="Required. Must be a valid port"
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.port.invalid'])}
           >
-            <label htmlFor="sftpPort">SFTP Port</label>
+            <label htmlFor="sftpPort">{intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.port'])}</label>
             <Input
               type="number"
               id="sftpPort"
@@ -48,11 +50,11 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
         <div className="col">
           <ValidationFormGroup
             for="sftpUsername"
-            helpText="the username to securely access the host"
-            invalidMessage="Required. Username cannot be blank"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.username.help'])}
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.username.invalid'])}
             invalid={invalidFields.sftpUsername}
           >
-            <label htmlFor="sftpUsername">SFTP Username</label>
+            <label htmlFor="sftpUsername">{intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.username'])}</label>
             <Input
               type="text"
               id="sftpUsername"
@@ -64,7 +66,7 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           </ValidationFormGroup>
           {config && (
             <div className="form-group">
-              <label htmlFor="changePassword">Change Password</label>
+              <label htmlFor="changePassword">{intl.formatMessage(messages['tab.report.config.add.config.form.data.change.password'])}</label>
               <Input
                 type="checkbox"
                 id="changePassword"
@@ -76,11 +78,11 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           )}
           <ValidationFormGroup
             for="encryptedSftpPassword"
-            helpText="The password to use to securely access the host. The password will be encrypted when stored in the database"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.password.help'])}
             invalid={invalidFields.encryptedSftpPassword}
-            invalidMessage="Required. Password must not be blank"
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.password.invalid'])}
           >
-            <label htmlFor="encryptedSftpPassword">SFTP Password</label>
+            <label htmlFor="encryptedSftpPassword">{intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.password'])}</label>
             <Input
               type="password"
               id="encryptedSftpPassword"
@@ -92,11 +94,11 @@ const SFTPDeliveryMethodForm = ({ invalidFields, config, handleBlur }) => {
           </ValidationFormGroup>
           <ValidationFormGroup
             for="sftpFilePath"
-            helpText="The path on the host to deliver the report too"
+            helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.file.path.help'])}
             invalid={invalidFields.sftpFilePath}
-            invalidMessage="Required"
+            invalidMessage={intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.file.path.invalid'])}
           >
-            <label htmlFor="sftpFilePath">SFTP File Path</label>
+            <label htmlFor="sftpFilePath">{intl.formatMessage(messages['tab.report.config.add.config.form.data.sftp.file.path'])}</label>
             <Input
               type="text"
               id="sftpFilePath"
@@ -139,4 +141,4 @@ SFTPDeliveryMethodForm.propTypes = {
   }),
 };
 
-export default SFTPDeliveryMethodForm;
+export default (injectIntl(SFTPDeliveryMethodForm));

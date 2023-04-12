@@ -9,6 +9,8 @@ import { camelCaseObject } from '@edx/frontend-platform/utils';
 import SFTPDeliveryMethodForm from './SFTPDeliveryMethodForm';
 import EmailDeliveryMethodForm from './EmailDeliveryMethodForm';
 import SUBMIT_STATES from '../../data/constants/formSubmissions';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 //  All the fields in this form that need to be validated can be added here.
 const REQUIRED_FIELDS = [
@@ -47,6 +49,7 @@ class ReportingConfigForm extends React.Component {
     APIErrors: {},
     active: this.props.config ? this.props.config.active : false,
     submitState: SUBMIT_STATES.DEFAULT,
+    intl: this.props.intl,
   };
 
   /**
@@ -160,7 +163,7 @@ class ReportingConfigForm extends React.Component {
   };
 
   render() {
-    const { config, availableCatalogs, reportingConfigTypes } = this.props;
+    const { config, availableCatalogs, reportingConfigTypes, intl } = this.props;
     const {
       frequency,
       invalidFields,
@@ -176,7 +179,7 @@ class ReportingConfigForm extends React.Component {
     const dataTypesOptionsValues = dataTypesOptions.map(item => item.value);
     const selectedDataTypesOption = config ? [{ label: config.dataType, value: config.dataType, hidden: true }] : [];
     return (
-      <form
+      <form className='report-form'
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target);
@@ -184,28 +187,31 @@ class ReportingConfigForm extends React.Component {
         }}
         onChange={() => this.setState({ submitState: SUBMIT_STATES.DEFAULT })}
       >
-        <div className="col">
-          <ValidationFormGroup
-            for="active"
-          >
-            <label htmlFor="active">Active</label>
-            <Input
-              type="checkbox"
-              id="active"
-              name="active"
-              className="ml-3"
-              checked={active}
-              onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
-            />
-          </ValidationFormGroup>
+        <div className="row">
+          <div className="col">
+            <ValidationFormGroup
+              for="active"
+            >
+              <label htmlFor="active">{intl.formatMessage(messages['tab.report.config.add.config.form.active'])}</label>
+              <Input
+                type="checkbox"
+                id="active"
+                name="active"
+                className="ml-3"
+                checked={active}
+                onChange={() => this.setState(prevState => ({ active: !prevState.active }))}
+              />
+            </ValidationFormGroup>
+          </div>
         </div>
         <div className="row">
-          <div className="col col-6">
+
+          <div className="col col-lg-6 col-md-6 col-sm-12 col-12">
             <ValidationFormGroup
               for="dataType"
-              helpText="The type of data this report should contain. If this is an old report, you will not be able to change this field, and should create a new report"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.type.help'])}
             >
-              <label htmlFor="dataType">Data Type</label>
+              <label htmlFor="dataType">{intl.formatMessage(messages['tab.report.config.add.config.form.data.type'])}</label>
               <Input
                 type="select"
                 id="dataType"
@@ -215,26 +221,14 @@ class ReportingConfigForm extends React.Component {
                 options={[...dataTypesOptions, ...selectedDataTypesOption]}
               />
             </ValidationFormGroup>
-            <ValidationFormGroup
-              for="reportType"
-              helpText="The type this report should be sent as, e.g. CSV"
-            >
-              <label htmlFor="reportType">Report Type</label>
-              <Input
-                type="select"
-                id="reportType"
-                name="reportType"
-                defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
-                options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
-              />
-            </ValidationFormGroup>
           </div>
-          <div className="col col-6">
+
+          <div className="col col-lg-6 col-md-6 col-sm-12 col-12">
             <ValidationFormGroup
               for="deliveryMethod"
-              helpText="The method in which the data should be sent"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.delivery.help'])}
             >
-              <label htmlFor="deliveryMethod">Delivery Method</label>
+              <label htmlFor="deliveryMethod">{intl.formatMessage(messages['tab.report.config.add.config.form.data.delivery'])}</label>
               <Input
                 type="select"
                 id="deliveryMethod"
@@ -244,11 +238,31 @@ class ReportingConfigForm extends React.Component {
                 onChange={e => this.setState({ deliveryMethod: e.target.value })}
               />
             </ValidationFormGroup>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col col-lg-6 col-md-6 col-sm-12 col-12">
+            <ValidationFormGroup
+              for="reportType"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.report.help'])}
+            >
+              <label htmlFor="reportType">{intl.formatMessage(messages['tab.report.config.add.config.form.data.report'])}</label>
+              <Input
+                type="select"
+                id="reportType"
+                name="reportType"
+                defaultValue={config ? config.reportType : reportingConfigTypes.reportType[0][0]}
+                options={reportingConfigTypes.reportType.map(item => ({ label: item[1], value: item[0] }))}
+              />
+            </ValidationFormGroup>
+          </div>
+          <div className="col col-lg-6 col-md-6 col-sm-12 col-12">
+
             <ValidationFormGroup
               for="frequency"
-              helpText="The frequency interval (daily, weekly, or monthly) that the report should be sent"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.frequency.help'])}
             >
-              <label htmlFor="frequency">Frequency</label>
+              <label htmlFor="frequency">{intl.formatMessage(messages['tab.report.config.add.config.form.data.frequency'])}</label>
               <Input
                 type="select"
                 id="frequency"
@@ -259,15 +273,17 @@ class ReportingConfigForm extends React.Component {
               />
             </ValidationFormGroup>
           </div>
+
         </div>
+
         <div className="row">
-          <div className="col">
+          <div className="col col-lg-4 col-md-4 col-sm-12 col-12">
             <ValidationFormGroup
               for="dayOfMonth"
-              helpText="The day of the month to send the report. This field is required and only valid when the frequency is monthly"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.day.month.help'])}
               invalid={frequency === 'monthly' && invalidFields.dayOfMonth}
             >
-              <label htmlFor="dayOfMonth">Day of Month</label>
+              <label htmlFor="dayOfMonth">{intl.formatMessage(messages['tab.report.config.add.config.form.data.day.month'])}</label>
               <Input
                 type="number"
                 max={MONTHLY_MAX}
@@ -280,12 +296,12 @@ class ReportingConfigForm extends React.Component {
               />
             </ValidationFormGroup>
           </div>
-          <div className="col">
+          <div className="col col-lg-4 col-md-4 col-sm-12 col-12">
             <ValidationFormGroup
               for="dayOfWeek"
-              helpText="The day of the week to send the report. This field is required and only valid when the frequency is weekly"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.day.week.help'])}
             >
-              <label htmlFor="dayOfWeek">Day of Week</label>
+              <label htmlFor="dayOfWeek">{intl.formatMessage(messages['tab.report.config.add.config.form.data.day.week'])}</label>
               <Input
                 type="select"
                 id="dayOfWeek"
@@ -296,14 +312,14 @@ class ReportingConfigForm extends React.Component {
               />
             </ValidationFormGroup>
           </div>
-          <div className="col">
+          <div className="col col-lg-4 col-md-4 col-sm-12 col-12">
             <ValidationFormGroup
               for="hourOfDay"
-              helpText="The hour of the day to send the report, in Eastern Standard Time (EST). This is required for all frequency settings"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.hour.day.help'])}
               invalid={invalidFields.hourOfDay}
               invalidMessage="Required for all frequency types"
             >
-              <label htmlFor="hourOfDay">Hour of Day</label>
+              <label htmlFor="hourOfDay">{intl.formatMessage(messages['tab.report.config.add.config.form.data.hour.day'])}</label>
               <Input
                 type="number"
                 id="hourOfDay"
@@ -314,22 +330,27 @@ class ReportingConfigForm extends React.Component {
             </ValidationFormGroup>
           </div>
         </div>
-        <ValidationFormGroup
-          for="pgpEncryptionKey"
-          helpText="The key for encryption, if PGP encrypted file is required"
-          invalid={!!APIErrors.pgpEncryptionKey}
-          invalidMessage={APIErrors.pgpEncryptionKey}
-        >
-          <label htmlFor="pgpEncryptionKey">PGP Encryption Key</label>
-          <Input
-            type="textarea"
-            id="pgpEncryptionKey"
-            name="pgpEncryptionKey"
-            defaultValue={config ? config.pgpEncryptionKey : undefined}
-            data-hj-suppress
-            onBlur={e => this.handleBlur(e)}
-          />
-        </ValidationFormGroup>
+        <div className="row">
+          <div className="col col-lg-12 col-md-12 col-sm-12 col-12">
+            <ValidationFormGroup
+              for="pgpEncryptionKey"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.pgp.help'])}
+              invalid={!!APIErrors.pgpEncryptionKey}
+              invalidMessage={APIErrors.pgpEncryptionKey}
+            >
+              <label htmlFor="pgpEncryptionKey">{intl.formatMessage(messages['tab.report.config.add.config.form.data.pgp'])}</label>
+              <Input
+                type="textarea"
+                id="pgpEncryptionKey"
+                name="pgpEncryptionKey"
+                defaultValue={config ? config.pgpEncryptionKey : undefined}
+                data-hj-suppress
+                onBlur={e => this.handleBlur(e)}
+              />
+            </ValidationFormGroup>
+          </div>
+
+        </div>
         {deliveryMethod === 'email' && (
           <EmailDeliveryMethodForm
             config={config}
@@ -344,63 +365,66 @@ class ReportingConfigForm extends React.Component {
             handleBlur={this.handleBlur}
           />
         )}
-        <div className="col">
-          <ValidationFormGroup
-            for="enterpriseCustomerCatalogs"
-            helpText="The catalogs that should be included in the report. No selection means all catalogs will be included."
-          >
-            <label htmlFor="enterpriseCustomerCatalogs">Enterprise Customer Catalogs</label>
-            <Input
-              type="select"
-              id="enterpriseCustomerCatalogs"
-              name="enterpriseCustomerCatalogUuids"
-              multiple
-              defaultValue={selectedCatalogs}
-              options={
-                availableCatalogs && availableCatalogs.map(item => ({
-                  value: item.uuid,
-                  label: `Catalog "${item.title}" with UUID "${item.uuid}"`,
-                }))
-              }
-            />
-          </ValidationFormGroup>
-        </div>
-        <div className="row justify-content-between align-items-center form-group">
-          <ValidationFormGroup
-            for="submitButton"
-            invalidMessage="There was an error submitting, please try again."
-            invalid={submitState === SUBMIT_STATES.ERROR}
-            className="mb-0"
-          >
-            <StatefulButton
-              state={submitState}
-              type="submit"
-              id="submitButton"
-              labels={{
-                default: 'Submit',
-                pending: 'Saving...',
-                complete: 'Complete',
-                error: 'Error',
-              }}
-              icons={{
-                default: <Icon className="fa fa-download" />,
-                pending: <Icon className="fa fa-spinner fa-spin" />,
-                complete: <Icon className="fa fa-check" />,
-                error: <Icon className="fa fa-times" />,
-              }}
-              disabledStates={[SUBMIT_STATES.PENDING]}
-              className="ml-3 col"
-              variant="primary"
-            />
-          </ValidationFormGroup>
-          {config && (
-            <Button
-              className="btn-outline-danger  mr-3"
-              onClick={() => this.props.deleteConfig(config.uuid)}
+        <div className='row'>
+          <div className="col col-12">
+            <ValidationFormGroup
+              for="enterpriseCustomerCatalogs"
+              helpText={intl.formatMessage(messages['tab.report.config.add.config.form.data.enterprise.catalog.help'])}
             >
-              <Icon className="fa fa-times danger" /> Delete
-            </Button>
-          )}
+              <label htmlFor="enterpriseCustomerCatalogs">{intl.formatMessage(messages['tab.report.config.add.config.form.data.enterprise.catalog'])}</label>
+              <Input
+                type="select"
+                id="enterpriseCustomerCatalogs"
+                name="enterpriseCustomerCatalogUuids"
+                multiple
+                defaultValue={selectedCatalogs}
+                options={
+                  availableCatalogs && availableCatalogs.map(item => ({
+                    value: item.uuid,
+
+                    label: intl.formatMessage(messages['tab.report.config.add.config.form.data.enterprise.catalog.label'], { title: item.title, uuid: item.uuid }),
+                  }))
+                }
+              />
+            </ValidationFormGroup>
+          </div>
+        </div>
+        <div className="row justify-content-between align-items-center ">
+          <div className="col col-lg-4 col-md-6 col-sm-12 col-12">
+
+              <StatefulButton
+                state={submitState}
+                type="submit"
+                id="submitButton"
+                labels={{
+                  default: intl.formatMessage(messages['tab.report.config.add.config.form.data.btn.submit']),
+                  pending: intl.formatMessage(messages['tab.report.config.add.config.form.data.btn.saving']),
+                  complete: intl.formatMessage(messages['tab.report.config.add.config.form.data.btn.complete']),
+                  error: intl.formatMessage(messages['tab.report.config.add.config.form.data.btn.error']),
+                }}
+                icons={{
+                  default: <Icon className="fa fa-download" />,
+                  pending: <Icon className="fa fa-spinner fa-spin" />,
+                  complete: <Icon className="fa fa-check" />,
+                  error: <Icon className="fa fa-times" />,
+                }}
+                disabledStates={[SUBMIT_STATES.PENDING]}
+                className="submit-btn w-100"
+                variant="primary"
+              />
+
+          </div>
+          <div className="col col-lg-6 col-md-6 col-sm-12 col-12">
+            {config && (
+              <Button
+                className="btn-outline-danger  mr-3"
+                onClick={() => this.props.deleteConfig(config.uuid)}
+              >
+                <Icon className="fa fa-times danger" /> {intl.formatMessage(messages['tab.report.config.add.config.form.data.btn.delete'])}
+              </Button>
+            )}
+
+          </div>
         </div>
       </form>
     );
@@ -454,4 +478,4 @@ ReportingConfigForm.propTypes = {
   deleteConfig: PropTypes.func,
 };
 
-export default ReportingConfigForm;
+export default (injectIntl(ReportingConfigForm));

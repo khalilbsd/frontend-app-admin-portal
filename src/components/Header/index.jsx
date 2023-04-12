@@ -14,6 +14,8 @@ import Img from '../Img';
 import { configuration } from '../../config';
 
 import './Header.scss';
+import messages from './messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
 export const Logo = ({ enterpriseLogo, enterpriseName }) => {
   const logo = configuration.LOGO_URL;
@@ -37,7 +39,7 @@ Logo.propTypes = {
   enterpriseName: PropTypes.string,
 };
 
-export const HeaderDropdown = ({ user, enterpriseSlug }) => {
+export const HeaderDropdown = ({ user, enterpriseSlug,intl }) => {
   const { profileImage, username } = user;
   const avatarImage = profileImage?.hasImage ? profileImage.imageUrlMedium : null;
   const avatarScreenReaderText = `Profile image for ${username}`;
@@ -57,7 +59,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug }) => {
         <Dropdown.Item
           href={getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug))}
         >
-          Logout
+          {intl.formatMessage(messages['header.logout'])}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -80,7 +82,7 @@ HeaderDropdown.propTypes = {
 };
 
 const Header = ({
-  hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,
+  hasSidebarToggle, enterpriseName, enterpriseLogo, enterpriseSlug,intl
 }) => {
   const user = getAuthenticatedUser();
   return (
@@ -97,7 +99,7 @@ const Header = ({
         </Nav>
         {(user?.username && enterpriseSlug) && (
           <Nav aria-label="Secondary" className="align-items-center ml-auto">
-            <HeaderDropdown user={user} enterpriseSlug={enterpriseSlug} />
+            <HeaderDropdown intl={intl} user={user} enterpriseSlug={enterpriseSlug} />
           </Nav>
         )}
       </Navbar>
@@ -120,4 +122,4 @@ Header.defaultProps = {
   hasSidebarToggle: false,
 };
 
-export default Header;
+export default (injectIntl(Header));

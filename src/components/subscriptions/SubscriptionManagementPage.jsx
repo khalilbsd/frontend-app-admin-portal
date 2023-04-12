@@ -17,7 +17,7 @@ const SubscriptionManagementPage = ({ enterpriseId,intl }) => (
     <Helmet title={intl.formatMessage(messages[PAGE_TITLE])} />
     <Hero title={intl.formatMessage(messages[PAGE_TITLE])} />
     <main role="main" className="manage-subscription">
-      <Container className="py-3" fluid>
+      <Container className="tab-content" fluid>
         <SubscriptionRoutes />
       </Container>
     </main>

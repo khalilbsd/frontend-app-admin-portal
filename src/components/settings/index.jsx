@@ -14,14 +14,15 @@ import {
   SETTINGS_PARAM_MATCH,
 } from './data/constants';
 import SettingsTabs from './SettingsTabs';
-
-const PAGE_TILE = 'Settings';
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages';
 
 /**
  * Behaves as the router for settings page
  * When browsing to {path} (../admin/settings) redirect to default tab
- */
-const SettingsPage = () => {
+*/
+const SettingsPage = ({intl}) => {
+  const PAGE_TILE = intl.formatMessage(messages['tab.settings.title']);
   const { path } = useRouteMatch();
   return (
     <>
@@ -44,4 +45,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default (injectIntl(SettingsPage));

@@ -145,7 +145,7 @@ class EnterpriseApp extends React.Component {
                   tabIndex="-1"
                   ref={this.contentWrapperRef}
                   style={{
-                    paddingLeft: matchesMediaQ ? sidebarWidth : defaultContentPadding,
+                    paddingLeft: matchesMediaQ ? sidebarWidth -10 : defaultContentPadding -10,
                   }}
                 >
                   <EnterpriseAppContent
