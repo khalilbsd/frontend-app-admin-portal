@@ -3,7 +3,7 @@ import React from 'react';
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
-import { injectIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, injectIntl } from '@edx/frontend-platform/i18n';
 import messages from './messages';
 
 const EnrollmentsTable = ({intl}) => {
@@ -58,16 +58,20 @@ const EnrollmentsTable = ({intl}) => {
   const formatEnrollmentData = enrollments => enrollments.map(enrollment => ({
     ...enrollment,
     user_email: <span data-hj-suppress>{enrollment.user_email}</span>,
-    last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
-    course_start_date: formatTimestamp({ timestamp: enrollment.course_start_date }),
-    course_end_date: formatTimestamp({ timestamp: enrollment.course_end_date }),
+    // last_activity_date: formatTimestamp({ timestamp: enrollment.last_activity_date }),
+    last_activity_date: (new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(enrollment.last_activity_date)),
+    // course_start_date: formatTimestamp({ timestamp: enrollment.course_start_date }),
+    course_start_date:  (new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(enrollment.course_start_date)),
+    // course_end_date: formatTimestamp({ timestamp: enrollment.course_end_date }),
+    course_end_date:  (new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(enrollment.course_end_date)),
     enrollment_date: formatTimestamp({
       timestamp: enrollment.enrollment_date,
     }),
     passed_date: formatPassedTimestamp(enrollment.passed_date,intl),
-    user_account_creation_date: formatTimestamp({
-      timestamp: enrollment.user_account_creation_date,
-    }),
+    // user_account_creation_date: formatTimestamp({
+    //   timestamp: enrollment.user_account_creation_date,
+    // }),
+    user_account_creation_date: (new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(enrollment.user_account_creation_date)),
     progress_status: enrollment.progress_status,
     course_list_price: enrollment.course_list_price ? `$${enrollment.course_list_price}` : '',
     current_grade: formatPercentage({ decimal: enrollment.current_grade }),

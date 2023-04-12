@@ -27,7 +27,7 @@ import { SubscriptionData } from '../subscriptions';
 import EmbeddedSubscription from './EmbeddedSubscription';
 import { features } from '../../config';
 import { isExperimentVariant } from '../../optimizely';
-import { injectIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, injectIntl } from '@edx/frontend-platform/i18n';
 import messages from './messages';
 
 class Admin extends React.Component {
@@ -370,7 +370,9 @@ class Admin extends React.Component {
                           {lastUpdatedDate
                             && (
                             <>
-                              {intl.formatMessage(messages['tab.progress.report.data.date.showing'])} {formatTimestamp({ timestamp: lastUpdatedDate })}
+                              {intl.formatMessage(messages['tab.progress.report.data.date.showing'])} {(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(lastUpdatedDate))}
+                               {/* {formatTimestamp({ timestamp: lastUpdatedDate })} */}
+
                             </>
                             )}
 

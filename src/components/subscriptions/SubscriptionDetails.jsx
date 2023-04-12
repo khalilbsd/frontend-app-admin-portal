@@ -76,7 +76,7 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
                 </div>
                 <div className="lead">
                   {/* {moment(subscription.priorRenewals[0].priorSubscriptionPlanStartDate).format('MMMM D, YYYY')} */}
-                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.priorRenewals[0].priorSubscriptionPlanStartDate))}
+                {(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(subscription.priorRenewals[0].priorSubscriptionPlanStartDate))}
 
                 </div>
               </div>
@@ -87,7 +87,7 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
               </div>
               <div className="lead start-date">
                 {/* {moment(subscription.startDate).format('MMMM D, YYYY')} */}
-                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.startDate))}
+                {(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(subscription.startDate))}
               </div>
             </div>
             <div className="sub-detail-card">
@@ -96,7 +96,7 @@ const SubscriptionDetails = ({ enterpriseSlug,intl }) => {
               </div>
               <div className="lead end-date">
                 {/* {moment(subscription.expirationDate).format('MMMM D, YYYY')} */}
-                {(new Intl.DateTimeFormat(getLocale())).format(new Date(subscription.expirationDate))}
+                {(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(subscription.expirationDate))}
               </div>
             </div>
           </div>

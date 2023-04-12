@@ -23,6 +23,7 @@ import SAPIcon from './icons/SAP.svg';
 import LmsApiService from './data/services/LmsApiService';
 import messages from './components/EnrollmentsTable/messages';
 import licenseMessages from './components/subscriptions/messages';
+import { getLocale } from '@edx/frontend-platform/i18n';
 const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
   if (timestamp) {
     return moment(timestamp).format(format);
@@ -32,7 +33,8 @@ const formatTimestamp = ({ timestamp, format = 'MMMM D, YYYY' }) => {
 
 const formatPassedTimestamp = (timestamp,intl) => {
   if (timestamp) {
-    return formatTimestamp({ timestamp });
+    // return formatTimestamp({ timestamp });
+    return (new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(timestamp));
   }
   return intl.formatMessage(messages['enrollment.table.label.course.passed.date.none']);
 };
