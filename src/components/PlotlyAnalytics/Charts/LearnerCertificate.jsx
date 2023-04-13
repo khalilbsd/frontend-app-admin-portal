@@ -77,7 +77,6 @@ const LearnerCertificate = ({ rawData,intl }) => {
       )
   }, [courseStats])
 
-console.log(courseStats);
 
   return (
     <Card>

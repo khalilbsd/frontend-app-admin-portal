@@ -33,7 +33,7 @@ const messages = defineMessages({
 
     'tab.analytics.chart.learner.course.enrollment.title': {
         id: 'tab.analytics.chart.learner.course.enrollment.title',
-        defaultMessage: 'Number of Learners per Course'
+        defaultMessage: 'Progress by course'
     },
 
     'tab.analytics.chart.learner.course.enrollment.horiz.axis.title': {
@@ -49,9 +49,9 @@ const messages = defineMessages({
         id: 'tab.analytics.chart.learner.course.enrollment.course',
         defaultMessage: 'Course'
     },
-    'tab.analytics.chart.learner.course.enrollment.chart.not.active': {
-        id: 'tab.analytics.chart.learner.course.enrollment.chart.not.active',
-        defaultMessage: 'Non Active Learners'
+    'tab.analytics.chart.learner.course.enrollment.chart.number.learners': {
+        id: 'tab.analytics.chart.learner.course.enrollment.chart.number.learners',
+        defaultMessage: 'Enrolled Learners'
     },
     'tab.analytics.chart.learner.course.enrollment.chart.in.progress': {
         id: 'tab.analytics.chart.learner.course.enrollment.chart.in.progress',
@@ -68,7 +68,11 @@ const messages = defineMessages({
     'tab.analytics.chart.learner.course.certificate.pending':{
         id:'tab.analytics.chart.learner.course.certificate.pending',
         defaultMessage: "Learner who still didn't get a certificate"
-    }
+    },
+    'tab.analytics.chart.error.message.no.data':{
+        id:'tab.analytics.error.message.no.data',
+        defaultMessage: "We're sorry! you dont have any enrollments before this date"
+    },
 
 })
 

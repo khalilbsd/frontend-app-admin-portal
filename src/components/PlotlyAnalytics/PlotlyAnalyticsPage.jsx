@@ -86,7 +86,7 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
   );
 
   return (
-    <>
+    <main className='analytics-page'>
       <Helmet title={PAGE_TITLE} />
       <Hero title={PAGE_TITLE} />
       {/* <div className="col-12 col-lg-9">
@@ -113,7 +113,7 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
           </Col>
         </Row>
       </Container>
-    </>
+    </main>
   );
 };
 
