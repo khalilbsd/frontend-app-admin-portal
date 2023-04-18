@@ -190,14 +190,14 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
 
 
       if (course && course.length > 0) {
-        const filtredCourseStat = courseStats.filter(item => item.courseKey === course).forEach(element=>{
+         courseStats.filter(item => item.courseKey === course).forEach(element=>{
           const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          element.totalFinished / licenseStats.total,
-          `${element.totalFinished / licenseStats.total}`,
-          element.totalInProgress / licenseStats.total,
-          `${element.totalInProgress / licenseStats.total}`,
+          Math.round((element.totalFinished / licenseStats.total)*100)/100,
+          `${(element.totalFinished / licenseStats.total)*100} %`,
+          Math.round((element.totalInProgress / licenseStats.total)*100)/100,
+          `${(element.totalInProgress / licenseStats.total)*100} %`,
           element.totalNotActive / licenseStats.total,
-          `${element.totalNotActive / licenseStats.total}`]
+          `${(element.totalNotActive / licenseStats.total)*100}%`]
           newData.push(temp);
         })
 
@@ -205,12 +205,12 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
       }else{
         courseStats?.forEach(element => {
           const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          element.totalFinished / licenseStats.total,
-          `${element.totalFinished / licenseStats.total}`,
-          element.totalInProgress / licenseStats.total,
-          `${element.totalInProgress / licenseStats.total}`,
-          element.totalNotActive / licenseStats.total,
-          `${element.totalNotActive / licenseStats.total}`]
+          Math.round((element.totalFinished / licenseStats.total)*100)/100,
+          `${(element.totalFinished / licenseStats.total)*100} %`,
+          Math.round((element.totalInProgress / licenseStats.total)*100)/100,
+          `${(element.totalInProgress / licenseStats.total)*100} %`,
+          Math.round((element.totalNotActive / licenseStats.total)*100)/100,
+          `${(element.totalNotActive / licenseStats.total)*100}%`]
           newData.push(temp);
         });
       }

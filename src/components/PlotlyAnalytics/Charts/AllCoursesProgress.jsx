@@ -62,6 +62,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
         setEndDate(date);
     };
 
+    console.log(licenses)
     useEffect(() => {
 
         const licenseDetails = () => {
@@ -101,7 +102,10 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
             })
 
             const totalLicenses = licenseStats.total - licenseStats.revoked - licenseStats.unassigned
-
+            console.log(totalLicenses)
+            console.log(licenseStats)
+            console.log(licenseStats.revoked)
+            console.log(licenseStats.unassigned)
             figures.activeLicense = licenseStats.activated
 
             if (totalLicenses > 0) {

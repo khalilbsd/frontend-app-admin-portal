@@ -108,16 +108,7 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
       <Container gap={2} className='tab-content'>
         <Row style={{ rowGap: 10 }}>
           <Col lg={6} md={6} sm={12} xs={12}  >
-            {/* <Row style={{ rowGap: 10 }}>
-              <Col lg={12} md={12} sm={12} xs={12}> */}
-            {/* 1st chart  */}
             <PieChart data={learnerStatus} title="tab.anayltics.chart.title.daily.activities" />
-            {/* </Col> */}
-            {/* <Col lg={12} md={12} sm={12} xs={12}>
-                <LineChart />
-              </Col> */}
-            {/* </Row> */}
-
           </Col>
           <Col lg={6} md={6} sm={12} xs={12} className='d-flex'    >
             <AllCoursesProgress licenses={subscriptions.results} enrollments={enrollmentsList} />
