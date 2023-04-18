@@ -69,7 +69,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
         setEndDate(date);
     };
 
-    console.log(licenses)
+
     useEffect(() => {
         const licenseDetails = () => {
             licenses.forEach(subscription => {
