@@ -59,6 +59,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
     });
     const [error, setErrorMessage] = useState(undefined);
     const handleStartDateChange = (date) => {
+
         setStartDate(date);
     };
     const handleEndDateChange = (date) => {
@@ -66,6 +67,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
             setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.startDateBeforeEndDate']))
             return
         }
+        setErrorMessage(undefined);
         setEndDate(date);
     };
 
