@@ -35,6 +35,10 @@ const messages = defineMessages({
         id: 'tab.analytics.chart.learner.course.enrollment.title',
         defaultMessage: 'Progress by course'
     },
+    'tab.analytics.chart.learner.course.certificate.title': {
+        id: 'tab.analytics.chart.learner.course.certificate.title',
+        defaultMessage: 'Learner certification status per course'
+    },
 
     'tab.analytics.chart.learner.course.enrollment.horiz.axis.title': {
         id: 'tab.analytics.chart.learner.course.enrollment.horiz.axis.title',
@@ -69,9 +73,66 @@ const messages = defineMessages({
         id:'tab.analytics.chart.learner.course.certificate.pending',
         defaultMessage: "Learner who still didn't get a certificate"
     },
+    'tab.analytics.chart.date.picker.start.date':{
+        id:'tab.analytics.chart.date.picker.start.date',
+        defaultMessage: "Start Date"
+    },
+    'tab.analytics.chart.date.picker.end.date':{
+        id:'tab.analytics.chart.date.picker.end.date',
+        defaultMessage: "End Date"
+    },
     'tab.analytics.chart.error.message.no.data':{
-        id:'tab.analytics.error.message.no.data',
-        defaultMessage: "We're sorry! you dont have any enrollments before this date"
+        id:'tab.analytics.chart.error.message.no.data',
+        defaultMessage: "We're sorry! you do not have any enrollments before this date"
+    },
+    'tab.analytics.chart.error.message.startDateBeforeEndDate':{
+        id:'tab.analytics.chart.error.message.startDateBeforeEndDate',
+        defaultMessage: "Error: Start date must be before end date"
+    },
+    'tab.analytics.chart.all.course.progress.title':{
+        id:'tab.analytics.chart.all.course.progress.title',
+        defaultMessage: "Progress of all courses"
+    },
+    'tab.analytics.chart.all.course.progress.catageory':{
+        id:'tab.analytics.chart.all.course.progress.catageory',
+        defaultMessage: "Catageory"
+    },
+    'tab.analytics.chart.all.course.progress.finished':{
+        id:'tab.analytics.chart.all.course.progress.finished',
+        defaultMessage: "Learners who have finished"
+    },
+    'tab.analytics.chart.all.course.progress.progress':{
+        id:'tab.analytics.chart.all.course.progress.progress',
+        defaultMessage: "Learners in progress"
+    },
+    'tab.analytics.chart.all.course.progress.license.nb':{
+        id:'tab.analytics.chart.all.course.progress.license.nb',
+        defaultMessage: "Number  of active licenses"
+    },
+    'tab.analytics.chart.all.course.progress.no.licenses.assigned':{
+        id:'tab.analytics.chart.all.course.progress.no.licenses.assigned',
+        defaultMessage: "Your company didn't assign any license yet "
+    },
+
+    'tab.analytics.chart.cumalative.general.line.title':{
+        id:'tab.analytics.chart.cumalative.general.line.title',
+        defaultMessage: "General statistic"
+    },
+    'tab.analytics.chart.cumalative.general.line.bought.linceses':{
+        id:'tab.analytics.chart.cumalative.general.line.bought.linceses',
+        defaultMessage: "Number of licenses purchased"
+    },
+    'tab.analytics.chart.cumalative.general.line.finished.cumulated':{
+        id:'tab.analytics.chart.cumalative.general.line.finished.cumulated',
+        defaultMessage: "Number of learners who finished combined"
+    },
+    'tab.analytics.chart.cumalative.general.line.progress.cumulated':{
+        id:'tab.analytics.chart.cumalative.general.line.progress.cumulated',
+        defaultMessage: "Number of learners in  progress combined"
+    },
+    'tab.analytics.chart.cumalative.general.line.month':{
+        id:'tab.analytics.chart.cumalative.general.line.month',
+        defaultMessage: "Month"
     },
 
 })

@@ -16,17 +16,29 @@ import { clearDashboardAnalytics } from '../../data/actions/dashboardAnalytics';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import messages from './messages';
 import LearnerCertificate from './Charts/LearnerCertificate';
+import { useSubscriptionData } from '../subscriptions/data/hooks';
+import AllCoursesProgress from './Charts/AllCoursesProgress';
 
 
 
-const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics,analyticsData, enrollments,intl }) => {
+const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsData, enrollments, intl }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
   const [enrollmentsList, setenrollmentsList] = useState(undefined)
-const [learnerStatus, setlearnerStatus] = useState(undefined)
-const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
+  const [learnerStatus, setlearnerStatus] = useState(undefined)
+  const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
   // const enrollmentsList = enrollments.then(enrollment => enrollments.data);
+
+  const {
+    subscriptions,
+    errors,
+    setErrors,
+    forceRefresh,
+    loading,
+  } = useSubscriptionData({ enterpriseId });
+
+
 
 
   async function getEnrollmentsData() {
@@ -42,13 +54,13 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
 
 
   function getLearnerStatus() {
-      setlearnerStatus(
-        [
-            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status']), intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.message'])],
-            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.enrolled']), Math.abs(analyticsData.number_of_users - analyticsData.enrolled_learners)],
-            [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.not.enrolled']), analyticsData.enrolled_learners],
-          ]
-      )
+    setlearnerStatus(
+      [
+        [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status']), intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.message'])],
+        [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.enrolled']), Math.abs(analyticsData.number_of_users - analyticsData.enrolled_learners)],
+        [intl.formatMessage(messages['tab.analytics.chart.learner.enrollment.status.not.enrolled']), analyticsData.enrolled_learners],
+      ]
+    )
   }
 
   useEffect(() => {
@@ -85,6 +97,7 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
     )
   );
 
+
   return (
     <main className='analytics-page'>
       <Helmet title={PAGE_TITLE} />
@@ -94,23 +107,37 @@ const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
       </div> */}
       <Container gap={2} className='tab-content'>
         <Row style={{ rowGap: 10 }}>
-          <Col lg={6} md={6} sm={6} xs={12}  >
+          <Col lg={6} md={6} sm={12} xs={12}  >
+            {/* <Row style={{ rowGap: 10 }}>
+              <Col lg={12} md={12} sm={12} xs={12}> */}
             {/* 1st chart  */}
             <PieChart data={learnerStatus} title="tab.anayltics.chart.title.daily.activities" />
+            {/* </Col> */}
+            {/* <Col lg={12} md={12} sm={12} xs={12}>
+                <LineChart />
+              </Col> */}
+            {/* </Row> */}
+
           </Col>
-          <Col lg={6} md={6} sm={6} xs={12}  >
-            <LineChart />
+          <Col lg={6} md={6} sm={12} xs={12} className='d-flex'    >
+            <AllCoursesProgress licenses={subscriptions.results} enrollments={enrollmentsList} />
           </Col>
         </Row>
         <Row className='mt-3' style={{ rowGap: 10 }}>
           <Col lg={12} md={12} sm={12} xs={12} >
-            <LearnerStatusInCourses rawData={enrollmentsList} />
+            {
+              !errors.length &&
+              <LearnerStatusInCourses rawData={enrollmentsList} licenseData={subscriptions} />
+            }
           </Col>
         </Row>
         <Row className='mt-3' style={{ rowGap: 10 }}>
-          <Col lg={12} md={12} sm={12} xs={12} >
+          <Col lg={6} md={12} sm={12} xs={12} >
             <LearnerCertificate rawData={enrollmentsList} />
           </Col>
+          {/* <Col lg={6} md={6} sm={12} xs={12} >
+          <LineChart licenses={subscriptions.results} enrollments={enrollments} />
+          </Col> */}
         </Row>
       </Container>
     </main>
@@ -128,7 +155,7 @@ const mapStateToProps = state => ({
   //   ['tab.analytics.chart.learner.enrollment.status.enrolled', Math.abs(state.dashboardAnalytics.number_of_users - state.dashboardAnalytics.enrolled_learners)],
   //   ['tab.analytics.chart.learner.enrollment.status.not.enrolled', state.dashboardAnalytics.enrolled_learners],
   // ],
-  analyticsData:state.dashboardAnalytics,
+  analyticsData: state.dashboardAnalytics,
   enrollments: EnterpriseDataApiService.fetchCourseEnrollments(state.portalConfiguration.enterpriseId)
 });
 

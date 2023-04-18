@@ -45,7 +45,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug,intl }) => {
   const avatarScreenReaderText = `Profile image for ${username}`;
 
   return (
-    <Dropdown>
+    <Dropdown  >
       <Dropdown.Toggle
         as={AvatarButton}
         src={avatarImage}
@@ -55,7 +55,7 @@ export const HeaderDropdown = ({ user, enterpriseSlug,intl }) => {
       >
         {username}
       </Dropdown.Toggle>
-      <Dropdown.Menu>
+      <Dropdown.Menu className='dropdown-user-menu'>
         <Dropdown.Item
           href={getLogoutRedirectUrl(getProxyLoginUrl(enterpriseSlug))}
         >

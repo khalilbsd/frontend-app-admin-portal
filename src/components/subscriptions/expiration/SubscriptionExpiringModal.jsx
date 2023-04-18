@@ -6,7 +6,7 @@ import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider'
 import { getSubscriptionExpiringCookieName } from '../data/utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
 import { formatTimestamp } from '../../../utils';
-import { injectIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, injectIntl } from '@edx/frontend-platform/i18n';
 import messages from '../messages';
 
 
@@ -52,7 +52,7 @@ const SubscriptionExpiringModal = ({
           {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.on.modal.message'])}
         </p>
         <i>
-            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.on.date.modal.message'],{expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+            {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.expriring.on.date.modal.message'],{expirationDate:(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(expirationDate))})}
 
         </i>
       </ModalDialog.Body>

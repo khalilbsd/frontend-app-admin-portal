@@ -12,7 +12,7 @@ import {
 import { SubscriptionDetailContext } from '../SubscriptionDetailContextProvider';
 import { formatTimestamp } from '../../../utils';
 import ContactCustomerSupportButton from '../../ContactCustomerSupportButton';
-import { injectIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, injectIntl } from '@edx/frontend-platform/i18n';
 import messages from '../messages';
 
 const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails,intl }) => {
@@ -43,7 +43,7 @@ const SubscriptionExpirationBanner = ({ isSubscriptionPlanDetails,intl }) => {
       <Alert.Heading>
         {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.title'])}
       </Alert.Heading>
-      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.message'],{SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,expirationDate:formatTimestamp({ timestamp: expirationDate })})}
+      {intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.expiration.ending.message'],{SUBSCRIPTION_PLAN_RENEWAL_LOCK_PERIOD_HOURS,expirationDate:(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(expirationDate))})}
     </>
   ));
 

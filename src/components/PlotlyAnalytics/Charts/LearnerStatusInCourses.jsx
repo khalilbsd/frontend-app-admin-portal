@@ -1,5 +1,5 @@
 import { Card } from '@edx/paragon';
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Chart } from "react-google-charts";
 import { useState } from 'react';
 import { injectIntl } from '@edx/frontend-platform/i18n';
@@ -8,24 +8,54 @@ import messages from '../messages';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
+
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { Grid } from '@material-ui/core';
+import CourseSearchBox from './CourseSearchBox';
 
 
 
 
-const LearnerStatusInCourses = ({ rawData,intl }) => {
+const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   const [courseStats, setCourseStats] = useState();
   const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] =useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [licenseStats, setLicenseStats] = useState({
+    revoked: 0,
+    allocated: 0,
+    assigned: 0,
+    activated: 0,
+    total: 0,
+    unassigned: 0,
+  });
+  const [courseList, setCourseList] = useState([]);
+  const [startDate, setStartDate] = useState(() => {
+    const today = new Date();
+    today.setDate(1);
+    today.setMonth(today.getMonth() - 1);
+    return today;
+  });
   const [error, setErrorMessage] = useState(undefined);
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const [course, setCourse] = useState(undefined)
+
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+  const handleEndDateChange = (date) => {
+    if (date < startDate) {
+      setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.startDateBeforeEndDate']))
+      return
+    }
+    setEndDate(date);
   };
 
 
-console.log(selectedDate)
+
+  const handleCourseChange = (e) => {
+    setCourse(e.target.value);
+  }
 
 
   const options = {
@@ -34,9 +64,24 @@ console.log(selectedDate)
     hAxis: {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.horiz.axis.title']),
       minValue: 0,
+
+    },
+    annotations: {
+      alwaysOutside: true,
+      textStyle: {
+        fontSize: 14,
+        fontName: 'Montserrat',
+        bold: true,
+        color: '#000',
+        auraColor: 'none'
+      }
     },
     vAxis: {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.vert.axis.title']),
+      format: 'percent',
+      minValue: 0,
+      ticks: [0, 0.1, .2, .3, .4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+
     },
     isStacked: false,
     series: {
@@ -44,101 +89,197 @@ console.log(selectedDate)
       1: { color: '#1a46de' },
       2: { color: '#de1a47' },
     },
+    tooltip: {
+      formatter: function () {
+        return this.series.name + ': ' + Highcharts.numberFormat(this.y * 100, 2, ',') + '%';
+      }
+    },
+    plotOptions: {
+      column: {
+        dataLabels: {
+          enabled: true,
+          formatter: function () {
+            return Highcharts.numberFormat(this.y * 100, 2, ',') + '%';
+          }
+        }
+      }
+    }
   }
 
 
 
+
+
   useEffect(() => {
+    const licenseDetails = () => {
+      licenseData.results.forEach(subscription => {
+        setLicenseStats(stat => {
+          stat.revoked += subscription.licenses.revoked
+          stat.allocated += subscription.licenses.allocated
+          stat.assigned += subscription.licenses.assigned
+          stat.activated += subscription.licenses.activated
+          stat.total += subscription.licenses.total
+          stat.unassigned += subscription.licenses.unassigned
+          return stat
+        }
+        )
+      })
+    }
+
     const groupedByCourse = rawData?.reduce((acc, enrollment) => {
       const courseKey = enrollment.courserun_key;
+
       const existingCourse = acc.find(course => course.courseKey === courseKey);
 
       if (existingCourse) {
 
         existingCourse.totalEnrollments++;
-         if ((parseFloat(enrollment.progress_status) > 0) && (parseFloat(enrollment.progress_status) < 100)) {
-           existingCourse.totalInProgress++;
-         }else if (parseFloat(enrollment.progress_status) == 100) {
-           existingCourse.totalFinished++;
-         }else {
-           existingCourse.totalNotActive++;
-         }
+        if ((parseFloat(enrollment.progress_status) > 0) && (parseFloat(enrollment.progress_status) < 100)) {
+          existingCourse.totalInProgress++;
+        } else if (parseFloat(enrollment.progress_status) == 100) {
+          existingCourse.totalFinished++;
+        } else {
+          existingCourse.totalNotActive++;
+        }
 
       } else {
-
-        if (selectedDate > new Date(enrollment.enrollment_date) ){
-        acc.push({
-          courseKey: courseKey,
-          courseTitle: enrollment.course_title,
-          totalEnrollments: 1,
-          totalInProgress: parseFloat(enrollment.progress_status) > 0 && parseFloat(enrollment.progress_status) < 100 ? 1 : 0,
-          totalFinished: parseFloat(enrollment.progress_status) == 100 ? 1 : 0,
-          totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
-        });
+        if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
+          acc.push({
+            courseKey: courseKey,
+            courseTitle: enrollment.course_title,
+            totalEnrollments: 1,
+            totalInProgress: parseFloat(enrollment.progress_status) > 0 && parseFloat(enrollment.progress_status) < 100 ? 1 : 0,
+            totalFinished: parseFloat(enrollment.progress_status) == 100 ? 1 : 0,
+            totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
+          });
+        }
       }
-    }
       return acc;
     }, []);
-
-    // groupedByCourse?.forEach(element => {
-    //     element.totalNotActive = element.totalEnrollments - (element.totalInProgress + element.totalFinished) ;
-    // });
-
-
     setCourseStats(groupedByCourse);
-  }, [rawData,selectedDate]);
+    licenseDetails();
+  }, [rawData, startDate, endDate, licenseData]);
+
 
 
 
   useEffect(() => {
-    if (courseStats?.length){
-    setErrorMessage(undefined)
-    setData([[intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']),intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']), intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.in.progress']),intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners'])]]);
-    courseStats?.forEach(element =>
-     {
-      const temp = [`${element.courseTitle} (${element.totalEnrollments})`, element.totalFinished, element.totalInProgress,element.totalEnrollments]
-      setData(data => [...data, temp]);
+
+    if (courseStats?.length) {
+      //preparing the course list for the course filter
+      const formattedCourseList = courseStats.map(course => {
+        return {
+          courseKey: course.courseKey,
+          courseTitle: course.courseTitle
+        };
+      });
+      setCourseList(formattedCourseList);
+      setErrorMessage(undefined)
+      //working the on the analytics data
+      const newData = [
+        [
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']),
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']),
+          { type: 'string', role: 'annotation' },
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.in.progress']),
+          { type: 'string', role: 'annotation' },
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners']),
+          { type: 'string', role: 'annotation' }
+        ]
+      ];
+
+
+      if (course && course.length > 0) {
+        const filtredCourseStat = courseStats.filter(item => item.courseKey === course).forEach(element=>{
+          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
+          element.totalFinished / licenseStats.total,
+          `${element.totalFinished / licenseStats.total}`,
+          element.totalInProgress / licenseStats.total,
+          `${element.totalInProgress / licenseStats.total}`,
+          element.totalNotActive / licenseStats.total,
+          `${element.totalNotActive / licenseStats.total}`]
+          newData.push(temp);
+        })
+
+
+      }else{
+        courseStats?.forEach(element => {
+          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
+          element.totalFinished / licenseStats.total,
+          `${element.totalFinished / licenseStats.total}`,
+          element.totalInProgress / licenseStats.total,
+          `${element.totalInProgress / licenseStats.total}`,
+          element.totalNotActive / licenseStats.total,
+          `${element.totalNotActive / licenseStats.total}`]
+          newData.push(temp);
+        });
+      }
+
+
+
+      setData(newData);
+    } else {
+      setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.no.data']))
     }
-      )
-  }else{
-    setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.no.data']))
-  }
-  }, [courseStats])
+  }, [courseStats, licenseStats,course]);
+
+
 
 
 
   return (
     <Card className='py-5 px-5'>
+      <h3 className='stats-card-title'>{intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.title'])}</h3>
       <div >
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          margin="normal"
-          id="date-picker-dialog"
-          label="Date picker dialog"
-          format="MM/dd/yyyy"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} lg={3} md={4} sm={6}>
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label={intl.formatMessage(messages['tab.analytics.chart.date.picker.start.date'])}
+                format="MM/dd/yyyy"
+                value={startDate}
+                onChange={handleStartDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} lg={3} md={4} sm={6}>
+              <KeyboardDatePicker
+                margin="normal"
+                id="date-picker-dialog"
+                label={intl.formatMessage(messages['tab.analytics.chart.date.picker.end.date'])}
+                format="MM/dd/yyyy"
+                value={endDate}
+                onChange={handleEndDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} lg={3} md={4} sm={6}>
+              <CourseSearchBox handleChange={handleCourseChange} initialValue={course} courses={courseList}  />
+            </Grid>
+          </Grid>
 
 
-    </MuiPickersUtilsProvider>
+        </MuiPickersUtilsProvider>
       </div>
       {
-        !error?
-        <Chart
-        chartType="ColumnChart"
-        width="100%"
-        height="600px"
-        data={data}
-        options={options}
-        />
-        :
-        <div className='w-100 d-flex align-items-center justify-content-center error-container'>
-          <h3 className='error-message no-data-found'>{error}</h3>
-        </div>
+        !error ?
+          <Chart
+            chartType="ColumnChart"
+            width="100%"
+            height="500px"
+            data={data}
+            options={options}
+          />
+          :
+          <div className='w-100 d-flex align-items-center justify-content-center error-container'>
+            <h3 className='error-message no-data-found'>{error}</h3>
+          </div>
       }
     </Card>
   )

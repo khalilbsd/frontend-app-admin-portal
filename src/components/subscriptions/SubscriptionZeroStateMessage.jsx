@@ -3,8 +3,10 @@ import { Card, Toast } from '@edx/paragon';
 import InviteLearnersButton from './buttons/InviteLearnersButton';
 import { SubscriptionContext } from './SubscriptionData';
 import { SubscriptionDetailContext } from './SubscriptionDetailContextProvider';
+import messages from './messages';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
-const SubscriptionZeroStateMessage = () => {
+const SubscriptionZeroStateMessage = ({intl}) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const { forceRefresh } = useContext(SubscriptionContext);
@@ -18,15 +20,15 @@ const SubscriptionZeroStateMessage = () => {
     <>
       <Card className="mb-4">
         <Card.Section className="text-center">
-          <h2>Get Started</h2>
+          <h2>{intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.zero.get.started'])}</h2>
           <p className="py-2 lead">
-            Assign your learners to a subscription license to enable their learning experiences on edX.
+           {intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.zero.get.started.message'])}
           </p>
           <InviteLearnersButton
             onSuccess={({ numSuccessfulAssignments }) => {
               forceRefresh();
               forceRefreshDetailView();
-              setToastMessage(`${numSuccessfulAssignments} email addresses were successfully added.`);
+              setToastMessage(intl.formatMessage(messages['subs.management.page.tab.manage.learners.sub.details.zero.get.started.add.success'],{numSuccessfulAssignments}));
               setShowToast(true);
             }}
             disabled={isSubscriptionExpired}
@@ -43,4 +45,4 @@ const SubscriptionZeroStateMessage = () => {
   );
 };
 
-export default SubscriptionZeroStateMessage;
+export default (injectIntl(SubscriptionZeroStateMessage));

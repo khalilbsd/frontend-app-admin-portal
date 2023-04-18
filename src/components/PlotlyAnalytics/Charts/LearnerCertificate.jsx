@@ -10,13 +10,13 @@ import messages from '../messages';
 
 
 
-const LearnerCertificate = ({ rawData,intl }) => {
+const LearnerCertificate = ({ rawData, intl }) => {
   const [courseStats, setCourseStats] = useState();
   const [data, setData] = useState([]);
 
 
   const options = {
-    title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.title']),
+    title: intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.title']),
     chartArea: { width: '70%' },
     hAxis: {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.horiz.axis.title']),
@@ -24,6 +24,10 @@ const LearnerCertificate = ({ rawData,intl }) => {
     },
     vAxis: {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.vert.axis.title']),
+      format: 'percent',
+      minValue: 0,
+      ticks: [0, 0.1, .2, .3, .4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+
     },
     isStacked: false,
     series: {
@@ -39,19 +43,19 @@ const LearnerCertificate = ({ rawData,intl }) => {
       const existingCourse = acc.find(course => course.courseKey === courseKey);
       if (existingCourse) {
         existingCourse.totalEnrollments++;
-         if (enrollment.passed_date) {
-            existingCourse.totalSucceded++
-        }else{
-            existingCourse.totalFailure++
-         }
+        if (enrollment.passed_date) {
+          existingCourse.totalSucceded++
+        } else {
+          existingCourse.totalFailure++
+        }
       } else {
         // console.log(enrollment.course_title)
         acc.push({
           courseKey: courseKey,
           courseTitle: enrollment.course_title,
           totalEnrollments: 1,
-            totalSucceded: enrollment.passed_date?1:0,
-            totalFailure: !enrollment.passed_date?1:0,
+          totalSucceded: enrollment.passed_date ? 1 : 0,
+          totalFailure: !enrollment.passed_date ? 1 : 0,
         });
       }
       return acc;
@@ -68,18 +72,23 @@ const LearnerCertificate = ({ rawData,intl }) => {
 
 
   useEffect(() => {
-    setData([[intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.succeded']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.pending'])]]);
-    courseStats?.forEach(element =>
-     {
-      const temp = [`${element.courseTitle} (${element.totalEnrollments})`, element.totalSucceded, element.totalFailure,]
+    setData([
+      [intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.succeded']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.pending'])]]);
+    courseStats?.forEach(element => {
+      const temp = [
+        `${element.courseTitle} (${element.totalEnrollments})`
+        , element.totalSucceded / element.totalEnrollments
+        , element.totalFailure / element.totalEnrollments,
+      ]
       setData(data => [...data, temp]);
     }
-      )
+    )
   }, [courseStats])
 
 
   return (
-    <Card>
+    <Card className='py-5 px-5'>
+      <h3 className='stats-card-title'>{intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.title'])}</h3>
       <Chart
         chartType="ColumnChart"
         width="100%"

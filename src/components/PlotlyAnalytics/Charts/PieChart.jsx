@@ -16,7 +16,8 @@ const PieChart = (props) => {
 
     };
     return (
-        <Card>
+        <Card className='py-5 px-5'>
+            <h3 className='stats-card-title'>{intl.formatMessage(messages[title])}</h3>
             <Chart
                 chartType="PieChart"
                 data={data}

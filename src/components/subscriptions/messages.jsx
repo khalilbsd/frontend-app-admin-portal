@@ -32,6 +32,20 @@ const messages = defineMessages({
         id:'subs.management.page.tab.manage.learners.sub.details.invite',
         defaultMessage: 'Invite learners'
     },
+    'subs.management.page.tab.manage.learners.sub.details.zero.get.started':{
+        id:'subs.management.page.tab.manage.learners.sub.details.zero.get.started',
+        defaultMessage: 'Get Started'
+    },
+    'subs.management.page.tab.manage.learners.sub.details.zero.get.started.message':{
+        id:'subs.management.page.tab.manage.learners.sub.details.zero.get.started.message',
+        defaultMessage: 'Assign your learners to a subscription license to enable their learning experiences on Groupado Pro.'
+    },
+    'subs.management.page.tab.manage.learners.sub.details.zero.get.started.add.success':{
+        id:'subs.management.page.tab.manage.learners.sub.details.zero.get.started.add.success',
+        defaultMessage: '{numSuccessfulAssignments} email addresses were successfully added.'
+    },
+
+
     'subs.management.page.tab.manage.learners.sub.details.message':{
         id:'subs.management.page.tab.manage.learners.sub.details.message',
         defaultMessage: 'In accordance with Groupado Pro privacy policies, learners that do not activate their allocated licenses within 90 days of invitation are purged from the record tables below.'
