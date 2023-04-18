@@ -94,7 +94,9 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
             }
             enrollments?.forEach(enrollment => {
                 if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
-                    if (enrollment.passed && enrollment.passed_date && parseFloat(enrollment.progress_status) > 60) {
+
+                    // console.log(`username ${enrollment.user_username} has passed : ${enrollment.passed} on  ${enrollment.passed_date} with ${parseFloat(enrollment.progress_status) > 60}`)
+                    if (enrollment.has_passed && enrollment.passed_date && parseFloat(enrollment.progress_status) > 60) {
                         figures.finished++
                         return
                     }
@@ -122,10 +124,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
 
             setData(stats)
 
-            // else {
-            //     console.log("fama errr ")
-            //     setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
-            // }
+
         }
 
         licenseDetails()

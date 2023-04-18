@@ -132,11 +132,12 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
       const existingCourse = acc.find(course => course.courseKey === courseKey);
 
       if (existingCourse) {
-
+        // console.log(`the user ${enrollment.user_username} has passed ${enrollment.has_passed} on ${enrollment.passed_date} with progress equal ${parseFloat(enrollment.progress_status)}`)
         existingCourse.totalEnrollments++;
-        if ((parseFloat(enrollment.progress_status) > 0) && (parseFloat(enrollment.progress_status) < 100)) {
+        if ((parseFloat(enrollment.progress_status) > 0)  && (parseFloat(enrollment.progress_status) < 60) && !(enrollment.has_passed)) {
           existingCourse.totalInProgress++;
-        } else if (parseFloat(enrollment.progress_status) == 100) {
+
+        } else if (parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date) {
           existingCourse.totalFinished++;
         } else {
           existingCourse.totalNotActive++;
@@ -149,7 +150,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
             courseTitle: enrollment.course_title,
             totalEnrollments: 1,
             totalInProgress: parseFloat(enrollment.progress_status) > 0 && parseFloat(enrollment.progress_status) < 100 ? 1 : 0,
-            totalFinished: parseFloat(enrollment.progress_status) == 100 ? 1 : 0,
+            totalFinished: parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date ? 1  : 0,
             totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
           });
         }
@@ -204,13 +205,12 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
         courseStats?.forEach(element => {
           const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
           Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)/100} %`,
+          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
           Math.round((element.totalInProgress / licenseStats.total)*100)/100,
-          `${Math.round((element.totalInProgress / licenseStats.total)*100)/100} %`,
-
+          `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
 
           Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)/100}%`]
+          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
           newData.push(temp);
         });
       }

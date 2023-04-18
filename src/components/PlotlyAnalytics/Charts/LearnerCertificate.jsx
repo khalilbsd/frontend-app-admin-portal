@@ -22,6 +22,16 @@ const LearnerCertificate = ({ rawData, intl }) => {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.horiz.axis.title']),
       minValue: 0,
     },
+    annotations: {
+      alwaysOutside: true,
+      textStyle: {
+        fontSize: 14,
+        fontName: 'Montserrat',
+        bold: true,
+        color: '#000',
+        auraColor: 'none'
+      }
+    },
     vAxis: {
       title: intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.vert.axis.title']),
       format: 'percent',
@@ -43,7 +53,7 @@ const LearnerCertificate = ({ rawData, intl }) => {
       const existingCourse = acc.find(course => course.courseKey === courseKey);
       if (existingCourse) {
         existingCourse.totalEnrollments++;
-        if (enrollment.passed_date) {
+        if (enrollment.passed_date && enrollment.has_passed && parseFloat(enrollment.progress_status) > 60) {
           existingCourse.totalSucceded++
         } else {
           existingCourse.totalFailure++
@@ -69,16 +79,28 @@ const LearnerCertificate = ({ rawData, intl }) => {
     setCourseStats(groupedByCourse);
   }, [rawData]);
 
-
+console.log(courseStats);
 
   useEffect(() => {
     setData([
-      [intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.succeded']), intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.pending'])]]);
+      [
+        intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']),
+        intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.succeded']),
+        { type: 'string', role: 'annotation' },
+        intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.pending']),
+        { type: 'string', role: 'annotation' },
+
+      ]]);
     courseStats?.forEach(element => {
       const temp = [
         `${element.courseTitle} (${element.totalEnrollments})`
-        , element.totalSucceded / element.totalEnrollments
-        , element.totalFailure / element.totalEnrollments,
+        , element.totalSucceded / element.totalEnrollments,
+         `${(element.totalSucceded / element.totalEnrollments)*100}%`,
+
+         element.totalFailure / element.totalEnrollments,
+         `${(element.totalFailure / element.totalEnrollments)*100}%`
+
+
       ]
       setData(data => [...data, temp]);
     }
