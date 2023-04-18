@@ -12,11 +12,12 @@ import TextAreaAutoSize from '../TextAreaAutoSize';
 import FileInput from '../FileInput';
 import { returnValidatedEmails, validateEmailAddrTemplateForm } from '../../data/validation/email';
 import { normalizeFileUpload } from '../../utils';
-
+import { injectIntl } from '@edx/frontend-platform/i18n';
+import messages from './messages'
 class InviteLearnersModal extends React.Component {
   constructor(props) {
     super(props);
-
+    this.intl= this.props.intl;
     this.errorMessageRef = React.createRef();
     this.modalRef = React.createRef();
 
@@ -31,9 +32,9 @@ class InviteLearnersModal extends React.Component {
       firstFocusableElement.focus();
     }
     this.props.initialize({
-      'email-template-greeting': emailTemplate.greeting,
-      'email-template-body': emailTemplate.body,
-      'email-template-closing': emailTemplate.closing(contactEmail),
+      'email-template-greeting': this.props.intl.formatMessage(messages[emailTemplate.greeting]),
+      'email-template-body': this.props.intl.formatMessage(messages[emailTemplate.body]),
+      'email-template-closing': emailTemplate.closing(contactEmail,this.props.intl),
     });
   }
 
@@ -98,34 +99,34 @@ class InviteLearnersModal extends React.Component {
       <>
         {submitFailed && this.renderErrorMessage()}
         <form onSubmit={e => e.preventDefault()}>
-          <p>Unassigned licenses: {availableSubscriptionCount}</p>
+          <p>{this.props.intl.formatMessage(messages['invite.learners.modal.add.unnassigned'])} {availableSubscriptionCount}</p>
           <div className="mt-4">
-            <h3>Add Users</h3>
+            <h3>{this.props.intl.formatMessage(messages['invite.learners.modal.add.users'])}</h3>
             <Field
               name="email-addresses"
               component={TextAreaAutoSize}
-              label="Email Address"
-              description="To add more than one user, enter one email address per line."
+              label={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.email'])}
+              description={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.email.descirption'])}
               data-hj-suppress
             />
             <p className="pb-2">
-              OR
+             {this.props.intl.formatMessage(messages['invite.learners.modal.add.users.or'])}
             </p>
             <Field
               id="csv-email-addresses"
               name="csv-email-addresses"
               component={FileInput}
-              label="Upload Email Addresses"
-              description="The file must be a CSV containing a single column of email addresses."
+              label={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.csv'])}
+              description={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.csv.description'])}
               accept=".csv"
               normalize={normalizeFileUpload}
               data-hj-suppress
             />
-            <h3>Email Template</h3>
+            <h3>{this.props.intl.formatMessage(messages['invite.learners.modal.add.users.email.template'])}</h3>
             <Field
               name="email-template-greeting"
               component={TextAreaAutoSize}
-              label="Customize Greeting"
+              label={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.email.template.greetings'])}
               data-hj-suppress
             />
             <Field
@@ -137,7 +138,7 @@ class InviteLearnersModal extends React.Component {
             <Field
               name="email-template-closing"
               component={TextAreaAutoSize}
-              label="Customize Closing"
+              label={this.props.intl.formatMessage(messages['invite.learners.modal.add.users.email.template.closing'])}
               data-hj-suppress
             />
           </div>
@@ -182,7 +183,7 @@ class InviteLearnersModal extends React.Component {
       <Modal
         ref={this.modalRef}
         dialogClassName="add-users"
-        title="Invite learners"
+        title={this.props.intl.formatMessage(messages['invite.learners.modal.title'])}
         body={this.renderBody()}
         buttons={[
           <Button
@@ -193,11 +194,11 @@ class InviteLearnersModal extends React.Component {
           >
             <>
               {submitting && <Icon className="fa fa-spinner fa-spin mr-2" />}
-              Invite learners
+              {this.props.intl.formatMessage(messages['invite.learners.modal.title'])}
             </>
           </Button>,
         ]}
-        closeText="Cancel"
+        closeText={this.props.intl.formatMessage(messages['invite.learners.modal.close'])}
         onClose={onClose}
         open
       />
@@ -208,6 +209,7 @@ class InviteLearnersModal extends React.Component {
 InviteLearnersModal.defaultProps = {
   error: null,
   contactEmail: null,
+
 };
 
 InviteLearnersModal.propTypes = {
@@ -231,4 +233,4 @@ InviteLearnersModal.propTypes = {
 
 export default reduxForm({
   form: 'license-assignment-modal-form',
-})(InviteLearnersModal);
+})(injectIntl(InviteLearnersModal));

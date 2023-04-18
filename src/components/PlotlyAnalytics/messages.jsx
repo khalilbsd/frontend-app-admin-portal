@@ -93,6 +93,10 @@ const messages = defineMessages({
         id:'tab.analytics.chart.all.course.progress.title',
         defaultMessage: "Progress of all courses"
     },
+    'tab.analytics.chart.all.course.progress.status':{
+        id:'subs.management.page.tab.manage.learners.license.data.table.status',
+        defaultMessage: "Status"
+    },
     'tab.analytics.chart.all.course.progress.catageory':{
         id:'tab.analytics.chart.all.course.progress.catageory',
         defaultMessage: "Catageory"

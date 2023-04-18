@@ -17,6 +17,16 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
     const options = {
         title: intl.formatMessage(messages['tab.analytics.chart.all.course.progress.title']),
         chartArea: { width: '70%' },
+        annotations: {
+            alwaysOutside: true,
+            textStyle: {
+              fontSize: 14,
+              fontName: 'Montserrat',
+              bold: true,
+              color: '#000',
+              auraColor: 'none'
+            }
+          },
         hAxis: {
 
             minValue: 0,
@@ -29,10 +39,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
 
         },
         isStacked: false,
-        series: {
-            0: { color: '#2ce4b4' },
-            1: { color: '#de1a47' },
-        },
+
     }
 
 
@@ -64,7 +71,6 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
 
     console.log(licenses)
     useEffect(() => {
-
         const licenseDetails = () => {
             licenses.forEach(subscription => {
                 setLicenseStats(stat => {
@@ -101,26 +107,25 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
                 }
             })
 
-            const totalLicenses = licenseStats.total - licenseStats.revoked - licenseStats.unassigned
-            console.log(totalLicenses)
-            console.log(licenseStats)
-            console.log(licenseStats.revoked)
-            console.log(licenseStats.unassigned)
+
+
             figures.activeLicense = licenseStats.activated
 
-            if (totalLicenses > 0) {
-                var stats = [
-                    [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.title']), intl.formatMessage(messages['tab.analytics.chart.all.course.progress.progress']), { role: 'style' }],
-                    [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.progress']), 5, '#2ce4b4'],
-                    [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.finished']), 5, '#2ce4b4'],
-                    [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.license.nb']), 5, '#2ce4b4'],
 
-                ]
+            var stats = [
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.title']),intl.formatMessage(messages['tab.analytics.chart.all.course.progress.status']) , { role: 'style' },{ role: 'annotation' }],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.progress']), Math.round((figures.progress / licenseStats.total)*100)/100,'#1a46de',`${Math.round((figures.progress / licenseStats.total)*100)}%`],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.finished']), Math.round((figures.finished / licenseStats.total)*100)/100, '#1a46de',`${Math.round((figures.finished / licenseStats.total)*100)}%`],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.license.nb']), Math.round((figures.activeLicense / licenseStats.total)*100)/100, '#1a46de',`${Math.round((figures.activeLicense / licenseStats.total)*100)}%`],
 
-                setData(stats)
-            } else {
-                setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
-            }
+            ]
+
+            setData(stats)
+
+            // else {
+            //     console.log("fama errr ")
+            //     setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
+            // }
         }
 
         licenseDetails()
@@ -129,6 +134,16 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
     }, [licenses, enrollments])
 
 
+
+    useEffect(() => {
+        const totalLicenses = () => {
+            return licenseStats.total - licenseStats.revoked - licenseStats.unassigned
+        }
+
+        if (totalLicenses() < 0) {
+            setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
+        }
+    }, [licenseStats])
 
 
     return (
