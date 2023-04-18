@@ -130,7 +130,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
         licenseDetails()
         genereateStatistique()
 
-    }, [licenses, enrollments])
+    }, [licenses, enrollments,startDate,endDate])
 
 
 
