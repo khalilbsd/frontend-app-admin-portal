@@ -39,7 +39,7 @@ class EnterpriseCatalogApiService {
     const queryParams = new URLSearchParams({
       enterprise_customer: enterpriseId,
     });
-    console.log(EnterpriseCatalogApiService.apiClient())
+
     return EnterpriseCatalogApiService.apiClient().get(`${EnterpriseCatalogApiService.enterpriseCurationUrl}?${queryParams.toString()}`);
   }
 
@@ -52,9 +52,7 @@ class EnterpriseCatalogApiService {
       enterprise_customer: enterpriseId,
       ...snakeCaseObject(options),
     };
-    console.log("under me is the user")
-    console.log(EnterpriseCatalogApiService.apiClient())
-    console.log(this.apiClient())
+
     return EnterpriseCatalogApiService.apiClient().post(
       EnterpriseCatalogApiService.enterpriseCurationUrl,
       payload,

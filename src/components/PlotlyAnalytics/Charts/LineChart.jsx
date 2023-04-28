@@ -41,7 +41,7 @@ const LineChart = ({intl,licenses,enrollments}) => {
   }, [licenses])
 
 
-console.log(licenses)
+
 
   return (
     <Card>

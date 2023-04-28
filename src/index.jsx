@@ -29,7 +29,6 @@ subscribe(APP_INIT_ERROR, (error) => {
 
 
 
-console.log(paragonMessages)
 initialize({
   handlers: {
     config: () => {

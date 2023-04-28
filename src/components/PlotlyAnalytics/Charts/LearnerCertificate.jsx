@@ -79,7 +79,6 @@ const LearnerCertificate = ({ rawData, intl }) => {
     setCourseStats(groupedByCourse);
   }, [rawData]);
 
-console.log(courseStats);
 
   useEffect(() => {
     setData([
