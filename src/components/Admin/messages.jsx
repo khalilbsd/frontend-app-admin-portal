@@ -88,6 +88,14 @@ const messages = defineMessages({
         id:'tab.progress.report.full.report.title',
         defaultMessage: 'Full Report'
     },
+    'tab.progress.report.reset.to.action':{
+        id:'tab.progress.report.reset.to.action',
+        defaultMessage: 'Reset to'
+    },
+    'tab.progress.report.reset.to.action.filters':{
+        id:'tab.progress.report.reset.to.action.filters',
+        defaultMessage: 'Reset Filters'
+    },
     'tab.progress.report.data.date.showing':{
         id:'tab.progress.report.data.date.showing',
         defaultMessage: 'Showing data as of'

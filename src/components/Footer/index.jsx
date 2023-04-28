@@ -1,94 +1,77 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { configuration } from '../../config';
-
-import Img from '../Img';
+import { Hyperlink, Image } from '@edx/paragon'
+import React from 'react'
+import { getConfig } from '@edx/frontend-platform';
+import { breakpoints, useWindowSize } from '@edx/paragon';
+import messages from './messages'
+import { injectIntl } from '@edx/frontend-platform/i18n';
 import './Footer.scss';
 
-class Footer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      enterpriseLogoNotFound: false,
-    };
-  }
+const Footer = ({intl}) => {
 
-  componentDidUpdate(prevProps) {
-    const { enterpriseLogo } = this.props;
-    if (enterpriseLogo && enterpriseLogo !== prevProps.enterpriseLogo) {
-      this.setState({ // eslint-disable-line react/no-did-update-set-state
-        enterpriseLogoNotFound: false,
-      });
-    }
-  }
+  const windowWidth = useWindowSize().width;
+  const wideScreen = windowWidth >= breakpoints.large.minWidth;
 
-  renderEnterpriseLogo() {
-    const { enterpriseLogo, enterpriseSlug, enterpriseName } = this.props;
-    return (
-      <Link className="logo pl-4" to={`/${enterpriseSlug}`}>
-        <Img
-          src={enterpriseLogo}
-          alt={`${enterpriseName} logo`}
-          onError={() => this.setState({ enterpriseLogoNotFound: true })}
-        />
-      </Link>
-    );
-  }
-
-  render() {
-    const { enterpriseLogoNotFound } = this.state;
-    const { enterpriseLogo } = this.props;
-    return (
-      <footer className="container-fluid py-4 border-top">
-        <div className="row justify-content-between align-items-center">
-          <div className="col-xs-12 col-md-4 logo-links">
-            <Link className="logo border-right pr-4" to="/">
-              <Img src={configuration.LOGO_TRADEMARK_URL} alt="edX logo" />
-            </Link>
-            {enterpriseLogo && !enterpriseLogoNotFound && this.renderEnterpriseLogo()}
+  const locations = [
+    { label: intl.formatMessage(messages.tunisia), location: 'L’immeuble sis au 3, rue Ibn Nafis, zone industrielle khereddine LAC 3, La goulette', phone: '+216 26 641 620', email: 'pro@groupado.com' },
+    { label: intl.formatMessage(messages.dubai), location: 'Business Bay, The Oberai; Office No, 904 Dubai, UAE', phone: '+971 551911059', email: 'pro@groupado.com' },
+    { label: intl.formatMessage(messages.ivoryCost), location: 'Abidjan', phone: '+2250546256408', email: 'pro@groupado.com' },
+  ]
+  const pages = [
+    { label: intl.formatMessage(messages.home), path: '/' },
+    { label: intl.formatMessage(messages.courses), path: '/courses' },
+    { label: intl.formatMessage(messages.about), path: '/about' },
+    { label: intl.formatMessage(messages.contact), path: '/contactus' }
+  ]
+  const policy = [
+    { label: intl.formatMessage(messages.privacy), path: '/privacy' },
+    { label: intl.formatMessage(messages.tos), path: '/tos' },
+    { label: intl.formatMessage(messages.cookies), path: '/cookies' }
+  ]
+  return (
+    <footer className={"footer"}>
+      <div className={"logoContainer"}>
+        <Hyperlink destination={getConfig().MARKETING_SITE_BASE_URL}>
+          <Image className="logo " alt={getConfig().SITE_NAME} src={getConfig().LOGO_URL} />
+        </Hyperlink>
+      </div>
+      <div className={"footerContent"}>
+        {locations.map((location, index) => (
+          <div key={index} className={`section ${!wideScreen ? 'small' : 'large'}`}>
+            <h2 className={"sectionHeading"}>{location.label}</h2>
+            <p className={"sectionSubHeadingLocation"}>{location.location}</p>
+            <p className={"sectionSubHeadingPhone"}>{location.phone}</p>
+            <p className={"sectionSubHeadingPhone"}>{location.email}</p>
           </div>
-          <div className="col-xs-12 col-md footer-links">
-            <nav>
-              <ul className="nav justify-content-end small">
-                <li className="nav-item border-right">
-                  <a className="nav-link px-2" href="https://www.edx.org/edx-terms-service">
-                    Terms of Service
-                  </a>
-                </li>
-                <li className="nav-item border-right">
-                  <a className="nav-link px-2" href="https://www.edx.org/edx-privacy-policy">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className="nav-link px-2"
-                    to={{ pathname: configuration.ENTERPRISE_SUPPORT_URL }}
-                    target="_blank"
-                  >
-                    Support
-                  </Link>
-                </li>
-              </ul>
-            </nav>
-          </div>
+
+        ))}
+
+        <div className={`section ${!wideScreen ? 'small' : 'large'}`}>
+          <h2 className={"sectionHeading"}>Pages</h2>
+          <ol className={"list"}>
+            {pages.map((page, index) => (
+              <li >
+                <a className={"link"} key={index} href={page.path}>
+                  {page.label}
+                </a>
+              </li>
+            ))}
+          </ol>
         </div>
-      </footer>
-    );
-  }
+        <div className={`section ${!wideScreen ? 'small' : 'large'}`}>
+          <h2 className="sectionHeading">Policy and terms</h2>
+          <ol className="list">
+            {policy.map((policy, index) => (
+              <li >
+                <a className="link" key={index} href={policy.path}>
+                  {policy.label}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </footer>
+  )
 }
 
-Footer.propTypes = {
-  enterpriseName: PropTypes.string,
-  enterpriseSlug: PropTypes.string,
-  enterpriseLogo: PropTypes.string,
-};
-
-Footer.defaultProps = {
-  enterpriseName: null,
-  enterpriseSlug: null,
-  enterpriseLogo: null,
-};
-
-export default Footer;
+export default injectIntl(Footer)

@@ -50,8 +50,8 @@ class Admin extends React.Component {
     this.props.clearDashboardAnalytics();
   }
 
-  getMetadataForAction(actionSlug,intl) {
-    const { enterpriseId } = this.props;
+  getMetadataForAction(actionSlug) {
+    const { enterpriseId,intl } = this.props;
     const defaultData = {
       title: intl.formatMessage(messages['tab.progress.report.full.report.title']),
       component: <EnrollmentsTable />,
@@ -223,7 +223,7 @@ class Admin extends React.Component {
   }
 
   renderUrlResetButton() {
-    const { match: { url } } = this.props;
+    const { match: { url },intl } = this.props;
 
     // Remove the slug from the url so it renders the full report
     const path = url.split('/').slice(0, -1).join('/');
@@ -231,13 +231,13 @@ class Admin extends React.Component {
     return (
       <Link to={path} className="btn btn-sm btn-outline-primary ml-0 ml-md-3 mr-3">
         <Icon className="fa fa-undo mr-2" />
-        Reset to {this.getMetadataForAction().title}
+       {intl.formatMessage(messages['tab.progress.report.reset.to.action'])} {this.getMetadataForAction().title}
       </Link>
     );
   }
 
   renderFiltersResetButton() {
-    const { location: { search, pathname } } = this.props;
+    const { location: { search, pathname },intl } = this.props;
     // remove the querys from the path
     const queryParams = new URLSearchParams(search);
     ['search', 'search_course', 'search_start_date'].forEach((searchTerm) => {
@@ -248,7 +248,7 @@ class Admin extends React.Component {
     return (
       <Link id="reset-filters" to={resetLink} className="btn btn-sm btn-outline-primary">
         <Icon className="fa fa-undo mr-2" />
-        Reset Filters
+       {intl.formatMessage(messages['tab.progress.report.reset.to.action.filters'])}
       </Link>
     );
   }

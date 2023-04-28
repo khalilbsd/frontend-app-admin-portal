@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import TableContainer from '../../containers/TableContainer';
 import { formatTimestamp, formatPassedTimestamp, formatPercentage } from '../../utils';
 import EnterpriseDataApiService from '../../data/services/EnterpriseDataApiService';
+import { injectIntl } from '@edx/frontend-platform/i18n';
 
 class LearnerActivityTable extends React.Component {
   getTableColumns() {
@@ -71,7 +72,7 @@ class LearnerActivityTable extends React.Component {
     enrollment_date: formatTimestamp({
       timestamp: enrollment.enrollment_date,
     }),
-    passed_date: formatPassedTimestamp(enrollment.passed_date),
+    passed_date: formatPassedTimestamp(enrollment.passed_date,this.props.intl),
     user_account_creation_date: formatTimestamp({
       timestamp: enrollment.user_account_creation_date,
     }),
@@ -108,4 +109,4 @@ LearnerActivityTable.propTypes = {
   activity: PropTypes.string.isRequired,
 };
 
-export default LearnerActivityTable;
+export default (injectIntl(LearnerActivityTable));
