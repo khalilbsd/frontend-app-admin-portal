@@ -194,11 +194,12 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
          courseStats.filter(item => item.courseKey === course).forEach(element=>{
           const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
           Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)/100} %`,
+          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
           Math.round((element.totalInProgress / licenseStats.total)*100)/100,
-          `${Math.round((element.totalInProgress / licenseStats.total)*100)/100} %`,
+          `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
+
           Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)/100}%`]
+          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
           newData.push(temp);
         })
       }else{

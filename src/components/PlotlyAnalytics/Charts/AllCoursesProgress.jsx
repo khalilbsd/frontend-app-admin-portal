@@ -20,13 +20,13 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
         annotations: {
             alwaysOutside: true,
             textStyle: {
-              fontSize: 14,
-              fontName: 'Montserrat',
-              bold: true,
-              color: '#000',
-              auraColor: 'none'
+                fontSize: 14,
+                fontName: 'Montserrat',
+                bold: true,
+                color: '#000',
+                auraColor: 'none'
             }
-          },
+        },
         hAxis: {
 
             minValue: 0,
@@ -72,6 +72,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
     };
 
 
+
     useEffect(() => {
         const licenseDetails = () => {
             licenses.forEach(subscription => {
@@ -87,6 +88,13 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
             })
         }
 
+        licenseDetails()
+    }, [licenses])
+
+
+    useEffect(() => {
+
+
 
         const genereateStatistique = () => {
             const figures = {
@@ -95,6 +103,7 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
                 activeLicense: 0,
             }
             enrollments?.forEach(enrollment => {
+                // console.log(` start ${startDate} | end ${endDate}`)
                 if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
 
                     // console.log(`username ${enrollment.user_username} has passed : ${enrollment.passed} on  ${enrollment.passed_date} with ${parseFloat(enrollment.progress_status) > 60}`)
@@ -114,13 +123,13 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
 
 
             figures.activeLicense = licenseStats.activated
-
+            console.log(figures);
 
             var stats = [
-                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.title']),intl.formatMessage(messages['tab.analytics.chart.all.course.progress.status']) , { role: 'style' },{ role: 'annotation' }],
-                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.progress']), Math.round((figures.progress / licenseStats.total)*100)/100,'#1a46de',`${Math.round((figures.progress / licenseStats.total)*100)}%`],
-                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.finished']), Math.round((figures.finished / licenseStats.total)*100)/100, '#1a46de',`${Math.round((figures.finished / licenseStats.total)*100)}%`],
-                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.license.nb']), Math.round((figures.activeLicense / licenseStats.total)*100)/100, '#1a46de',`${Math.round((figures.activeLicense / licenseStats.total)*100)}%`],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.title']), intl.formatMessage(messages['tab.analytics.chart.all.course.progress.status']), { role: 'style' }, { role: 'annotation' }],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.progress']), Math.round((figures.progress / licenseStats.total) * 100) / 100, '#1a46de', `${Math.round((figures.progress / licenseStats.total) * 100)}%`],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.finished']), Math.round((figures.finished / licenseStats.total) * 100) / 100, '#1a46de', `${Math.round((figures.finished / licenseStats.total) * 100)}%`],
+                [intl.formatMessage(messages['tab.analytics.chart.all.course.progress.license.nb']), Math.round((figures.activeLicense / licenseStats.total) * 100) / 100, '#1a46de', `${Math.round((figures.activeLicense / licenseStats.total) * 100)}%`],
 
             ]
 
@@ -128,23 +137,23 @@ const AllCoursesProgress = ({ intl, licenses, enrollments }) => {
 
 
         }
-
-        licenseDetails()
         genereateStatistique()
 
-    }, [licenses, enrollments,startDate,endDate])
+    }, [ enrollments, startDate, endDate])
 
 
+    !
+        useEffect(() => {
+            const totalLicenses = () => {
+                return licenseStats.total - licenseStats.revoked - licenseStats.unassigned
+            }
 
-    useEffect(() => {
-        const totalLicenses = () => {
-            return licenseStats.total - licenseStats.revoked - licenseStats.unassigned
-        }
+            if (totalLicenses() < 0) {
+                setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
+            }
+        }, [licenseStats])
 
-        if (totalLicenses() < 0) {
-            setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.all.course.progress.no.licenses.assigned']))
-        }
-    }, [licenseStats])
+
 
 
     return (

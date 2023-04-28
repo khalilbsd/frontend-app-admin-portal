@@ -30,7 +30,7 @@ import LicenseManagementTableActionColumn from './LicenseManagementTableActionCo
 import LicenseManagementUserBadge from './LicenseManagementUserBadge';
 import { SUBSCRIPTION_TABLE_EVENTS } from '../../../../eventTracking';
 import { pushEvent, EVENTS, isExperimentActive } from '../../../../optimizely';
-import { injectIntl } from '@edx/frontend-platform/i18n';
+import { getLocale, injectIntl } from '@edx/frontend-platform/i18n';
 import messages from '../../messages';
 
 
@@ -54,14 +54,19 @@ const LicenseManagementTable = ({intl}) => {
     switch (user.status) {
       case ACTIVATED: {
 
-        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.activated'],{activationDate:formatTimestamp({ timestamp: user.activationDate })});
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.activated'],
+        {activationDate:(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(user.activationDate))});
       }
       case REVOKED: {
-        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.revoked'],{activationDate:formatTimestamp({ timestamp: user.revokedDate })});
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.revoked'],
+        {revokedDate:(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(user.revokedDate))});
+
 
       }
       case ASSIGNED: {
-        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.invited'],{activationDate:formatTimestamp({ timestamp: user.lastRemindDate })});
+        return intl.formatMessage(messages['subs.management.page.tab.manage.learners.license.data.table.recent.actions.invited'],
+        {lastRemindDate:(new Intl.DateTimeFormat(getLocale(),{ weekday: 'long', month: 'short', day: 'numeric' })).format(new Date(user.lastRemindDate))});
+
       }
       default: {
         return null;
