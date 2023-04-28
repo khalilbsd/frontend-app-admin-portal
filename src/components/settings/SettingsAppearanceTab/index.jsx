@@ -108,7 +108,7 @@ import messages from '../messages';
          {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo.error.message'])}
         </p>
       </Alert>
-      <h3 className="py-2">
+      {/* <h3 className="py-2">
         {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.customize.logo'])}
         <InfoHover className="" keyName="logo-info-hover" message={logoMessage} />
       </h3>
@@ -139,7 +139,7 @@ import messages from '../messages';
         show={configChangeSuccess || false}
       >
        {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.updated.success'])}
-      </Toast>
+      </Toast> */}
       <h3 className="py-2 pt-5">
         {intl.formatMessage(messages['tab.settings.tabs.labels.appearance.theme'])}
         <InfoHover className="" keyName="theme-info-hover" message={themeMessage} />

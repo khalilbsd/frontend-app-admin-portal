@@ -12,7 +12,7 @@ const messages = defineMessages({
     },
     'tab.settings.tabs.labels.appearance.customize.logo.message': {
         id: 'tab.settings.tabs.labels.appearance.customize.logo.message',
-        defaultMessage: 'Customize the appearance of your learner and administrator edX experiences with your organization’s logo and color themes.'
+        defaultMessage: 'Customize the appearance of your learner and administrator Groupado Pro experiences with your organization’s color themes.'
     },
     'tab.settings.tabs.labels.appearance.customize.logo.error.sorry': {
         id: 'tab.settings.tabs.labels.appearance.customize.logo.error.sorry',

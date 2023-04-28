@@ -154,7 +154,7 @@
     "pgn.Dropzone.DefaultContent.fileSizeMin": "Min {sizeMin}",
     "pgn.Dropzone.DefaultContent.fileTypeRestriction": "Télécharger {count, plural, one {{firstPart} fichier} other {{firstPart} ou {secondPart} fichiers}}",
     "tab.settings.tabs.labels.appearance": "Apparence du portail",
-    "tab.settings.tabs.labels.appearance.customize.logo.message": "Personnalisez l'apparence de vos expériences d'apprentissage et d'administration edX avec le logo de votre organisation et des thèmes de couleurs.",
+    "tab.settings.tabs.labels.appearance.customize.logo.message": "Personnalisez l'apparence de vos expériences d'apprentissage et d'administration Groupado Pro avec  des thèmes de couleurs.",
     "tab.settings.tabs.labels.appearance.customize.logo.error.sorry": "Nous sommes désolés",
     "tab.settings.tabs.labels.appearance.customize.logo.error.message": "Quelque chose s'est mal passé en coulisse. Réessayez plus tard ou contactez le support pour obtenir de l'aide.",
     "tab.settings.tabs.labels.appearance.customize.logo": "Logo",
