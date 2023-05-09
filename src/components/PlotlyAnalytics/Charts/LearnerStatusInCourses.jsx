@@ -34,7 +34,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   const [startDate, setStartDate] = useState(() => {
     const today = new Date();
     today.setDate(1);
-    today.setMonth(today.getMonth() - 4);
+    today.setMonth(today.getMonth() - 1);
     return today;
   });
   const [error, setErrorMessage] = useState(undefined);
@@ -124,7 +124,7 @@ useEffect(()=>{
     })
   }
   licenseDetails();
-},[licenseData])
+},[licenseData,startDate,endDate]);
 
 
   useEffect(() => {
@@ -139,13 +139,13 @@ useEffect(()=>{
 
     const groupedByCourse = rawData?.reduce((acc, enrollment) => {
       // console.log(licenseStats);
-      // console.log(`unactive license ${parseInt(licenseStats.unassigned)+parseInt(licenseStats.assigned)}`);
+      console.log(`unactive license ${parseInt(licenseStats.unassigned)+parseInt(licenseStats.assigned)}`);
       const courseKey = enrollment.courserun_key;
 
       const existingCourse = acc.find(course => course.courseKey === courseKey);
 
       if (existingCourse) {
-        // console.log(`number of  inactive user in ${existingCourse.courseTitle} is ${existingCourse.totalNotActive}`);
+        console.log(`number of  inactive user in ${existingCourse.courseTitle} is ${existingCourse.totalNotActive}`);
         // console.log(`the user ${enrollment.user_username} has passed ${enrollment.has_passed} on ${enrollment.passed_date} with progress equal ${parseFloat(enrollment.progress_status)}`)
         existingCourse.totalEnrollments++;
         if ((parseFloat(enrollment.progress_status) > 0)  && (parseFloat(enrollment.progress_status) < 100) && !(enrollment.has_passed)) {
@@ -154,15 +154,15 @@ useEffect(()=>{
         } else if (parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date) {
           existingCourse.totalFinished++;
         } else {
-          // console.log(`im in inactive for the course ${existingCourse.courseTitle}`);
+          console.log(`im in inactive for the course ${existingCourse.courseTitle}`);
           existingCourse.totalNotActive++;
-          // console.log(existingCourse.totalNotActive);
+          console.log(existingCourse.totalNotActive);
         }
 
       } else {
         if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
           const unacu=getInactiveUsers(enrollment.progress_status)
-          // console.log(`this is user is inactive for the course  ${enrollment.course_title} with progresss ${unacu}`);
+          console.log(`this is user is inactive for the course  ${enrollment.course_title} with progresss ${unacu}`);
           const stats= {
             courseKey: courseKey,
             courseTitle: enrollment.course_title,
@@ -188,7 +188,10 @@ useEffect(()=>{
   }, [rawData, startDate, endDate,licenseStats]);
 
 
-
+// console.log("license statistique");
+// console.log(licenseStats);
+// console.log("course stats");
+// console.log(courseStats);
 
 
   useEffect(() => {
@@ -221,7 +224,7 @@ useEffect(()=>{
       if (course && course.length > 0) {
          courseStats.filter(item => item.courseKey === course).forEach(element=>{
           const temp = [`
-          ${element.courseTitle}`,
+          ${element.courseTitle} (${element.totalEnrollments})`,
           Math.round((element.totalNotActive / licenseStats.total)*100)/100,
           `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
 
@@ -236,7 +239,7 @@ useEffect(()=>{
       }else{
         courseStats?.forEach(element => {
           const temp = [`
-          ${element.courseTitle}`,
+          ${element.courseTitle} (${element.totalEnrollments})`,
           Math.round((element.totalNotActive / licenseStats.total)*100)/100,
           `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
 
@@ -246,17 +249,6 @@ useEffect(()=>{
           `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
 
         ]
-        //   const temp = [`
-        //   ${element.courseTitle} (${element.totalEnrollments})`,
-        //   Math.round((element.totalNotActive / licenseStats.total)*100)/100,
-        //   `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
-
-        //   Math.round((element.totalInProgress / licenseStats.total)*100)/100,
-        //   `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
-        //   Math.round((element.totalFinished / licenseStats.total)*100)/100,
-        //   `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
-
-        // ]
           newData.push(temp);
         });
       }
