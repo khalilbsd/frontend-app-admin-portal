@@ -55,7 +55,7 @@ const messages = defineMessages({
     },
     'tab.analytics.chart.learner.course.enrollment.chart.number.learners': {
         id: 'tab.analytics.chart.learner.course.enrollment.chart.number.learners',
-        defaultMessage: 'Not Enrolled Learners'
+        defaultMessage: "Learners that didn't start the course"
     },
     'tab.analytics.chart.learner.course.enrollment.chart.in.progress': {
         id: 'tab.analytics.chart.learner.course.enrollment.chart.in.progress',

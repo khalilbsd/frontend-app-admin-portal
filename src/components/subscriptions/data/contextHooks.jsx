@@ -8,10 +8,13 @@ import { SubscriptionContext } from '../SubscriptionData';
   from the subscriptionUUID param in the route.
 */
 export const useSubscriptionFromParams = ({ match }) => {
+  console.log(match);
   // Use UUID to find matching subscription plan in SubscriptionContext, return 404 if not found
   const { params: { subscriptionUUID } } = match;
+
   const { data: subscriptions, loading } = useContext(SubscriptionContext);
-  const foundSubscriptionByUUID = Object.values(subscriptions.results).find(sub => sub.uuid === subscriptionUUID);
+  console.log(subscriptions);
+  const foundSubscriptionByUUID = Object.values(subscriptions?.results).find(sub => sub.uuid === subscriptionUUID);
   if (!foundSubscriptionByUUID) {
     return [null, loading];
   }

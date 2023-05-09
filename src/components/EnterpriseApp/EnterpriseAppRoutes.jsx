@@ -16,6 +16,7 @@ import BulkEnrollmentResultsDownloadPage from '../BulkEnrollmentResultsDownloadP
 import LearnerCreditManagement from '../learner-credit-management';
 import { EnterpriseSubsidiesContext } from '../EnterpriseSubsidiesContext';
 import ContentHighlights from '../ContentHighlights';
+import AnalyticsPage from '../PlotlyAnalytics/AnalyticsPage';
 
 const EnterpriseAppRoutes = ({
   baseUrl,
@@ -82,7 +83,8 @@ const EnterpriseAppRoutes = ({
           key="analytics"
           exact
           path={`${baseUrl}/admin/${ROUTE_NAMES.analytics}`}
-          component={PlotlyAnalyticsPage}
+          // component={PlotlyAnalyticsPage}
+          component={AnalyticsPage}
         />
       )}
 
