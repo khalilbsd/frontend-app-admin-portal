@@ -124,7 +124,7 @@ useEffect(()=>{
     })
   }
   licenseDetails();
-},[licenseData,startDate,endDate]);
+},[licenseData])
 
 
   useEffect(() => {
@@ -188,10 +188,10 @@ useEffect(()=>{
   }, [rawData, startDate, endDate,licenseStats]);
 
 
-// console.log("license statistique");
-// console.log(licenseStats);
-// console.log("course stats");
-// console.log(courseStats);
+ console.log("license statistique");
+ console.log(licenseStats);
+ console.log("course stats");
+ console.log(courseStats);
 
 
   useEffect(() => {
@@ -261,7 +261,7 @@ useEffect(()=>{
     }
   }, [courseStats, licenseStats,course]);
 
-
+console.log(data);
 
   return (
     <Card className='py-5 px-5'>

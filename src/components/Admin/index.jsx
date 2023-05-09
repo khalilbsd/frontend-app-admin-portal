@@ -63,7 +63,7 @@ class Admin extends React.Component {
 
     const actionData = {
       'registered-unenrolled-learners': {
-        title: 'Registered Learners Not Yet Enrolled in a Course',
+        title: intl.formatMessage(messages['tab.progress.report.full.report.sub.title']),
         component: <RegisteredLearnersTable />,
         csvFetchMethod: () => (
           EnterpriseDataApiService.fetchUnenrolledRegisteredLearners(

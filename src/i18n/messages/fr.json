@@ -30,6 +30,7 @@
     "tab.progress.report.cards.courseCompletions.label.completed.courses": "Combien de cours ont été suivis par les apprenants ?",
     "tab.progress.report.cards.courseCompletions.label.completed.courses.week": "Qui a suivi un cours la semaine dernière ?",
     "tab.progress.report.full.report.title": "Rapport complet",
+    "tab.progress.report.full.report.sub.title": "Apprenants inscrits dans la plate-forme et non encore inscrits à un cours",
     "tab.progress.report.reset.to.action": "Réinitialiser au",
     "tab.progress.report.reset.to.action.filters": "Réinitialiser les filtres",
     "tab.progress.report.data.date.showing": "Donnés au",

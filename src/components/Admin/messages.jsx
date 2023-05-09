@@ -88,6 +88,10 @@ const messages = defineMessages({
         id:'tab.progress.report.full.report.title',
         defaultMessage: 'Full Report'
     },
+    'tab.progress.report.full.report.sub.title':{
+        id:'tab.progress.report.full.report.sub.title',
+        defaultMessage: 'Registered Learners Not Yet Enrolled in a Course'
+    },
     'tab.progress.report.reset.to.action':{
         id:'tab.progress.report.reset.to.action',
         defaultMessage: 'Reset to'
