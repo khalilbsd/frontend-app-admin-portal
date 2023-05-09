@@ -13,6 +13,7 @@ import {
 } from '@material-ui/pickers';
 import { Grid } from '@material-ui/core';
 import CourseSearchBox from './CourseSearchBox';
+import { element } from 'prop-types';
 
 
 
@@ -33,7 +34,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   const [startDate, setStartDate] = useState(() => {
     const today = new Date();
     today.setDate(1);
-    today.setMonth(today.getMonth() - 1);
+    today.setMonth(today.getMonth() - 4);
     return today;
   });
   const [error, setErrorMessage] = useState(undefined);
@@ -85,9 +86,9 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
     },
     isStacked: false,
     series: {
-      0: { color: '#2ce4b4' },
+      0: { color: '#de1a47' },
       1: { color: '#1a46de' },
-      2: { color: '#de1a47' },
+      2: { color: '#2ce4b4' },
     },
     tooltip: {
       formatter: function () {
@@ -107,59 +108,85 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   }
 
 
-
+useEffect(()=>{
+  const licenseDetails = () => {
+    licenseData.results.forEach(subscription => {
+      setLicenseStats(stat => {
+        stat.revoked += subscription.licenses.revoked
+        stat.allocated += subscription.licenses.allocated
+        stat.assigned += subscription.licenses.assigned
+        stat.activated += subscription.licenses.activated
+        stat.total += subscription.licenses.total
+        stat.unassigned += subscription.licenses.unassigned
+        return stat
+      }
+      )
+    })
+  }
+  licenseDetails();
+},[licenseData])
 
 
   useEffect(() => {
-    const licenseDetails = () => {
-      licenseData.results.forEach(subscription => {
-        setLicenseStats(stat => {
-          stat.revoked += subscription.licenses.revoked
-          stat.allocated += subscription.licenses.allocated
-          stat.assigned += subscription.licenses.assigned
-          stat.activated += subscription.licenses.activated
-          stat.total += subscription.licenses.total
-          stat.unassigned += subscription.licenses.unassigned
-          return stat
-        }
-        )
-      })
+    function getInactiveUsers(progress){
+      console.log(`native progress is ${progress}`);
+      if (parseFloat(progress) < 1){
+        return 1
+      }
+      return 0
+
     }
 
     const groupedByCourse = rawData?.reduce((acc, enrollment) => {
+      // console.log(licenseStats);
+      // console.log(`unactive license ${parseInt(licenseStats.unassigned)+parseInt(licenseStats.assigned)}`);
       const courseKey = enrollment.courserun_key;
 
       const existingCourse = acc.find(course => course.courseKey === courseKey);
 
       if (existingCourse) {
+        // console.log(`number of  inactive user in ${existingCourse.courseTitle} is ${existingCourse.totalNotActive}`);
         // console.log(`the user ${enrollment.user_username} has passed ${enrollment.has_passed} on ${enrollment.passed_date} with progress equal ${parseFloat(enrollment.progress_status)}`)
         existingCourse.totalEnrollments++;
-        if ((parseFloat(enrollment.progress_status) > 0)  && (parseFloat(enrollment.progress_status) < 60) && !(enrollment.has_passed)) {
+        if ((parseFloat(enrollment.progress_status) > 0)  && (parseFloat(enrollment.progress_status) < 100) && !(enrollment.has_passed)) {
           existingCourse.totalInProgress++;
 
         } else if (parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date) {
           existingCourse.totalFinished++;
         } else {
+          // console.log(`im in inactive for the course ${existingCourse.courseTitle}`);
           existingCourse.totalNotActive++;
+          // console.log(existingCourse.totalNotActive);
         }
 
       } else {
         if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
-          acc.push({
+          const unacu=getInactiveUsers(enrollment.progress_status)
+          // console.log(`this is user is inactive for the course  ${enrollment.course_title} with progresss ${unacu}`);
+          const stats= {
             courseKey: courseKey,
             courseTitle: enrollment.course_title,
             totalEnrollments: 1,
             totalInProgress: parseFloat(enrollment.progress_status) > 0 && parseFloat(enrollment.progress_status) < 100 ? 1 : 0,
             totalFinished: parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date ? 1  : 0,
-            totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
-          });
+            // totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
+            totalNotActive: parseInt(licenseStats.assigned) + parseInt(licenseStats.unassigned) + unacu,
+          }
+          console.log(stats.totalNotActive);
+          // stats.totalNotActive = parseInt(stats.totalNotActive) + p
+
+          acc.push(stats)
         }
       }
+
       return acc;
     }, []);
+
+
     setCourseStats(groupedByCourse);
-    licenseDetails();
-  }, [rawData, startDate, endDate, licenseData]);
+
+  }, [rawData, startDate, endDate,licenseStats]);
+
 
 
 
@@ -180,38 +207,56 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
       const newData = [
         [
           intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']),
-          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']),
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners']),
           { type: 'string', role: 'annotation' },
           intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.in.progress']),
           { type: 'string', role: 'annotation' },
-          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners']),
-          { type: 'string', role: 'annotation' }
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']),
+          { type: 'string', role: 'annotation' },
+
         ]
       ];
 
 
       if (course && course.length > 0) {
          courseStats.filter(item => item.courseKey === course).forEach(element=>{
-          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
+          const temp = [`
+          ${element.courseTitle}`,
+          Math.round((element.totalNotActive / licenseStats.total)*100)/100,
+          `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
+
           Math.round((element.totalInProgress / licenseStats.total)*100)/100,
           `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
+          Math.round((element.totalFinished / licenseStats.total)*100)/100,
+          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
 
-          Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
+        ]
           newData.push(temp);
         })
       }else{
         courseStats?.forEach(element => {
-          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
+          const temp = [`
+          ${element.courseTitle}`,
+          Math.round((element.totalNotActive / licenseStats.total)*100)/100,
+          `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
+
           Math.round((element.totalInProgress / licenseStats.total)*100)/100,
           `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
+          Math.round((element.totalFinished / licenseStats.total)*100)/100,
+          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
 
-          Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
+        ]
+        //   const temp = [`
+        //   ${element.courseTitle} (${element.totalEnrollments})`,
+        //   Math.round((element.totalNotActive / licenseStats.total)*100)/100,
+        //   `${Math.round((element.totalNotActive / licenseStats.total)*100)}%`,
+
+        //   Math.round((element.totalInProgress / licenseStats.total)*100)/100,
+        //   `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
+        //   Math.round((element.totalFinished / licenseStats.total)*100)/100,
+        //   `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
+
+        // ]
           newData.push(temp);
         });
       }
@@ -223,8 +268,6 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
       setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.no.data']))
     }
   }, [courseStats, licenseStats,course]);
-
-
 
 
 

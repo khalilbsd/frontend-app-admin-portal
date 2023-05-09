@@ -9,7 +9,7 @@
     "tab.analytics.chart.learner.course.enrollment.horiz.axis.title": "Nom du cours",
     "tab.analytics.chart.learner.course.enrollment.vert.axis.title": "Nombre d'apprenants",
     "tab.analytics.chart.learner.course.enrollment.course": "Cours",
-    "tab.analytics.chart.learner.course.enrollment.chart.number.learners": "Apprenants inscrits",
+    "tab.analytics.chart.learner.course.enrollment.chart.number.learners": "Apprenants non inscrits",
     "tab.analytics.chart.learner.course.enrollment.chart.in.progress": "Apprenants en cours d'apprentissage",
     "tab.analytics.chart.learner.course.enrollment.chart.finish": "Apprenants ayant terminé leur formation",
     "tab.analytics.chart.learner.course.certificate.succeded": "Apprenants ayant obtenu un certificat",
