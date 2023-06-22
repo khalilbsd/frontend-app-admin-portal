@@ -93,6 +93,7 @@ const [error, setError] = useState(undefined)
       ]]);
     console.log("marra");
     if (courseStats?.length > 0) {
+      setError(undefined)
       courseStats?.forEach(element => {
         const temp = [
           `${element.courseTitle} (${element.totalEnrollments})`
@@ -106,7 +107,6 @@ const [error, setError] = useState(undefined)
       }
       )
     } else {
-
         const temp = [
           `0`, 0, `0%`,0,`0%`
         ]

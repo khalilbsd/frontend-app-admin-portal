@@ -177,7 +177,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData, licenseUsersDetail
     const statistiqueRefinement = () => {
       licenseUsersDetails?.forEach(userLicense => {
         if (userLicense.status === 'activated') {
-          groupedByCourse.forEach(course => {
+          groupedByCourse?.forEach(course => {
             if (!course.users_emails.includes(userLicense.user_email)) {
               course.totalNotActive++
             }
