@@ -13,7 +13,7 @@ import messages from '../messages';
 const LearnerCertificate = ({ rawData, intl }) => {
   const [courseStats, setCourseStats] = useState();
   const [data, setData] = useState([]);
-
+const [error, setError] = useState(undefined)
 
   const options = {
     title: intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.title']),
@@ -77,6 +77,7 @@ const LearnerCertificate = ({ rawData, intl }) => {
 
 
     setCourseStats(groupedByCourse);
+    //setCourseStats([]);
   }, [rawData]);
 
 
@@ -90,33 +91,50 @@ const LearnerCertificate = ({ rawData, intl }) => {
         { type: 'string', role: 'annotation' },
 
       ]]);
-    courseStats?.forEach(element => {
-      const temp = [
-        `${element.courseTitle} (${element.totalEnrollments})`
-        , element.totalSucceded / element.totalEnrollments,
-         `${(element.totalSucceded / element.totalEnrollments)*100}%`,
+    console.log("marra");
+    if (courseStats?.length > 0) {
+      courseStats?.forEach(element => {
+        const temp = [
+          `${element.courseTitle} (${element.totalEnrollments})`
+          , element.totalSucceded / element.totalEnrollments,
+          `${(element.totalSucceded / element.totalEnrollments) * 100}%`,
 
-         element.totalFailure / element.totalEnrollments,
-         `${(element.totalFailure / element.totalEnrollments)*100}%`
+          element.totalFailure / element.totalEnrollments,
+          `${(element.totalFailure / element.totalEnrollments) * 100}%`
+        ]
+        setData(data => [...data, temp]);
+      }
+      )
+    } else {
 
+        const temp = [
+          `0`, 0, `0%`,0,`0%`
+        ]
+        setData(data => [...data, temp]);
+        setError("il n'y a pas encore d'inscriptions")
 
-      ]
-      setData(data => [...data, temp]);
     }
-    )
   }, [courseStats])
 
+  console.log(data);
 
   return (
     <Card className='py-5 px-5'>
       <h3 className='stats-card-title'>{intl.formatMessage(messages['tab.analytics.chart.learner.course.certificate.title'])}</h3>
+      {error?
+       <div className='w-100 d-flex align-items-center justify-content-center error-container'>
+       <h3 className='error-message no-data-found'>{error}</h3>
+      </div>
+        :
+
       <Chart
-        chartType="ColumnChart"
-        width="100%"
-        height="600px"
-        data={data}
-        options={options}
+      chartType="ColumnChart"
+      width="100%"
+      height="600px"
+      data={data}
+      options={options}
       />
+    }
     </Card>
   )
 }
