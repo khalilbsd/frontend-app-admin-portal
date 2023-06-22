@@ -18,14 +18,17 @@ import messages from './messages';
 import LearnerCertificate from './Charts/LearnerCertificate';
 import { useSubscriptionData } from '../subscriptions/data/hooks';
 import AllCoursesProgress from './Charts/AllCoursesProgress';
+import LicenseManagerApiService from '../../data/services/LicenseManagerAPIService';
 
 
 
-const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsData, enrollments, intl }) => {
+
+const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsData, enrollments, intl, subscriptionUUID }) => {
   const [status, setStatus] = useState({
     visible: false, alertType: '', message: '',
   });
   const [enrollmentsList, setenrollmentsList] = useState(undefined)
+  const [licenseUsersDetails, setLicenseUsersDetails] = useState(undefined)
   const [learnerStatus, setlearnerStatus] = useState(undefined)
   const PAGE_TITLE = intl.formatMessage(messages['tab.anayltics.page.title']);
   // const enrollmentsList = enrollments.then(enrollment => enrollments.data);
@@ -38,6 +41,16 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
     loading,
   } = useSubscriptionData({ enterpriseId });
 
+
+  async function getLicenseData() {
+    try {
+      const { data:results } = await LicenseManagerApiService.fetchSubscriptionUsers(subscriptionUUID)
+      setLicenseUsersDetails(results)
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
 
 
@@ -66,8 +79,11 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
   useEffect(() => {
     fetchDashboardAnalytics(enterpriseId)
     getEnrollmentsData()
+    if (subscriptionUUID){
+      getLicenseData()
+    }
 
-  }, [enterpriseId])
+  }, [enterpriseId,subscriptionUUID])
 
 
   useEffect(() => {
@@ -75,27 +91,27 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
   }, [analyticsData])
 
 
+  // const setSuccessStatus = ({ visible, message = '' }) => {
+  //   setStatus({
+  //     visible,
+  //     alertType: 'success',
+  //     message,
+  //   });
+  // };
 
-  const setSuccessStatus = ({ visible, message = '' }) => {
-    setStatus({
-      visible,
-      alertType: 'success',
-      message,
-    });
-  };
 
-  const renderStatusMessage = () => (
-    status && status.visible && (
-      <StatusAlert
-        alertType={status.alertType}
-        iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
-        title={status.title}
-        message={status.message}
-        onClose={() => setSuccessStatus({ visible: false })}
-        dismissible
-      />
-    )
-  );
+  // const renderStatusMessage = () => (
+  //   status && status.visible && (
+  //     <StatusAlert
+  //       alertType={status.alertType}
+  //       iconClassName={status.iconClassName || `fa ${status.alertType === 'success' ? 'fa-check' : 'fa-times-circle'}`}
+  //       title={status.title}
+  //       message={status.message}
+  //       onClose={() => setSuccessStatus({ visible: false })}
+  //       dismissible
+  //     />
+  //   )
+  // );
 
 
   return (
@@ -107,7 +123,7 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
       </div> */}
       <Container gap={2} className='tab-content'>
         <Row style={{ rowGap: 10 }}>
-          <Col lg={6} md={6} sm={12} xs={12}  className='d-flex'  >
+          <Col lg={6} md={6} sm={12} xs={12} className='d-flex'  >
             <PieChart data={learnerStatus} title="tab.anayltics.chart.title.daily.activities" totalNumberOfUsers={analyticsData.number_of_users} />
           </Col>
           <Col lg={6} md={6} sm={12} xs={12} className='d-flex'    >
@@ -118,7 +134,7 @@ const PlotlyAnalyticsPage = ({ enterpriseId, fetchDashboardAnalytics, analyticsD
           <Col lg={12} md={12} sm={12} xs={12} >
             {
               !errors.length &&
-              <LearnerStatusInCourses rawData={enrollmentsList} licenseData={subscriptions} />
+              <LearnerStatusInCourses rawData={enrollmentsList} licenseData={subscriptions} licenseUsersDetails={licenseUsersDetails?.results} />
             }
           </Col>
         </Row>
@@ -147,7 +163,8 @@ const mapStateToProps = state => ({
   //   ['tab.analytics.chart.learner.enrollment.status.not.enrolled', state.dashboardAnalytics.enrolled_learners],
   // ],
   analyticsData: state.dashboardAnalytics,
-  enrollments: EnterpriseDataApiService.fetchCourseEnrollments(state.portalConfiguration.enterpriseId)
+  enrollments: EnterpriseDataApiService.fetchCourseEnrollments(state.portalConfiguration.enterpriseId),
+
 });
 
 

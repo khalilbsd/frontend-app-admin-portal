@@ -13,11 +13,13 @@ import {
 } from '@material-ui/pickers';
 import { Grid } from '@material-ui/core';
 import CourseSearchBox from './CourseSearchBox';
+import { element } from 'prop-types';
+import { forEach } from 'lodash';
 
 
 
 
-const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
+const LearnerStatusInCourses = ({ rawData, intl, licenseData, licenseUsersDetails }) => {
   const [courseStats, setCourseStats] = useState();
   const [data, setData] = useState([]);
   const [endDate, setEndDate] = useState(new Date());
@@ -33,7 +35,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   const [startDate, setStartDate] = useState(() => {
     const today = new Date();
     today.setDate(1);
-    today.setMonth(today.getMonth() - 1);
+    today.setMonth(today.getMonth() - 4);
     return today;
   });
   const [error, setErrorMessage] = useState(undefined);
@@ -85,9 +87,9 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
     },
     isStacked: false,
     series: {
-      0: { color: '#2ce4b4' },
+      0: { color: '#de1a47' },
       1: { color: '#1a46de' },
-      2: { color: '#de1a47' },
+      2: { color: '#2ce4b4' },
     },
     tooltip: {
       formatter: function () {
@@ -107,9 +109,6 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
   }
 
 
-
-
-
   useEffect(() => {
     const licenseDetails = () => {
       licenseData.results.forEach(subscription => {
@@ -125,43 +124,72 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
         )
       })
     }
+    licenseDetails();
+  }, [licenseData])
 
+
+  useEffect(() => {
+    function getInactiveUsers(progress) {
+      if (parseFloat(progress) < 1) {
+        return 1
+      }
+      return 0
+
+    }
     const groupedByCourse = rawData?.reduce((acc, enrollment) => {
       const courseKey = enrollment.courserun_key;
 
       const existingCourse = acc.find(course => course.courseKey === courseKey);
-
       if (existingCourse) {
-        // console.log(`the user ${enrollment.user_username} has passed ${enrollment.has_passed} on ${enrollment.passed_date} with progress equal ${parseFloat(enrollment.progress_status)}`)
         existingCourse.totalEnrollments++;
-        if ((parseFloat(enrollment.progress_status) > 0)  && (parseFloat(enrollment.progress_status) < 60) && !(enrollment.has_passed)) {
+        existingCourse.users_emails.push(enrollment.user_email);
+        if ((parseFloat(enrollment.progress_status) > 0) && (parseFloat(enrollment.progress_status) < 100) && !(enrollment.has_passed)) {
           existingCourse.totalInProgress++;
-
         } else if (parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date) {
           existingCourse.totalFinished++;
         } else {
           existingCourse.totalNotActive++;
-        }
 
+        }
       } else {
         if (endDate > new Date(enrollment.enrollment_date) && startDate < new Date(enrollment.enrollment_date)) {
-          acc.push({
+          const unacu = getInactiveUsers(enrollment.progress_status)
+          const stats = {
             courseKey: courseKey,
             courseTitle: enrollment.course_title,
+            users_emails: [enrollment.user_email],
             totalEnrollments: 1,
             totalInProgress: parseFloat(enrollment.progress_status) > 0 && parseFloat(enrollment.progress_status) < 100 ? 1 : 0,
-            totalFinished: parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date ? 1  : 0,
-            totalNotActive: parseFloat(enrollment.progress_status) == 0 ? 1 : 0,
-          });
+            totalFinished: parseFloat(enrollment.progress_status) > 60 && enrollment.has_passed && enrollment.passed_date ? 1 : 0,
+
+            totalNotActive: parseInt(licenseStats.assigned) + parseInt(licenseStats.unassigned) + unacu,
+          }
+
+
+          acc.push(stats)
         }
       }
+
       return acc;
     }, []);
-    setCourseStats(groupedByCourse);
-    licenseDetails();
-  }, [rawData, startDate, endDate, licenseData]);
 
 
+    const statistiqueRefinement = () => {
+      licenseUsersDetails?.forEach(userLicense => {
+        if (userLicense.status === 'activated') {
+          groupedByCourse.forEach(course => {
+            if (!course.users_emails.includes(userLicense.user_email)) {
+              course.totalNotActive++
+            }
+          })
+        }
+      })
+      return groupedByCourse
+    }
+
+    setCourseStats(statistiqueRefinement);
+
+  }, [rawData, startDate, endDate, licenseStats, licenseUsersDetails]);
 
 
   useEffect(() => {
@@ -180,38 +208,46 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
       const newData = [
         [
           intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.course']),
-          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']),
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners']),
           { type: 'string', role: 'annotation' },
           intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.in.progress']),
           { type: 'string', role: 'annotation' },
-          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.number.learners']),
-          { type: 'string', role: 'annotation' }
+          intl.formatMessage(messages['tab.analytics.chart.learner.course.enrollment.chart.finish']),
+          { type: 'string', role: 'annotation' },
+
         ]
       ];
 
 
       if (course && course.length > 0) {
-         courseStats.filter(item => item.courseKey === course).forEach(element=>{
-          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
-          Math.round((element.totalInProgress / licenseStats.total)*100)/100,
-          `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
+        courseStats.filter(item => item.courseKey === course).forEach(element => {
+          const temp = [`
+          ${element.courseTitle} (${element.totalEnrollments})`,
+          Math.round((element.totalNotActive / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalNotActive / licenseStats.total) * 100)}%`,
 
-          Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
+          Math.round((element.totalInProgress / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalInProgress / licenseStats.total) * 100)} %`,
+          Math.round((element.totalFinished / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalFinished / licenseStats.total) * 100)} %`,
+
+          ]
           newData.push(temp);
         })
-      }else{
+      } else {
         courseStats?.forEach(element => {
-          const temp = [`${element.courseTitle} (${element.totalEnrollments})`,
-          Math.round((element.totalFinished / licenseStats.total)*100)/100,
-          `${Math.round((element.totalFinished / licenseStats.total)*100)} %`,
-          Math.round((element.totalInProgress / licenseStats.total)*100)/100,
-          `${Math.round((element.totalInProgress / licenseStats.total)*100)} %`,
 
-          Math.round((element.totalEnrollments / licenseStats.total)*100)/100,
-          `${Math.round((element.totalEnrollments / licenseStats.total)*100)}%`]
+          const temp = [`
+          ${element.courseTitle} (${element.totalEnrollments})`,
+          Math.round((element.totalNotActive / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalNotActive / licenseStats.total) * 100)}%`,
+
+          Math.round((element.totalInProgress / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalInProgress / licenseStats.total) * 100)} %`,
+          Math.round((element.totalFinished / licenseStats.total) * 100) / 100,
+          `${Math.round((element.totalFinished / licenseStats.total) * 100)} %`,
+
+          ]
           newData.push(temp);
         });
       }
@@ -222,9 +258,7 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
     } else {
       setErrorMessage(intl.formatMessage(messages['tab.analytics.chart.error.message.no.data']))
     }
-  }, [courseStats, licenseStats,course]);
-
-
+  }, [courseStats, licenseStats, course]);
 
 
 
@@ -261,11 +295,9 @@ const LearnerStatusInCourses = ({ rawData, intl, licenseData }) => {
               />
             </Grid>
             <Grid item xs={12} lg={3} md={4} sm={6}>
-              <CourseSearchBox handleChange={handleCourseChange} initialValue={course} courses={courseList}  />
+              <CourseSearchBox handleChange={handleCourseChange} initialValue={course} courses={courseList} />
             </Grid>
           </Grid>
-
-
         </MuiPickersUtilsProvider>
       </div>
       {
